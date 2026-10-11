@@ -1,0 +1,30 @@
+from collections.abc import AsyncIterator
+from typing import Literal, NotRequired, Protocol, TypedDict
+
+Messages = list[dict[str, str]]
+
+
+class ModelStatus(TypedDict):
+    provider: str
+    backend: str
+    model: str | None
+    state: Literal["not_configured", "model_missing", "loading", "ready", "failed"]
+    reason: str | None
+    context_size: NotRequired[int]
+    gpu_layers: NotRequired[int]
+    reachable: NotRequired[bool]
+
+
+class ModelProvider(Protocol):
+    async def start(self) -> None: ...
+    async def chat(self, messages: Messages) -> str: ...
+    def stream(self, messages: Messages) -> AsyncIterator[str]: ...
+    async def health(self) -> ModelStatus: ...
+    async def close(self) -> None: ...
+
+
+class EmbeddingProvider(Protocol):
+    async def start(self) -> None: ...
+    async def embed(self, texts: list[str]) -> list[list[float]]: ...
+    async def health(self) -> ModelStatus: ...
+    async def close(self) -> None: ...
