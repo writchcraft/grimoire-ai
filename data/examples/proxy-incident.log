@@ -1,0 +1,7 @@
+2026-10-28T10:00:00Z INFO proxy starting
+2026-10-28T10:00:01Z INFO listening on port 443
+2026-10-28T10:07:12Z ERROR upstream connection refused upstream=192.0.2.20:3000 pid=1001
+2026-10-28T10:07:13Z ERROR upstream connection refused upstream=192.0.2.20:3000 pid=1002
+2026-10-28T10:07:14Z WARNING retrying upstream after 1s
+2026-10-28T10:07:16Z ERROR upstream connection refused upstream=192.0.2.20:3000 pid=1003
+2026-10-28T10:09:00Z INFO upstream connection established

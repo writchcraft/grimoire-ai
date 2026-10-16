@@ -1,0 +1,7 @@
+Fictional incident notes
+
+Affected service: reverse-proxy / grafana
+Operator reported checking the proxy configuration at 10:08 UTC.
+No configuration changes were reported in these notes.
+Logs show an upstream connection refusal; this does not prove why the upstream was unavailable.
+Suggested follow-up: inspect the Grafana process/container and correlate its logs with the proxy errors.
