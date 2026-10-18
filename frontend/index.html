@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#0e1017" />
+    <meta
+      name="description"
+      content="Grimoire — local intelligence for your homelab."
+    />
+    <title>Grimoire · Homelab intelligence</title>
+    <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <link rel="stylesheet" href="/src/compact.css" />
+    <script type="module" src="/src/app.js"></script>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <a class="brand" href="/" aria-label="Grimoire home"
+        ><span class="sigil">◈</span
+        ><span>grimoire<small>HOMELAB INTELLIGENCE</small></span></a
+      >
+      <div class="workspace">
+        <span class="workspace-icon">⌘</span>
+        <div>Local workspace<small>Self-hosted · private by design</small></div>
+        <span class="workspace-dot"></span>
+      </div>
+      <div class="nav-caption">WORKSPACE</div>
+      <nav aria-label="Workspace">
+        <button class="nav-item active" data-view="chat" aria-current="page">
+          <span>✧</span> Assistant <kbd>01</kbd>
+        </button>
+        <button class="nav-item" data-view="knowledge">
+          <span>▤</span> Knowledge <kbd id="nav-count">0</kbd>
+        </button>
+        <button class="nav-item" data-view="logs">
+          <span>≋</span> Logs & incidents <kbd>03</kbd>
+        </button>
+        <button class="nav-item" data-view="services">
+          <span>⬡</span> Services <kbd>04</kbd>
+        </button>
+      </nav>
+      <div class="sidebar-note">
+        <span>◈</span>
+        <p>
+          Your infrastructure.<br />Your knowledge.<br /><strong
+            >Your machine.</strong
+          >
+        </p>
+      </div>
+      <div class="sidebar-bottom">
+        <span class="status-dot" id="connection-dot"></span>
+        <div id="connection-label">Checking local model…</div>
+        <button id="refresh-status" aria-label="Refresh connection status">
+          ↻
+        </button>
+      </div>
+      <div class="version">GRIMOIRE <span>v0.1.0 / local</span></div>
+    </aside>
+    <main>
+      <header class="topbar">
+        <div>
+          <span class="breadcrumb">Workspace</span><span class="slash">/</span
+          ><span id="page-title">Assistant</span>
+        </div>
+        <div class="privacy">
+          <span>◉</span> LOCAL-FIRST <span class="topbar-divider"></span
+          ><span class="model-tag" id="model-tag">Checking model…</span>
+        </div>
+      </header>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <section id="view-chat" class="view chat-view">
+        <div class="chat-toolbar">
+          <div>
+            <span class="status-dot violet"></span> Infrastructure assistant
+          </div>
+          <button id="clear-chat" class="text-button">
+            New conversation ↗
+          </button>
+        </div>
+        <div
+          id="conversation"
+          class="conversation"
+          role="log"
+          aria-label="Conversation"
+          aria-live="polite"
+        >
+          <div id="welcome" class="welcome">
+            <div class="hero-sigil">
+              ◈<span class="orbit one"></span><span class="orbit two"></span>
+            </div>
+            <div class="eyebrow">MAKE SENSE OF YOUR HOMELAB</div>
+            <h1>A little clarity.<br /><span>A lot less guesswork.</span></h1>
+            <p>
+              Ask your documentation. Untangle your logs.<br />Find the evidence
+              behind the answer.
+            </p>
+            <div class="prompt-grid">
+              <button data-prompt="What ports does my monitoring stack expose?">
+                <span class="prompt-icon">⬡</span
+                ><strong>Know your infrastructure</strong
+                ><span>What ports does my monitoring stack expose?</span
+                ><i>↗</i>
+              </button>
+              <button data-prompt="How do I restart my reverse proxy?">
+                <span class="prompt-icon">▤</span
+                ><strong>Find it in your docs</strong
+                ><span>How do I restart my reverse proxy?</span><i>↗</i>
+              </button>
+              <button data-go="logs">
+                <span class="prompt-icon">≋</span
+                ><strong>Follow the evidence</strong
+                ><span>Inspect errors and repeated log failures</span><i>↗</i>
+              </button>
+              <button data-go="knowledge">
+                <span class="prompt-icon">+</span
+                ><strong>Build your knowledge</strong
+                ><span>Add runbooks, configs and service notes</span><i>↗</i>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="composer-wrap">
+          <form id="chat-form" class="composer">
+            <label for="chat-input" class="sr-only">Message Grimoire</label
+            ><textarea
+              id="chat-input"
+              placeholder="Ask about your homelab…"
+              rows="2"
+              maxlength="8000"
+              required
+            ></textarea>
+            <div class="composer-bottom">
+              <label class="mode-select"
+                ><span>◈</span
+                ><select id="chat-mode" aria-label="Answer mode">
+                  <option value="knowledge">Indexed knowledge</option>
+                  <option value="general">General chat</option>
+                </select></label
+              ><span class="composer-hint"
+                >Enter to send · Shift + Enter for a new line</span
+              ><button
+                class="send"
+                id="send-chat"
+                type="submit"
+                aria-label="Send message"
+              >
+                ↑</button
+              ><button class="text-button" id="stop-chat" type="button" hidden>
+                Stop
+              </button>
+            </div>
+          </form>
+          <div class="composer-footnote">
+            Answers need evidence. Verify suggested commands before running
+            them.
+          </div>
+        </div>
+      </section>
+      <section id="view-knowledge" class="view content-view" hidden>
+        <div class="section-heading">
+          <div class="eyebrow">THE CODEX</div>
+          <h1>Your knowledge, connected.</h1>
+          <p>
+            Index local runbooks and configuration. Keep the source within
+            reach.
+          </p>
+        </div>
+        <div class="panel upload-panel">
+          <div class="panel-heading">
+            <h2>Add documentation</h2>
+            <span class="badge">LOCAL EMBEDDINGS</span>
+          </div>
+          <form id="upload-form">
+            <label class="file-label" for="document-file"
+              ><span>＋</span><strong>Choose a document</strong
+              ><small
+                >Markdown, TXT, JSON, YAML or LOG · up to
+                <span id="upload-limit">2 MiB</span> · UTF-8</small
+              ><input
+                id="document-file"
+                type="file"
+                accept=".md,.txt,.json,.yaml,.yml,.log"
+                required
+            /></label>
+            <div class="form-row">
+              <label
+                >Service label (optional)<input
+                  id="document-service"
+                  maxlength="100"
+                  placeholder="e.g. grafana" /></label
+              ><button class="primary-button" id="upload-button">
+                Index document ↗
+              </button>
+            </div>
+            <p class="helper">
+              A local embedding model must be configured. Files remain on this server;
+              never upload secrets.
+            </p>
+          </form>
+        </div>
+        <form id="search-form" class="search-bar">
+          <label class="sr-only" for="search-query">Search knowledge</label
+          ><input
+            id="search-query"
+            placeholder="Search text, filenames, paths or services…"
+            maxlength="500"
+            required
+          /><select id="search-type" aria-label="Filter file type">
+            <option value="">All types</option>
+            <option>md</option>
+            <option>txt</option>
+            <option>yaml</option>
+            <option>yml</option>
+            <option>json</option>
+            <option>log</option></select
+          ><input
+            id="search-service"
+            placeholder="Service filter"
+            maxlength="100"
+            aria-label="Filter service"
+          /><button class="primary-button">Search</button>
+        </form>
+        <div id="search-results" class="results" aria-live="polite"></div>
+        <div class="panel">
+          <div class="panel-heading">
+            <h2>Indexed documents</h2>
+            <span class="muted" id="document-total">0 documents</span>
+          </div>
+          <div id="documents-list" class="document-list"></div>
+        </div>
+      </section>
+      <section id="view-logs" class="view content-view" hidden>
+        <div class="section-heading">
+          <div class="eyebrow">THE SCRYER</div>
+          <h1>From noise to a working theory.</h1>
+          <p>
+            Inspect supplied logs. Separate observed events from possible
+            causes.
+          </p>
+        </div>
+        <div class="panel">
+          <form id="log-form">
+            <div class="panel-heading">
+              <h2>Log evidence</h2>
+              <label class="text-button"
+                >Open log file<input
+                  id="log-file"
+                  type="file"
+                  accept=".log,.txt"
+                  class="sr-only"
+              /></label>
+            </div>
+            <label class="sr-only" for="log-content">Log content</label
+            ><textarea
+              id="log-content"
+              class="code-input"
+              rows="10"
+              maxlength="200000"
+              placeholder="Paste service logs here…"
+              required
+            ></textarea>
+            <div class="form-row">
+              <label
+                >Affected service<input
+                  id="log-service"
+                  placeholder="e.g. reverse-proxy"
+                  maxlength="100" /></label
+              ><label
+                >Incident title<input
+                  id="incident-title"
+                  placeholder="e.g. Upstream connection failures"
+                  maxlength="150"
+              /></label>
+            </div>
+            <label
+              >Question<input
+                id="log-question"
+                placeholder="What failed and what should I investigate?"
+                maxlength="2000" /></label
+            ><label
+              >Notes / troubleshooting already performed<textarea
+                id="incident-notes"
+                rows="2"
+                maxlength="8000"
+                placeholder="Record only actions you actually performed…"
+              ></textarea>
+            </label>
+            <div class="form-row">
+              <label class="checkbox-label"
+                ><input id="use-model" type="checkbox" /> Add local model
+                explanation</label
+              >
+              <div class="actions">
+                <button class="secondary-button" name="action" value="analyse">
+                  Analyse logs</button
+                ><button class="primary-button" name="action" value="incident">
+                  Create incident ↗
+                </button>
+              </div>
+            </div>
+            <p class="helper">
+              Pattern matching works without a model. Model explanations are
+              hypotheses, not verified causes.
+            </p>
+          </form>
+        </div>
+        <div id="log-results" aria-live="polite"></div>
+      </section>
+      <section id="view-services" class="view content-view" hidden>
+        <div class="section-heading">
+          <div class="eyebrow">INFRASTRUCTURE</div>
+          <h1>Give your services some context.</h1>
+          <p>
+            A local inventory of hosts, endpoints and dependencies. No live
+            discovery.
+          </p>
+        </div>
+        <div class="panel">
+          <details>
+            <summary>Add a service <span>＋</span></summary>
+            <form id="service-form">
+              <div class="form-row">
+                <label
+                  >Name<input
+                    name="name"
+                    maxlength="100"
+                    required
+                    placeholder="grafana" /></label
+                ><label
+                  >Kind<select name="kind">
+                    <option value="container">Container</option>
+                    <option value="server">Server</option>
+                    <option value="vm">Virtual machine</option>
+                    <option value="database">Database</option>
+                    <option value="proxy">Reverse proxy</option>
+                    <option value="monitoring">Monitoring</option>
+                    <option value="network">Network device</option>
+                    <option value="other">Other</option>
+                  </select></label
+                >
+              </div>
+              <div class="form-row">
+                <label
+                  >Hostname<input
+                    name="hostname"
+                    maxlength="253"
+                    placeholder="monitoring.lab.example" /></label
+                ><label
+                  >IP address<input
+                    name="ip_address"
+                    placeholder="192.0.2.20" /></label
+                ><label
+                  >Ports (comma separated)<input
+                    name="ports"
+                    placeholder="3000, 9090"
+                /></label>
+              </div>
+              <div class="form-row">
+                <label
+                  >URLs (comma separated)<input
+                    name="urls"
+                    placeholder="http://192.0.2.20:3000" /></label
+                ><label
+                  >Dependencies (comma separated)<input
+                    name="dependencies"
+                    placeholder="postgres, prometheus"
+                /></label>
+              </div>
+              <div class="form-row">
+                <label
+                  >Operating system<input
+                    name="operating_system"
+                    maxlength="100"
+                    placeholder="Debian 12" /></label
+                ><label
+                  >Tags (comma separated)<input
+                    name="tags"
+                    placeholder="monitoring, internal"
+                /></label>
+              </div>
+              <label
+                >Notes<textarea
+                  name="notes"
+                  rows="2"
+                  maxlength="4000"
+                ></textarea></label
+              ><button class="primary-button">Save service ↗</button>
+            </form>
+          </details>
+        </div>
+        <div id="services-list" class="service-grid" aria-live="polite"></div>
+      </section>
+    </main>
+  </body>
+</html>
