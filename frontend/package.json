@@ -1,0 +1,9 @@
+{
+  "name": "grimoire-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "check": "node --check src/app.js && node --check src/api.js",
+    "test": "node --test tests/api.test.js"
+  }
+}
