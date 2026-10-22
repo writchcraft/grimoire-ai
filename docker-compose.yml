@@ -1,0 +1,49 @@
+name: grimoire
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "127.0.0.1:${GRIMOIRE_PORT:-8080}:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+  backend:
+    build: ./backend
+    environment:
+      GRIMOIRE_AI_PROVIDER: ${GRIMOIRE_AI_PROVIDER:-native}
+      GRIMOIRE_EMBEDDING_PROVIDER: ${GRIMOIRE_EMBEDDING_PROVIDER:-native}
+      GRIMOIRE_NATIVE_MODEL_PATH: ${GRIMOIRE_NATIVE_MODEL_PATH:-/models/chat.gguf}
+      GRIMOIRE_NATIVE_EMBEDDING_MODEL_PATH: ${GRIMOIRE_NATIVE_EMBEDDING_MODEL_PATH:-/models/embed.gguf}
+      GRIMOIRE_NATIVE_CONTEXT_SIZE: ${GRIMOIRE_NATIVE_CONTEXT_SIZE:-8192}
+      GRIMOIRE_NATIVE_EMBEDDING_CONTEXT_SIZE: ${GRIMOIRE_NATIVE_EMBEDDING_CONTEXT_SIZE:-2048}
+      GRIMOIRE_NATIVE_GPU_LAYERS: ${GRIMOIRE_NATIVE_GPU_LAYERS:-0}
+      GRIMOIRE_NATIVE_THREADS: ${GRIMOIRE_NATIVE_THREADS:-}
+      GRIMOIRE_NATIVE_CHAT_FORMAT: ${GRIMOIRE_NATIVE_CHAT_FORMAT:-}
+      GRIMOIRE_MAX_OUTPUT_TOKENS: ${GRIMOIRE_MAX_OUTPUT_TOKENS:-2048}
+      GRIMOIRE_OLLAMA_URL: ${GRIMOIRE_OLLAMA_URL:-http://ollama:11434}
+      GRIMOIRE_MODEL: ${GRIMOIRE_MODEL:-qwen2.5:3b}
+      GRIMOIRE_EMBEDDING_MODEL: ${GRIMOIRE_EMBEDDING_MODEL:-nomic-embed-text}
+      GRIMOIRE_DATA_DIR: /app/data
+      GRIMOIRE_MAX_UPLOAD_BYTES: ${GRIMOIRE_MAX_UPLOAD_BYTES:-2097152}
+      GRIMOIRE_RETRIEVAL_THRESHOLD: ${GRIMOIRE_RETRIEVAL_THRESHOLD:-0.45}
+      GRIMOIRE_LOG_LEVEL: ${GRIMOIRE_LOG_LEVEL:-INFO}
+    volumes:
+      - grimoire-data:/app/data
+      - ${GRIMOIRE_MODELS_DIR:-./models}:/models:ro
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+  ollama:
+    profiles: [ollama]
+    image: ollama/ollama:0.40.12
+    environment:
+      OLLAMA_NO_CLOUD: "1"
+    volumes:
+      - ollama-models:/root/.ollama
+    restart: unless-stopped
+volumes:
+  grimoire-data:
+  ollama-models:
