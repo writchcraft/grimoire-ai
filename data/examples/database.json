@@ -1,0 +1,12 @@
+{
+  "service": "postgresql",
+  "hostname": "database.lab.example",
+  "ip_address": "192.0.2.30",
+  "port": 5432,
+  "configuration": {
+    "listen_addresses": "192.0.2.30",
+    "max_connections": 100,
+    "shared_buffers": "256MB"
+  },
+  "notes": "Fictional example. Credentials deliberately omitted. This database is not part of Grimoire's deployment."
+}
