@@ -1,0 +1,11 @@
+# Example configuration only; never automatically applied by Grimoire.
+service: reverse-proxy
+hostname: proxy.lab.example
+ip_address: 192.0.2.10
+ports: [80, 443]
+dependencies:
+  - grafana
+notes:
+  restart: "From the example stack directory, run docker compose restart proxy."
+  effect: "This interrupts proxy traffic while the container restarts."
+  investigate: "For upstream errors check the backend endpoint, container network and DNS."
