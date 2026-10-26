@@ -1,0 +1,17 @@
+name: Feature request
+description: Propose a focused improvement with observable acceptance criteria.
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or workflow
+      description: Explain the user need and current workaround.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Proposed behavior and acceptance criteria
+      description: Describe how to demonstrate success, constraints and alternatives.
+    validations:
+      required: true
