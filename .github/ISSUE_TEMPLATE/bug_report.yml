@@ -1,0 +1,23 @@
+name: Bug report
+description: Report a reproducible application failure using fictional data.
+labels: [bug]
+body:
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction and expected behavior
+      description: Include minimal steps, observed behavior and expected behavior. Remove secrets.
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Commit SHA, OS, Python version, provider and native or Docker setup.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized evidence
+      description: Request IDs, error messages or fictional input that reproduces the issue.
