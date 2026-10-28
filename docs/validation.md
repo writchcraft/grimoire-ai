@@ -7,6 +7,8 @@
 - Full backend suite after repository organization: `python -m pytest backend/tests -q` — **121 passed** (89 existing plus 32 additional cases). One existing Starlette warning deprecates its HTTPX-based TestClient.
 - Python: `ruff check backend scripts` and `ruff format --check backend scripts` passed.
 - Frontend: `npm run check --prefix frontend` passed; `npm test --prefix frontend` — **4 passed**.
+- Publication gate: `python scripts/check.py` passed after integration, including tracked-file credential-pattern/artifact checks and `git diff --check HEAD`. Only the public `.env.example` is tracked; local environments, model weights, runtime data and caches remain excluded.
+- Live development smoke: started a temporary Uvicorn process on loopback with isolated temporary data and no model paths. Frontend HTML, JavaScript/CSS assets, liveness and inventory returned HTTP 200; provider status was degraded as expected. The process was stopped and temporary database removed afterward.
 - Native dependency lock resolved from PyPI for Linux/Python 3.12, including llama-cpp-python 0.3.36. This resolves metadata; it does not establish a successful binding installation/build.
 - Compose YAML parsed and structure checked: native default, read-only model mount, optional Ollama profile, no backend dependency on Ollama, loopback frontend publication. Docker CLI is unavailable, so Compose config/build/start were not executed.
 
