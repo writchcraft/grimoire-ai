@@ -20,16 +20,20 @@ Before merging, review the complete diff and run `python scripts/check.py`.
 Container changes require Compose config/build checks. Keep known real-model
 acceptance limitations visible in the validation record. Merge completed work
 with `git merge --no-ff <branch>` so integration boundaries remain visible.
-Do not force-push shared `main` or fabricate commit dates.
+Keep actual commit dates during ongoing development. Rewriting shared `main`
+requires explicit agreement and a guarded `--force-with-lease` push.
 
 Publish with `git push origin main`. Push a feature branch only when it is useful
 for collaboration or review. If another contributor updates the remote first,
 fetch and integrate their work; never overwrite it to make a push succeed.
 
 The initial history imports an already implemented application into focused
-module, test and documentation commits at the time of repository organization.
-These commits record the import, not a claim that implementation occurred over
-an earlier period. Feature merge boundaries describe the imported subsystems.
+module, test and documentation commits. On 28 October 2026, the repository owner
+requested shorter commit messages and an artificial distribution of the import
+timestamps across the preceding three weeks. Those dates are presentation
+metadata, not evidence of development or validation on those earlier days.
+Implementation was imported and validated on 28 October 2026. Feature merge
+boundaries describe the imported subsystems.
 Intermediate import commits can reference modules introduced later in the same
 integration batch; the completed application is validated at the final tip.
 
