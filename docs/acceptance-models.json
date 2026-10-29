@@ -14,5 +14,14 @@
     "bytes": 45949216,
     "sha256": "797b70c4edf85907fe0a49eb85811256f65fa0f7bf52166b147fd16be2be4662",
     "url": "https://huggingface.co/second-state/All-MiniLM-L6-v2-Embedding-GGUF/resolve/544f204f2eaa2d71361ffc74d6df7170285b286a/all-MiniLM-L6-v2-ggml-model-f16.gguf"
+  },
+  {
+    "repository": "Qwen/Qwen2.5-3B-Instruct-GGUF",
+    "revision": "7dabda4d13d513e3e842b20f0d435c732f172cbe",
+    "filename": "qwen2.5-3b-instruct-q4_k_m.gguf",
+    "bytes": 2104932768,
+    "sha256": "626b4a6678b86442240e33df819e00132d3ba7dddfe1cdc4fbb18e0a9615c62d",
+    "url": "https://huggingface.co/Qwen/Qwen2.5-3B-Instruct-GGUF/resolve/7dabda4d13d513e3e842b20f0d435c732f172cbe/qwen2.5-3b-instruct-q4_k_m.gguf",
+    "purpose": "Controlled generation comparison only; application default unchanged"
   }
 ]

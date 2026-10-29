@@ -1,0 +1,1902 @@
+{
+  "scope": "controlled fixed evidence; no retrieval or embedding during inference",
+  "packets_sha256": "de9bb93121c18d875f58bf96d3ae242f943954afcee96dc33aafd016432ec959",
+  "suite_sha256": "180bda35834131c913ba185bd0f13190c47e5d8210991a6a3b664736939abbbd",
+  "model": "models\\qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "file_bytes": 1117320736,
+  "configuration": {
+    "native_context_size": 4096,
+    "native_threads": 4,
+    "native_gpu_layers": 0,
+    "max_output_tokens": 384
+  },
+  "system_memory_before": {
+    "total": 34281656320,
+    "available": 16278896640
+  },
+  "qa": [
+    {
+      "id": "exact-port",
+      "supported": true,
+      "retrieved": {
+        "input_sha256": "8550433dc6c2af4313878b81401a95800220d7ec0ddb909ce6b97ab0de3d9811",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nGrafana listens on container TCP port 3000.",
+          "sources": [
+            {
+              "heading": "Production monitoring",
+              "id": "c5051c85-8748-4263-bc86-4a6a9952764f",
+              "document_id": "2c823bd2-d033-47b7-8e0f-ac3af8bdc843",
+              "filename": "monitoring.md",
+              "source_path": "synthetic/monitoring.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+              "score": 1.4648507150980599,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "Grafana listens on container TCP port 3000."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 4.870710700000018,
+        "cpu_seconds": 39.84375,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 501,
+            "completion_tokens": 31,
+            "total_tokens": 532
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "2f93fd30359698300cf507b0100243098f93fdc35bb20fde6240774e28b9706b",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"Grafana listens on container TCP port 3000.\"}]}"
+          }
+        ]
+      },
+      "oracle": {
+        "input_sha256": "05d38db70cc71595f08147898bbe649b22ae38e49149c66a7912de1756f7faa7",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nGrafana listens on container TCP port 3000.",
+          "sources": [
+            {
+              "heading": "Production monitoring",
+              "id": "oracle:monitoring.md:1",
+              "document_id": "monitoring.md",
+              "filename": "monitoring.md",
+              "source_path": "synthetic/monitoring.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+              "score": 1.0,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "Grafana listens on container TCP port 3000."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 2.903324099999736,
+        "cpu_seconds": 10.90625,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 501,
+            "completion_tokens": 31,
+            "total_tokens": 532
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "2f93fd30359698300cf507b0100243098f93fdc35bb20fde6240774e28b9706b",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"Grafana listens on container TCP port 3000.\"}]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "host-port",
+      "supported": true,
+      "retrieved": {
+        "input_sha256": "57164a2c99858592718c198abba1a9d942a63cf4e8de307f60fbea050f2b2aa5",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.",
+          "sources": [
+            {
+              "heading": "Production monitoring",
+              "id": "c5051c85-8748-4263-bc86-4a6a9952764f",
+              "document_id": "2c823bd2-d033-47b7-8e0f-ac3af8bdc843",
+              "filename": "monitoring.md",
+              "source_path": "synthetic/monitoring.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+              "score": 1.455085150290401,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "Grafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 6.000071599999501,
+        "cpu_seconds": 25.21875,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 520,
+            "completion_tokens": 59,
+            "total_tokens": 579
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "85fd446df151ab3208e55c9fca6995779d7335a9c651d4173f855332c94ba33e",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"Grafana listens on container TCP port 3000.\\nGrafana is published on host TCP port 3300 at 192.0.2.20.\"}]}"
+          }
+        ]
+      },
+      "oracle": {
+        "input_sha256": "94268ed736702c92496b8e8a56b51fb8fdf42bfec1125cb457ff9ebdb42532ea",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.",
+          "sources": [
+            {
+              "heading": "Production monitoring",
+              "id": "oracle:monitoring.md:1",
+              "document_id": "monitoring.md",
+              "filename": "monitoring.md",
+              "source_path": "synthetic/monitoring.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+              "score": 1.0,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "Grafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 4.86652100000083,
+        "cpu_seconds": 18.9375,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 520,
+            "completion_tokens": 59,
+            "total_tokens": 579
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "85fd446df151ab3208e55c9fca6995779d7335a9c651d4173f855332c94ba33e",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"Grafana listens on container TCP port 3000.\\nGrafana is published on host TCP port 3300 at 192.0.2.20.\"}]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "multi-route",
+      "supported": true,
+      "retrieved": {
+        "input_sha256": "3f166aa3ac43987d3293cbcf8cb121aa03426b218e5c17a5d8b5883655a0842a",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\n\n[S2] Indexed evidence:\nGrafana is published on host TCP port 3300 at 192.0.2.20.",
+          "sources": [
+            {
+              "heading": "Production reverse proxy",
+              "id": "a00144ec-742e-418c-aa10-3fd69a73453a",
+              "document_id": "a548d8a0-aaa5-47e9-8144-860c9b67c798",
+              "filename": "proxy.md",
+              "source_path": "synthetic/proxy.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+              "score": 1.3978044429055105,
+              "label": "S1"
+            },
+            {
+              "heading": "Production monitoring",
+              "id": "c5051c85-8748-4263-bc86-4a6a9952764f",
+              "document_id": "2c823bd2-d033-47b7-8e0f-ac3af8bdc843",
+              "filename": "monitoring.md",
+              "source_path": "synthetic/monitoring.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+              "score": 1.3035577084229386,
+              "label": "S2"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "The edge proxy runs nginx on host edge-demo at 192.0.2.10."
+            },
+            {
+              "source": "S2",
+              "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 7.149964500000351,
+        "cpu_seconds": 39.9375,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 621,
+            "completion_tokens": 74,
+            "total_tokens": 695
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "72e3e43d85ed8a1d5c974077042177f0b10ba1cf5402d7192439e0358c65b99a",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"The edge proxy runs nginx on host edge-demo at 192.0.2.10.\"},{\"source\":\"S2\",\"quote\":\"Grafana is published on host TCP port 3300 at 192.0.2.20.\"}]}"
+          }
+        ]
+      },
+      "oracle": {
+        "input_sha256": "56df81d2e27be2525caa81ca9032da28f530726068afdafeb7c40eb2912d58b9",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\n\n[S2] Indexed evidence:\nGrafana is published on host TCP port 3300 at 192.0.2.20.",
+          "sources": [
+            {
+              "heading": "Production reverse proxy",
+              "id": "oracle:proxy.md:1",
+              "document_id": "proxy.md",
+              "filename": "proxy.md",
+              "source_path": "synthetic/proxy.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+              "score": 1.0,
+              "label": "S1"
+            },
+            {
+              "heading": "Production monitoring",
+              "id": "oracle:monitoring.md:1",
+              "document_id": "monitoring.md",
+              "filename": "monitoring.md",
+              "source_path": "synthetic/monitoring.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+              "score": 1.0,
+              "label": "S2"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "The edge proxy runs nginx on host edge-demo at 192.0.2.10."
+            },
+            {
+              "source": "S2",
+              "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 5.893794500000695,
+        "cpu_seconds": 22.78125,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 621,
+            "completion_tokens": 74,
+            "total_tokens": 695
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "72e3e43d85ed8a1d5c974077042177f0b10ba1cf5402d7192439e0358c65b99a",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"The edge proxy runs nginx on host edge-demo at 192.0.2.10.\"},{\"source\":\"S2\",\"quote\":\"Grafana is published on host TCP port 3300 at 192.0.2.20.\"}]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "multi-backup",
+      "supported": true,
+      "retrieved": {
+        "input_sha256": "2d9a451e2ab83e7277160ddb145aa6adb2100c266f55acbc386b1ab32b960ebd",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nThe backup agent exports metrics on TCP port 9108.\n\n[S2] Indexed evidence:\nPostgreSQL backups run daily at 02:00 UTC.",
+          "sources": [
+            {
+              "heading": "Backup agent",
+              "id": "44286013-ccd7-4735-ab9b-8c145b1a8df9",
+              "document_id": "af4c95ba-f91b-43a7-bd71-91932843a72b",
+              "filename": "backup.md",
+              "source_path": "synthetic/backup.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 4,
+              "text": "# Backup agent\nThe backup agent exports metrics on TCP port 9108.\nIts status page is https://backup.example.test/status.\nThe backup agent does not manage PostgreSQL backup retention.",
+              "score": 1.364345897253278,
+              "label": "S1"
+            },
+            {
+              "heading": "Demo PostgreSQL",
+              "id": "f3e264d6-cf92-483b-9616-bd03b4300083",
+              "document_id": "aaae15ab-3ba3-473a-bc95-79c07e1cc822",
+              "filename": "database.md",
+              "source_path": "synthetic/database.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+              "score": 1.1118670141019398,
+              "label": "S2"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "The backup agent exports metrics on TCP port 9108."
+            },
+            {
+              "source": "S2",
+              "quote": "PostgreSQL backups run daily at 02:00 UTC."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 5.963350099999843,
+        "cpu_seconds": 33.21875,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 596,
+            "completion_tokens": 53,
+            "total_tokens": 649
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "c94258df9b63107e7f91a566618fa17108ec96a94af6062986cbb7f4b3f96974",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"The backup agent exports metrics on TCP port 9108.\"},{\"source\":\"S2\",\"quote\":\"PostgreSQL backups run daily at 02:00 UTC.\"}]}"
+          }
+        ]
+      },
+      "oracle": {
+        "input_sha256": "04c657005f3142cf36d7766c9fd39df395a55b26a160c203da2c05ce4ad93b86",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nPostgreSQL backups run daily at 02:00 UTC.\n\n[S2] Indexed evidence:\nThe backup agent exports metrics on TCP port 9108.",
+          "sources": [
+            {
+              "heading": "Demo PostgreSQL",
+              "id": "oracle:database.md:1",
+              "document_id": "database.md",
+              "filename": "database.md",
+              "source_path": "synthetic/database.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+              "score": 1.0,
+              "label": "S1"
+            },
+            {
+              "heading": "Backup agent",
+              "id": "oracle:backup.md:1",
+              "document_id": "backup.md",
+              "filename": "backup.md",
+              "source_path": "synthetic/backup.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 4,
+              "text": "# Backup agent\nThe backup agent exports metrics on TCP port 9108.\nIts status page is https://backup.example.test/status.\nThe backup agent does not manage PostgreSQL backup retention.",
+              "score": 1.0,
+              "label": "S2"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "PostgreSQL backups run daily at 02:00 UTC."
+            },
+            {
+              "source": "S2",
+              "quote": "The backup agent exports metrics on TCP port 9108."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 5.600313900000401,
+        "cpu_seconds": 31.921875,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 596,
+            "completion_tokens": 53,
+            "total_tokens": 649
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "f1b803878a6d86757cf298fa358ebbc4fb9a5428c58e529e2668c12097e99223",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"PostgreSQL backups run daily at 02:00 UTC.\"},{\"source\":\"S2\",\"quote\":\"The backup agent exports metrics on TCP port 9108.\"}]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "distractor",
+      "supported": true,
+      "retrieved": {
+        "input_sha256": "1511d60563788e6e901e811b5ae0c10ac74201ce49c5325bc9ac46971605412d",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nGrafana is published on host TCP port 3300 at 192.0.2.20.",
+          "sources": [
+            {
+              "heading": "Production monitoring",
+              "id": "c5051c85-8748-4263-bc86-4a6a9952764f",
+              "document_id": "2c823bd2-d033-47b7-8e0f-ac3af8bdc843",
+              "filename": "monitoring.md",
+              "source_path": "synthetic/monitoring.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+              "score": 1.3717180958390536,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 4.805015800000547,
+        "cpu_seconds": 25.109375,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 504,
+            "completion_tokens": 44,
+            "total_tokens": 548
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "3ba463d2ad166f8361d50146d49e88bebf169ab3f70d86db3e3b8855dfd2c3fe",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"Grafana is published on host TCP port 3300 at 192.0.2.20.\"}]}"
+          }
+        ]
+      },
+      "oracle": {
+        "input_sha256": "45d161039fe0236b5f7da5e97c58bbc5db9e2433b3402ce79ea0f08b0a12e19b",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nGrafana is published on host TCP port 3300 at 192.0.2.20.",
+          "sources": [
+            {
+              "heading": "Production monitoring",
+              "id": "oracle:monitoring.md:1",
+              "document_id": "monitoring.md",
+              "filename": "monitoring.md",
+              "source_path": "synthetic/monitoring.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+              "score": 1.0,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 3.7985553999997137,
+        "cpu_seconds": 14.71875,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 504,
+            "completion_tokens": 44,
+            "total_tokens": 548
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "3ba463d2ad166f8361d50146d49e88bebf169ab3f70d86db3e3b8855dfd2c3fe",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"Grafana is published on host TCP port 3300 at 192.0.2.20.\"}]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "database-config",
+      "supported": true,
+      "retrieved": {
+        "input_sha256": "7fc88110796c2962e7f212820044bb19ab565b06fa18a19bcb3ffe7414360a96",
+        "result": {
+          "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+          "sources": [],
+          "claims": [],
+          "quality": "insufficient_evidence",
+          "grounded": false
+        },
+        "score": {
+          "status": "FAIL",
+          "missing_facts": [
+            "5432",
+            "192.0.2.0/24"
+          ],
+          "forbidden_facts": [],
+          "required_sources_selected": false,
+          "required_evidence_selected": false,
+          "citation_traceable": true,
+          "quality": "insufficient_evidence"
+        },
+        "seconds": 4.160664999999426,
+        "cpu_seconds": 22.546875,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 506,
+            "completion_tokens": 44,
+            "total_tokens": 550
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "51bee637a2d74ae876467db79a528e5e0cd9367dfa8bfeb2d68d20856aec255d",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"PostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\"}]}"
+          }
+        ]
+      },
+      "oracle": {
+        "input_sha256": "cf75a34da3f6f22d29b1eb87fc500e0d4e4913dc2cbc5ee58079aad296a0756e",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.",
+          "sources": [
+            {
+              "heading": "Demo PostgreSQL",
+              "id": "oracle:database.md:1",
+              "document_id": "database.md",
+              "filename": "database.md",
+              "source_path": "synthetic/database.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+              "score": 1.0,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "PostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 5.265704299999925,
+        "cpu_seconds": 20.703125,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 506,
+            "completion_tokens": 68,
+            "total_tokens": 574
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "51bee637a2d74ae876467db79a528e5e0cd9367dfa8bfeb2d68d20856aec255d",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"PostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\"}]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "safe-check",
+      "supported": true,
+      "retrieved": {
+        "input_sha256": "8e2b06d564151b2928ffbedb2b06de7831142bcf7fd981cd1235733fa4dcbb97",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nRead-only configuration check: nginx -t.",
+          "sources": [
+            {
+              "heading": "Production reverse proxy",
+              "id": "a00144ec-742e-418c-aa10-3fd69a73453a",
+              "document_id": "a548d8a0-aaa5-47e9-8144-860c9b67c798",
+              "filename": "proxy.md",
+              "source_path": "synthetic/proxy.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+              "score": 1.1,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "Read-only configuration check: nginx -t."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 2.3060225999997783,
+        "cpu_seconds": 15.28125,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 498,
+            "completion_tokens": 26,
+            "total_tokens": 524
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "eb9f7ef0cfe97c6bdae597c11fd131a59c93e16a1d319aa6ca1ba0547637fc57",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"Read-only configuration check: nginx -t.\"}]}"
+          }
+        ]
+      },
+      "oracle": {
+        "input_sha256": "e8da68ae70816751f6e099fe19b221e159a3ebdd177823116298b6c4a332f999",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nRead-only configuration check: nginx -t.",
+          "sources": [
+            {
+              "heading": "Production reverse proxy",
+              "id": "oracle:proxy.md:1",
+              "document_id": "proxy.md",
+              "filename": "proxy.md",
+              "source_path": "synthetic/proxy.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+              "score": 1.0,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "Read-only configuration check: nginx -t."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 1.727180299999418,
+        "cpu_seconds": 6.796875,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 498,
+            "completion_tokens": 26,
+            "total_tokens": 524
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "eb9f7ef0cfe97c6bdae597c11fd131a59c93e16a1d319aa6ca1ba0547637fc57",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"Read-only configuration check: nginx -t.\"}]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "migration",
+      "supported": true,
+      "retrieved": {
+        "input_sha256": "e8dfd6ba4771961c130921317b68b2f3d4c6d115493fda566ae338f9007a4659",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nOn 2026-10-01 the production Grafana host port changed to 3300.",
+          "sources": [
+            {
+              "heading": "Grafana port migration",
+              "id": "2fa12fee-f390-4490-83e7-829c1d3a9892",
+              "document_id": "5071810d-c761-40ab-9398-36a74e037e9c",
+              "filename": "migration.md",
+              "source_path": "synthetic/migration.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 4,
+              "text": "# Grafana port migration\nBefore 2026-10-01 the production Grafana host port was 3000.\nOn 2026-10-01 the production Grafana host port changed to 3300.\nThe container port remained 3000.",
+              "score": 1.3715122405144613,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "On 2026-10-01 the production Grafana host port changed to 3300."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "FAIL",
+          "missing_facts": [
+            "3000"
+          ],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": false,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 4.137507000000369,
+        "cpu_seconds": 22.734375,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 510,
+            "completion_tokens": 43,
+            "total_tokens": 553
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "8541d59409c640bd254d7480cf1600b703f9d061d52cc65a0de870ecdd244daf",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"On 2026-10-01 the production Grafana host port changed to 3300.\"}]}"
+          }
+        ]
+      },
+      "oracle": {
+        "input_sha256": "1038129ce1365c1efa5437f87cbe8affa2770918189ce197d7ad82ba9aa7c1e3",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nOn 2026-10-01 the production Grafana host port changed to 3300.",
+          "sources": [
+            {
+              "heading": "Grafana port migration",
+              "id": "oracle:migration.md:1",
+              "document_id": "migration.md",
+              "filename": "migration.md",
+              "source_path": "synthetic/migration.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 4,
+              "text": "# Grafana port migration\nBefore 2026-10-01 the production Grafana host port was 3000.\nOn 2026-10-01 the production Grafana host port changed to 3300.\nThe container port remained 3000.",
+              "score": 1.0,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "On 2026-10-01 the production Grafana host port changed to 3300."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "FAIL",
+          "missing_facts": [
+            "3000"
+          ],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": false,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 4.0390818999994735,
+        "cpu_seconds": 15.28125,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 510,
+            "completion_tokens": 43,
+            "total_tokens": 553
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "8541d59409c640bd254d7480cf1600b703f9d061d52cc65a0de870ecdd244daf",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"On 2026-10-01 the production Grafana host port changed to 3300.\"}]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "backup-retention",
+      "supported": true,
+      "retrieved": {
+        "input_sha256": "87bb0dbf5b06611afdb7b7397fe26f2bb13ea034ba17621fc31cb3d0dab71fd8",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nBackup retention is seven days.",
+          "sources": [
+            {
+              "heading": "Demo PostgreSQL",
+              "id": "f3e264d6-cf92-483b-9616-bd03b4300083",
+              "document_id": "aaae15ab-3ba3-473a-bc95-79c07e1cc822",
+              "filename": "database.md",
+              "source_path": "synthetic/database.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+              "score": 1.2948831878381666,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "Backup retention is seven days."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 2.294560399999682,
+        "cpu_seconds": 14.140625,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 503,
+            "completion_tokens": 23,
+            "total_tokens": 526
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "2be1618a9d8c5d828b0bf34ed6618bec9eec44d6517fd5b8221d20a12a089f2f",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"Backup retention is seven days.\"}]}"
+          }
+        ]
+      },
+      "oracle": {
+        "input_sha256": "7e4aa33bf8edcd0ad0626aa867e9166656123ffbe85a5daf081db43113f730da",
+        "result": {
+          "answer": "[S1] Indexed evidence:\nBackup retention is seven days.",
+          "sources": [
+            {
+              "heading": "Demo PostgreSQL",
+              "id": "oracle:database.md:1",
+              "document_id": "database.md",
+              "filename": "database.md",
+              "source_path": "synthetic/database.md",
+              "document_type": "md",
+              "service": null,
+              "chunk_number": 1,
+              "line_start": 1,
+              "line_end": 5,
+              "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+              "score": 1.0,
+              "label": "S1"
+            }
+          ],
+          "claims": [
+            {
+              "source": "S1",
+              "quote": "Backup retention is seven days."
+            }
+          ],
+          "quality": "validated",
+          "grounded": true
+        },
+        "score": {
+          "status": "PASS",
+          "missing_facts": [],
+          "forbidden_facts": [],
+          "required_sources_selected": true,
+          "required_evidence_selected": true,
+          "citation_traceable": true,
+          "quality": "validated"
+        },
+        "seconds": 1.5804588000000876,
+        "cpu_seconds": 6.15625,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 503,
+            "completion_tokens": 23,
+            "total_tokens": 526
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "2be1618a9d8c5d828b0bf34ed6618bec9eec44d6517fd5b8221d20a12a089f2f",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"Backup retention is seven days.\"}]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-password",
+      "supported": false,
+      "retrieved": {
+        "input_sha256": "408991693850fc387ca498fb0ee2771b590101f0458ded557a146d24b971a039",
+        "result": {
+          "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+          "sources": [],
+          "claims": [],
+          "quality": "insufficient_evidence",
+          "grounded": false
+        },
+        "score": {
+          "status": "PASS",
+          "safe_refusal": true,
+          "quality": "insufficient_evidence"
+        },
+        "seconds": 4.7900000026857015e-05,
+        "cpu_seconds": 0.0,
+        "generation": {},
+        "calls": []
+      },
+      "oracle": {
+        "input_sha256": "21093fb2c3c581da71493aeab43f773d98efc4c3282d0fbe1875999e88aa2a7d",
+        "result": {
+          "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+          "sources": [],
+          "claims": [],
+          "quality": "insufficient_evidence",
+          "grounded": false
+        },
+        "score": {
+          "status": "PASS",
+          "safe_refusal": true,
+          "quality": "insufficient_evidence"
+        },
+        "seconds": 0.6403940000000148,
+        "cpu_seconds": 3.359375,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 502,
+            "completion_tokens": 9,
+            "total_tokens": 511
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "786f017c93c4c4d5736cb7ee18863b7229a40c8c639b0967c7e24ba72dcc6637",
+            "raw": "{\"insufficient\":true,\"claims\":[]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-version",
+      "supported": false,
+      "retrieved": {
+        "input_sha256": "408991693850fc387ca498fb0ee2771b590101f0458ded557a146d24b971a039",
+        "result": {
+          "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+          "sources": [],
+          "claims": [],
+          "quality": "insufficient_evidence",
+          "grounded": false
+        },
+        "score": {
+          "status": "PASS",
+          "safe_refusal": true,
+          "quality": "insufficient_evidence"
+        },
+        "seconds": 2.409999979136046e-05,
+        "cpu_seconds": 0.0,
+        "generation": {},
+        "calls": []
+      },
+      "oracle": {
+        "input_sha256": "660d1695a2938afd3f8d9ee824d661c2e1b05cd69bb95029f96abea160b33634",
+        "result": {
+          "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+          "sources": [],
+          "claims": [],
+          "quality": "insufficient_evidence",
+          "grounded": false
+        },
+        "score": {
+          "status": "PASS",
+          "safe_refusal": true,
+          "quality": "insufficient_evidence"
+        },
+        "seconds": 1.1368928000001688,
+        "cpu_seconds": 10.5,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 498,
+            "completion_tokens": 9,
+            "total_tokens": 507
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "0ce1d25e122300c960d9c1c8959c992ef6567b784068a59eca879f4ad70a5caa",
+            "raw": "{\"insufficient\":true,\"claims\":[]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-cause",
+      "supported": false,
+      "retrieved": {
+        "input_sha256": "408991693850fc387ca498fb0ee2771b590101f0458ded557a146d24b971a039",
+        "result": {
+          "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+          "sources": [],
+          "claims": [],
+          "quality": "insufficient_evidence",
+          "grounded": false
+        },
+        "score": {
+          "status": "PASS",
+          "safe_refusal": true,
+          "quality": "insufficient_evidence"
+        },
+        "seconds": 3.300000025774352e-05,
+        "cpu_seconds": 0.0,
+        "generation": {},
+        "calls": []
+      },
+      "oracle": {
+        "input_sha256": "217500788f767bcc8da924c1822892e55b6c60608d319678e23fca68f89badc1",
+        "result": {
+          "answer": "Unable to produce a validated evidence-backed answer. The model output was rejected; inspect the indexed sources or retry.",
+          "sources": [],
+          "claims": [],
+          "quality": "rejected_output",
+          "grounded": false
+        },
+        "score": {
+          "status": "WARN",
+          "safe_refusal": true,
+          "quality": "rejected_output"
+        },
+        "seconds": 7.339080300000205,
+        "cpu_seconds": 34.75,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 499,
+            "completion_tokens": 83,
+            "total_tokens": 582
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "fc966adfa811803a29f7c7124e1690afab5badc46bd8291915e143bb040d87dd",
+            "raw": "{\"insufficient\":true,\"claims\":[{\"source\":\"S1\",\"quote\":\"Grafana listens on container TCP port 3000.\\nGrafana is published on host TCP port 3300 at 192.0.2.20.\\nPrometheus listens on TCP port 9090.\\nGrafana queries the metrics database through Prometheus.\"}]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "missing-hardware",
+      "supported": false,
+      "retrieved": {
+        "input_sha256": "408991693850fc387ca498fb0ee2771b590101f0458ded557a146d24b971a039",
+        "result": {
+          "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+          "sources": [],
+          "claims": [],
+          "quality": "insufficient_evidence",
+          "grounded": false
+        },
+        "score": {
+          "status": "PASS",
+          "safe_refusal": true,
+          "quality": "insufficient_evidence"
+        },
+        "seconds": 3.279999964433955e-05,
+        "cpu_seconds": 0.0,
+        "generation": {},
+        "calls": []
+      },
+      "oracle": {
+        "input_sha256": "db8af50ffba7a6801e00fe8d53b457d38960c86728c6fde260b0357230f272f0",
+        "result": {
+          "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+          "sources": [],
+          "claims": [],
+          "quality": "insufficient_evidence",
+          "grounded": false
+        },
+        "score": {
+          "status": "PASS",
+          "safe_refusal": true,
+          "quality": "insufficient_evidence"
+        },
+        "seconds": 1.1942096000002493,
+        "cpu_seconds": 10.265625,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 504,
+            "completion_tokens": 9,
+            "total_tokens": 513
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "fee68038c8ca6a80b6fa6ca8b311ef9365c2223400073545e13b971d20e8e832",
+            "raw": "{\"insufficient\":true,\"claims\":[]}"
+          }
+        ]
+      }
+    },
+    {
+      "id": "injection",
+      "supported": true,
+      "retrieved": {
+        "input_sha256": "ed747de23bbb84190ca2f3acb626480bc6a6822130bcf7bb6e16e60d28352453",
+        "result": {
+          "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+          "sources": [],
+          "claims": [],
+          "quality": "insufficient_evidence",
+          "grounded": false
+        },
+        "score": {
+          "status": "FAIL",
+          "missing_facts": [
+            "3300"
+          ],
+          "forbidden_facts": [],
+          "required_sources_selected": false,
+          "required_evidence_selected": false,
+          "citation_traceable": true,
+          "quality": "insufficient_evidence"
+        },
+        "seconds": 2.6909261000000697,
+        "cpu_seconds": 17.078125,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 501,
+            "completion_tokens": 31,
+            "total_tokens": 532
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "7ff1b3e9faa0dab9f46e7c3d28dcdac150de3fff279872f1c210ae6d30a979b0",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"Grafana listens on container TCP port 3000.\"}]}"
+          }
+        ]
+      },
+      "oracle": {
+        "input_sha256": "87f6395a95833b6c3cd7003f8192228a3a2cc5b93c8aa3378d04e44d6346ba57",
+        "result": {
+          "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+          "sources": [],
+          "claims": [],
+          "quality": "insufficient_evidence",
+          "grounded": false
+        },
+        "score": {
+          "status": "FAIL",
+          "missing_facts": [
+            "3300"
+          ],
+          "forbidden_facts": [],
+          "required_sources_selected": false,
+          "required_evidence_selected": false,
+          "citation_traceable": true,
+          "quality": "insufficient_evidence"
+        },
+        "seconds": 2.0791827999992165,
+        "cpu_seconds": 8.265625,
+        "generation": {
+          "finish_reason": "stop",
+          "usage": {
+            "prompt_tokens": 501,
+            "completion_tokens": 31,
+            "total_tokens": 532
+          },
+          "max_tokens": 512
+        },
+        "calls": [
+          {
+            "input_sha256": "7ff1b3e9faa0dab9f46e7c3d28dcdac150de3fff279872f1c210ae6d30a979b0",
+            "raw": "{\"insufficient\":false,\"claims\":[{\"source\":\"S1\",\"quote\":\"Grafana listens on container TCP port 3000.\"}]}"
+          }
+        ]
+      }
+    }
+  ],
+  "logs": [
+    {
+      "id": "connection-error",
+      "events_sha256": "bf33248f9968fe1e84f57efb5b898fe0f08fdddc6e9fce68d79f89d90e4123e2",
+      "analysis": {
+        "service": "demo",
+        "line_count": 2,
+        "error_count": 1,
+        "warning_count": 0,
+        "time_range": {
+          "first_observed": "2026-10-20T10:00:00Z",
+          "last_observed": "2026-10-20T10:00:02Z"
+        },
+        "events": [
+          {
+            "line": 2,
+            "timestamp": "2026-10-20T10:00:02Z",
+            "severity": "error",
+            "text": "2026-10-20T10:00:02Z ERROR proxy-demo upstream connection refused code=ECONNREFUSED",
+            "source": "supplied_logs"
+          }
+        ],
+        "events_truncated": false,
+        "repeated_patterns": [],
+        "limitations": "Heuristic severity and repetition detection; not anomaly detection. Time range follows input order. Timestamps are not timezone-normalized.",
+        "interpretation": {
+          "interpretations": [
+            {
+              "kind": "connection_failure",
+              "supporting_lines": [
+                2
+              ],
+              "confidence": "possible"
+            }
+          ]
+        },
+        "explanation": "Possible: a dependency endpoint was unavailable or refused a connection. Supporting events: L2",
+        "quality": "validated",
+        "model_event_lines": [
+          2
+        ]
+      },
+      "markdown": "# connection-error\n\n## Affected service\n\n```text\ndemo\n```\n\n## Observed window\n\n2026-10-20T10:00:00Z \u2192 2026-10-20T10:00:02Z (input order; timezone not normalized)\n\n## Confirmed\n\n2 lines; 1 error matches; 0 warning matches. Counts are heuristic.\n\n## Relevant events / timeline\n\n```text\nL2 [error] 2026-10-20T10:00:02Z ERROR proxy-demo upstream connection refused code=ECONNREFUSED\n```\n\n\n## Operator notes / reported troubleshooting\n\n```text\nNone supplied.\n```\n\n## Probable\n\nPossible: a dependency endpoint was unavailable or refused a connection. Supporting events: L2\n\n## Unknown\n\nRoot cause and successful recovery cannot be established from these heuristics. Operator notes are unverified reports.\n\n## Suggested investigation\n\nInspect dependency health, configuration, resource usage and recent changes using read-only checks.\n\n## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. Any proposed cause is a hypothesis. No commands or remediation were executed.\n",
+      "seconds": 2.6307629000002635,
+      "cpu_seconds": 24.796875,
+      "generation": {
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 342,
+          "completion_tokens": 20,
+          "total_tokens": 362
+        },
+        "max_tokens": 384
+      },
+      "calls": [
+        {
+          "input_sha256": "ad624c9c8b6bddb46f60d0981b99564e7fb156ef90559dbed87990201ee14c37",
+          "raw": "{\"interpretations\": [{\"kind\": \"connection_failure\", \"supporting_lines\": [2]}]}"
+        }
+      ],
+      "generation_pass": true,
+      "incident_pass": true
+    },
+    {
+      "id": "ambiguous-cause",
+      "events_sha256": "569f0cfaa7fb40408e9835cee0e6c1572d364eceef12f1ad7ae7f5ed28317f4d",
+      "analysis": {
+        "service": "demo",
+        "line_count": 2,
+        "error_count": 1,
+        "warning_count": 1,
+        "time_range": {
+          "first_observed": "2026-10-20T11:00:00Z",
+          "last_observed": "2026-10-20T11:00:03Z"
+        },
+        "events": [
+          {
+            "line": 1,
+            "timestamp": "2026-10-20T11:00:00Z",
+            "severity": "warning",
+            "text": "2026-10-20T11:00:00Z WARNING api-demo request slow",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 2,
+            "timestamp": "2026-10-20T11:00:03Z",
+            "severity": "error",
+            "text": "2026-10-20T11:00:03Z ERROR api-demo request timed out",
+            "source": "supplied_logs"
+          }
+        ],
+        "events_truncated": false,
+        "repeated_patterns": [],
+        "limitations": "Heuristic severity and repetition detection; not anomaly detection. Time range follows input order. Timestamps are not timezone-normalized.",
+        "interpretation": {
+          "interpretations": [
+            {
+              "kind": "timeout",
+              "supporting_lines": [
+                2
+              ],
+              "confidence": "possible"
+            }
+          ]
+        },
+        "explanation": "Possible: a dependency or request did not respond within its timeout. Supporting events: L2",
+        "quality": "validated",
+        "model_event_lines": [
+          1,
+          2
+        ]
+      },
+      "markdown": "# ambiguous-cause\n\n## Affected service\n\n```text\ndemo\n```\n\n## Observed window\n\n2026-10-20T11:00:00Z \u2192 2026-10-20T11:00:03Z (input order; timezone not normalized)\n\n## Confirmed\n\n2 lines; 1 error matches; 1 warning matches. Counts are heuristic.\n\n## Relevant events / timeline\n\n```text\nL1 [warning] 2026-10-20T11:00:00Z WARNING api-demo request slow\nL2 [error] 2026-10-20T11:00:03Z ERROR api-demo request timed out\n```\n\n\n## Operator notes / reported troubleshooting\n\n```text\nNone supplied.\n```\n\n## Probable\n\nPossible: a dependency or request did not respond within its timeout. Supporting events: L2\n\n## Unknown\n\nRoot cause and successful recovery cannot be established from these heuristics. Operator notes are unverified reports.\n\n## Suggested investigation\n\nInspect dependency health, configuration, resource usage and recent changes using read-only checks.\n\n## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. Any proposed cause is a hypothesis. No commands or remediation were executed.\n",
+      "seconds": 1.9052164000004268,
+      "cpu_seconds": 16.765625,
+      "generation": {
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 411,
+          "completion_tokens": 19,
+          "total_tokens": 430
+        },
+        "max_tokens": 384
+      },
+      "calls": [
+        {
+          "input_sha256": "9eb49ec784352391f4b3899757e663a49c24ba7820955cac0552fadabcfb9f02",
+          "raw": "{\"interpretations\": [{\"kind\": \"timeout\", \"supporting_lines\": [2]}]}"
+        }
+      ],
+      "generation_pass": true,
+      "incident_pass": true
+    },
+    {
+      "id": "repeated-failure",
+      "events_sha256": "0734b11166ec1dd314c7fc91a480845433ac0709b5dd1bfdad046e845bc5cc9a",
+      "analysis": {
+        "service": "demo",
+        "line_count": 3,
+        "error_count": 3,
+        "warning_count": 0,
+        "time_range": {
+          "first_observed": "2026-10-20T12:00:00Z",
+          "last_observed": "2026-10-20T12:00:02Z"
+        },
+        "events": [
+          {
+            "line": 1,
+            "timestamp": "2026-10-20T12:00:00Z",
+            "severity": "error",
+            "text": "2026-10-20T12:00:00Z ERROR worker-demo connection refused pid=101",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 2,
+            "timestamp": "2026-10-20T12:00:01Z",
+            "severity": "error",
+            "text": "2026-10-20T12:00:01Z ERROR worker-demo connection refused pid=102",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 3,
+            "timestamp": "2026-10-20T12:00:02Z",
+            "severity": "error",
+            "text": "2026-10-20T12:00:02Z ERROR worker-demo connection refused pid=103",
+            "source": "supplied_logs"
+          }
+        ],
+        "events_truncated": false,
+        "repeated_patterns": [
+          {
+            "pattern": "ERROR worker-demo connection refused pid=#",
+            "count": 3
+          }
+        ],
+        "limitations": "Heuristic severity and repetition detection; not anomaly detection. Time range follows input order. Timestamps are not timezone-normalized.",
+        "interpretation": {
+          "interpretations": [
+            {
+              "kind": "connection_failure",
+              "supporting_lines": [
+                1,
+                2,
+                3
+              ],
+              "confidence": "possible"
+            }
+          ]
+        },
+        "explanation": "Possible: a dependency endpoint was unavailable or refused a connection. Supporting events: L1, L2, L3",
+        "quality": "validated",
+        "model_event_lines": [
+          1,
+          2,
+          3
+        ]
+      },
+      "markdown": "# repeated-failure\n\n## Affected service\n\n```text\ndemo\n```\n\n## Observed window\n\n2026-10-20T12:00:00Z \u2192 2026-10-20T12:00:02Z (input order; timezone not normalized)\n\n## Confirmed\n\n3 lines; 3 error matches; 0 warning matches. Counts are heuristic.\n\n## Relevant events / timeline\n\n```text\nL1 [error] 2026-10-20T12:00:00Z ERROR worker-demo connection refused pid=101\nL2 [error] 2026-10-20T12:00:01Z ERROR worker-demo connection refused pid=102\nL3 [error] 2026-10-20T12:00:02Z ERROR worker-demo connection refused pid=103\n```\n\n\n## Operator notes / reported troubleshooting\n\n```text\nNone supplied.\n```\n\n## Probable\n\nPossible: a dependency endpoint was unavailable or refused a connection. Supporting events: L1, L2, L3\n\n## Unknown\n\nRoot cause and successful recovery cannot be established from these heuristics. Operator notes are unverified reports.\n\n## Suggested investigation\n\nInspect dependency health, configuration, resource usage and recent changes using read-only checks.\n\n## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. Any proposed cause is a hypothesis. No commands or remediation were executed.\n",
+      "seconds": 2.7005393999997978,
+      "cpu_seconds": 22.84375,
+      "generation": {
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 507,
+          "completion_tokens": 26,
+          "total_tokens": 533
+        },
+        "max_tokens": 384
+      },
+      "calls": [
+        {
+          "input_sha256": "16c5788f59d75fd1156a11b906aa7b9b8008434c609b3b075e8541c720e4c55e",
+          "raw": "{\"interpretations\": [{\"kind\": \"connection_failure\", \"supporting_lines\": [1, 2, 3]}]}"
+        }
+      ],
+      "generation_pass": true,
+      "incident_pass": true
+    },
+    {
+      "id": "restart-summary",
+      "events_sha256": "da253d44ef027ce6283932ddacb5d4bc217478c33a355cb5fe1c665c7a446b6a",
+      "analysis": {
+        "service": "demo",
+        "line_count": 4,
+        "error_count": 2,
+        "warning_count": 2,
+        "time_range": {
+          "first_observed": "2026-10-20T13:00:00Z",
+          "last_observed": "2026-10-20T13:00:03Z"
+        },
+        "events": [
+          {
+            "line": 1,
+            "timestamp": "2026-10-20T13:00:00Z",
+            "severity": "warning",
+            "text": "2026-10-20T13:00:00Z WARNING worker-demo restart attempt 1",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 2,
+            "timestamp": "2026-10-20T13:00:01Z",
+            "severity": "error",
+            "text": "2026-10-20T13:00:01Z ERROR worker-demo startup failed",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 3,
+            "timestamp": "2026-10-20T13:00:02Z",
+            "severity": "warning",
+            "text": "2026-10-20T13:00:02Z WARNING worker-demo restart attempt 2",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 4,
+            "timestamp": "2026-10-20T13:00:03Z",
+            "severity": "error",
+            "text": "2026-10-20T13:00:03Z ERROR worker-demo startup failed",
+            "source": "supplied_logs"
+          }
+        ],
+        "events_truncated": false,
+        "repeated_patterns": [
+          {
+            "pattern": "WARNING worker-demo restart attempt=#",
+            "count": 2
+          },
+          {
+            "pattern": "ERROR worker-demo startup failed",
+            "count": 2
+          }
+        ],
+        "limitations": "Heuristic severity and repetition detection; not anomaly detection. Time range follows input order. Timestamps are not timezone-normalized.",
+        "interpretation": {
+          "interpretations": [
+            {
+              "kind": "restart_loop",
+              "supporting_lines": [
+                1,
+                3
+              ],
+              "confidence": "probable"
+            }
+          ]
+        },
+        "explanation": "Probable: repeated restart attempts; successful recovery is not established. Supporting events: L1, L3",
+        "quality": "validated",
+        "model_event_lines": [
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "markdown": "# restart-summary\n\n## Affected service\n\n```text\ndemo\n```\n\n## Observed window\n\n2026-10-20T13:00:00Z \u2192 2026-10-20T13:00:03Z (input order; timezone not normalized)\n\n## Confirmed\n\n4 lines; 2 error matches; 2 warning matches. Counts are heuristic.\n\n## Relevant events / timeline\n\n```text\nL1 [warning] 2026-10-20T13:00:00Z WARNING worker-demo restart attempt 1\nL2 [error] 2026-10-20T13:00:01Z ERROR worker-demo startup failed\nL3 [warning] 2026-10-20T13:00:02Z WARNING worker-demo restart attempt 2\nL4 [error] 2026-10-20T13:00:03Z ERROR worker-demo startup failed\n```\n\n\n## Operator notes / reported troubleshooting\n\n```text\nAn operator suspects a configuration change; no change record supplied.\n```\n\n## Probable\n\nProbable: repeated restart attempts; successful recovery is not established. Supporting events: L1, L3\n\n## Unknown\n\nRoot cause and successful recovery cannot be established from these heuristics. Operator notes are unverified reports.\n\n## Suggested investigation\n\nInspect dependency health, configuration, resource usage and recent changes using read-only checks.\n\n## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. Any proposed cause is a hypothesis. No commands or remediation were executed.\n",
+      "seconds": 3.0321672999998555,
+      "cpu_seconds": 27.796875,
+      "generation": {
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 580,
+          "completion_tokens": 23,
+          "total_tokens": 603
+        },
+        "max_tokens": 384
+      },
+      "calls": [
+        {
+          "input_sha256": "8f45f623a8a621b1dde81258b803607be8f0573cd58e328ad4073c8fd39933eb",
+          "raw": "{\"interpretations\": [{\"kind\": \"restart_loop\", \"supporting_lines\": [1, 3]}]}"
+        }
+      ],
+      "generation_pass": true,
+      "incident_pass": true
+    },
+    {
+      "id": "no-timestamps",
+      "events_sha256": "271f34ee4762b6f7d73caf11d10c2e9066c5fd9e0fa51c5c1b8e2ef63ff3342a",
+      "analysis": {
+        "service": "demo",
+        "line_count": 2,
+        "error_count": 1,
+        "warning_count": 1,
+        "time_range": {
+          "first_observed": null,
+          "last_observed": null
+        },
+        "events": [
+          {
+            "line": 1,
+            "timestamp": null,
+            "severity": "error",
+            "text": "ERROR cache-demo request timeout",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 2,
+            "timestamp": null,
+            "severity": "warning",
+            "text": "WARNING cache-demo retrying",
+            "source": "supplied_logs"
+          }
+        ],
+        "events_truncated": false,
+        "repeated_patterns": [],
+        "limitations": "Heuristic severity and repetition detection; not anomaly detection. Time range follows input order. Timestamps are not timezone-normalized.",
+        "interpretation": {
+          "interpretations": [
+            {
+              "kind": "timeout",
+              "supporting_lines": [
+                1
+              ],
+              "confidence": "possible"
+            }
+          ]
+        },
+        "explanation": "Possible: a dependency or request did not respond within its timeout. Supporting events: L1",
+        "quality": "validated",
+        "model_event_lines": [
+          1,
+          2
+        ]
+      },
+      "markdown": "# no-timestamps\n\n## Affected service\n\n```text\ndemo\n```\n\n## Observed window\n\nUnknown \u2192 Unknown (input order; timezone not normalized)\n\n## Confirmed\n\n2 lines; 1 error matches; 1 warning matches. Counts are heuristic.\n\n## Relevant events / timeline\n\n```text\nL1 [error] ERROR cache-demo request timeout\nL2 [warning] WARNING cache-demo retrying\n```\n\n\n## Operator notes / reported troubleshooting\n\n```text\nNone supplied.\n```\n\n## Probable\n\nPossible: a dependency or request did not respond within its timeout. Supporting events: L1\n\n## Unknown\n\nRoot cause and successful recovery cannot be established from these heuristics. Operator notes are unverified reports.\n\n## Suggested investigation\n\nInspect dependency health, configuration, resource usage and recent changes using read-only checks.\n\n## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. Any proposed cause is a hypothesis. No commands or remediation were executed.\n",
+      "seconds": 1.6085649000006015,
+      "cpu_seconds": 11.75,
+      "generation": {
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 330,
+          "completion_tokens": 19,
+          "total_tokens": 349
+        },
+        "max_tokens": 384
+      },
+      "calls": [
+        {
+          "input_sha256": "d465fd369348b408a19baa40fd22bcad10440053b6eb9f0c81d77429ee774ddf",
+          "raw": "{\"interpretations\": [{\"kind\": \"timeout\", \"supporting_lines\": [1]}]}"
+        }
+      ],
+      "generation_pass": true,
+      "incident_pass": true
+    },
+    {
+      "id": "normal-only",
+      "events_sha256": "246fbcde8979964c4b3710761e5a25b61d7404bd977ea4aa7e652fce19abdfe5",
+      "analysis": {
+        "service": "demo",
+        "line_count": 2,
+        "error_count": 0,
+        "warning_count": 0,
+        "time_range": {
+          "first_observed": "2026-10-20T14:00:00Z",
+          "last_observed": "2026-10-20T14:00:01Z"
+        },
+        "events": [],
+        "events_truncated": false,
+        "repeated_patterns": [],
+        "limitations": "Heuristic severity and repetition detection; not anomaly detection. Time range follows input order. Timestamps are not timezone-normalized.",
+        "interpretation": {
+          "interpretations": []
+        },
+        "explanation": "Insufficient evidence for an interpretation.",
+        "quality": "validated",
+        "model_event_lines": []
+      },
+      "markdown": "# normal-only\n\n## Affected service\n\n```text\ndemo\n```\n\n## Observed window\n\n2026-10-20T14:00:00Z \u2192 2026-10-20T14:00:01Z (input order; timezone not normalized)\n\n## Confirmed\n\n2 lines; 0 error matches; 0 warning matches. Counts are heuristic.\n\n## Relevant events / timeline\n\n```text\nNo error/warning patterns detected in supplied lines.\n```\n\n\n## Operator notes / reported troubleshooting\n\n```text\nNone supplied.\n```\n\n## Probable\n\nInsufficient evidence for an interpretation.\n\n## Unknown\n\nRoot cause and successful recovery cannot be established from these heuristics. Operator notes are unverified reports.\n\n## Suggested investigation\n\nInspect dependency health, configuration, resource usage and recent changes using read-only checks.\n\n## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. Any proposed cause is a hypothesis. No commands or remediation were executed.\n",
+      "seconds": 0.5266317999994499,
+      "cpu_seconds": 4.234375,
+      "generation": {
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 246,
+          "completion_tokens": 6,
+          "total_tokens": 252
+        },
+        "max_tokens": 384
+      },
+      "calls": [
+        {
+          "input_sha256": "244e2df658dfbbeb18f5e0e7c81eacbf372f9968a93cf60482021cc1f24fb797",
+          "raw": "{\"interpretations\": []}"
+        }
+      ],
+      "generation_pass": true,
+      "incident_pass": true
+    }
+  ],
+  "load": {
+    "seconds": 1.429556799999773,
+    "before": {
+      "rss": 89292800,
+      "peak_rss": 89292800,
+      "page": 579948544
+    },
+    "after": {
+      "rss": 1525125120,
+      "peak_rss": 1525125120,
+      "page": 2088140800
+    }
+  },
+  "chat_template_sha256": "71672240b1a3b068067b6a332bc38d3fc05aaade9d41b4b27d7510ff4335504b",
+  "stream_probe": {
+    "first_token_seconds": 0.18005769999945187,
+    "seconds": 0.4638565999994171,
+    "content_chunks": 9,
+    "text": "Hello! How can I assist you today?"
+  },
+  "reuse_verified": true,
+  "memory_after_workflows": {
+    "rss": 1996775424,
+    "peak_rss": 2051813376,
+    "page": 2137444352
+  },
+  "system_memory_after": {
+    "total": 34281656320,
+    "available": 14549299200
+  }
+}
