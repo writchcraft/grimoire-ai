@@ -1,5 +1,7 @@
 # Validation record
 
+> Current project decision — 29 October 2026: the Windows-native development/runtime milestone is **CLOSED**, with verification limited to the existing evidence in [the deployment report](deployment-report.md). Linux native and Docker deployment are intentionally **DEFERRED / NOT YET TESTED**, preserved as future release/deployment acceptance tasks. They do not block continued Windows development or a supervised first read-only homelab integration. No runtime discovery or installation is requested. All earlier BLOCKED statements below are historical observations, not current development blockers.
+
 > Update — 29 October 2026: real CPU binding and both GGUFs are now provisioned and executed. See [current real-model acceptance](real-model-acceptance.md) for measured results, browser evidence, process-level offline checks and quality limitations. Earlier blocked entries below are historical. Docker remains **BLOCKED — Docker CLI unavailable**.
 
 > Update — 29 October 2026: real CPU binding and both GGUFs are now provisioned and executed. See [current real-model acceptance](real-model-acceptance.md) for measured results, browser evidence, process-level offline checks and quality limitations. Earlier blocked entries below are historical. Docker remains **BLOCKED — Docker CLI unavailable**.
@@ -138,3 +140,55 @@ The current measured record is [Reliability milestone](real-model-acceptance.md#
 The small development suite has 20 synthetic cases. Real MiniLM retrieval found all required evidence in 3/10 top-1, 8/10 top-3 and 9/10 top-5 results. Real Qwen 1.5B hardened QA passed 2/10 with retrieval and 7/10 with oracle documents. Unsupported questions passed 4/4 with retrieved context and 4/4 with oracle related documents. All five displayed excerpts were traceable, but two cited answers were incomplete. Structured log extraction/interpretation and deterministic incident checks passed 6/6 each. These are narrow evidence/structure checks, not general accuracy.
 
 The full real-model command correctly exited 1. The normal automated gate passed separately: **187 weightless backend tests**, **four frontend tests**, frontend syntax, Ruff, diff whitespace and tracked-file hygiene. One existing Starlette/httpx deprecation warning remains. Regression coverage includes fabricated sources/excerpts, partial negations, malformed/truncated output, invented log/timeline fields, invalid event references, numeric confidence, error-code repetition, chunk/budget coverage, incomplete but traceable answers, isolated evaluation and CLI reporting. Real-model quality and manual prose review remain distinct from those automated tests. See the measured record for exact final counts, output limits, weaknesses and the decision against automatic model selection at this stage.
+
+
+## Structured facts — 29 October 2026
+
+The latest [structured fact acceptance record](real-model-acceptance.md#structured-fact-milestone--29-october-2026)
+supersedes the earlier reliability scores above: unchanged-suite supported and
+oracle QA both pass 10/10; retrieved/oracle unsupported refusals pass 4/4 each;
+17/17 displayed excerpts are traceable; log extraction, interpretation and
+incidents pass 6/6 each. Retrieval hit@3, hit@5 and complete packets remain 10/10.
+The local gate passes 229 model-independent backend tests and four frontend
+tests. Fixed evidence, full end-to-end evaluation, supplementary refusal results,
+per-stage latency and limitations are linked in that record. No 3B structured
+recheck, registry or automatic routing was introduced.
+
+
+## Qualified evidence pipeline — 29 October 2026
+
+See the [complete first-run comparison](heldout/after-general-fixes-report.md) and
+[machine-readable audit](heldout/analysis-after-general-fixes.json). With the
+same Qwen2.5-1.5B Q4_K_M model and unchanged frozen suites/scorer, complete
+held-out packets improve from 17/22 to 22/22, supported QA from 14/22 to 22/22,
+and oracle QA from 12/22 to 22/22. Unsupported refusals improve to 5/5 in both
+modes; both adversarial cases pass. Development remains 10/10 supported/oracle,
+4/4 refusals per mode, with all citations and logs/incidents passing. The full
+gate passes 332 backend and four frontend tests. Routing readiness for the next
+registry/policy milestone is YES on this diagnostic evidence; routing is not
+implemented. The original held-out report, digest and classifications remain
+immutable, and every completed follow-up run is retained separately.
+
+## Deterministic generation routing - 29 October 2026
+
+The registry/router use the existing evidence and validation services unchanged. Frozen development/held-out documents, expected outcomes and scoring assertions are retained. Routing tests exercise generation inventory validation, capability/readiness decisions, bounded fallback, explicit override, native ownership/switch-back, streaming serialization, cancellation draining, embedding identity isolation, and factual/log rejection through the actual HTTP handlers. Registry/CLI JSON and Auto/manual status labels are checked too.
+
+Real fixed-vs-policy runs, a deliberately bounded 3B structured-log experiment and an actual 1.5B -> 3B -> 1.5B lifecycle/fallback probe are recorded in [the routing report](routing/report.md). These previously exposed suites are regression material, not a new blind held-out assessment. No benchmark outcomes are used as routing rules.
+
+## Manual HTTP monitoring - 29 October 2026
+
+Final regression: 426 backend tests and 5 frontend tests passed, including 37 new monitoring tests and all 389 prior backend tests. Ruff, changed Python formatting, JavaScript syntax and whitespace checks pass. Real local TCP API/CLI acceptance and a browser UI check also passed. See [monitoring report](monitoring-report.md) for evidence, limits, retention and the explicit separation between local acceptance and mocks. Linux/Docker remain deferred; real model quality evaluations were not rerun.
+
+## Read-only DNS inspection - 29 October 2026
+
+The [DNS acceptance report](dns-report.md) records 454 backend and six frontend tests
+passing, including all existing HTTP monitoring and evidence-validation regressions.
+The real development and held-out model suites were rerun successfully with the
+provisioned local Qwen 1.5B and MiniLM weights; frozen suites/scorers were unchanged.
+Real system-resolver acceptance covered localhost, a reserved invalid hostname and
+a disposable configured local service. Browser checks verified resolved/unresolved
+cards, hostname-only inventory and persistence after reload. No configured LAN
+hostname existed. OS resolver semantics and raw-CNAME/TTL limitations are explicit;
+HTTP SSRF validation remains independent. No infrastructure control was introduced.
+
+TLS inspection acceptance and full regression results are recorded in [the TLS milestone report](tls-report.md), including disposable local certificate fixtures and unchanged development/held-out reliability suites.

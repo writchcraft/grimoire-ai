@@ -10,7 +10,7 @@ Grimoire combines local inference, document retrieval, log inspection, incident 
 
 [Run locally](#quick-start) · [Demo walkthrough](docs/demo.md) · [Architecture](docs/architecture.md) · [Security](docs/security.md) · [Verification results](docs/validation.md) · [Code map](#repository-structure)
 
-**Status: v0.1.0 · single-user initial implementation.** Core workflows run with local Qwen 1.5B and MiniLM weights. A small synthetic suite measures reliability; see [results](docs/real-model-acceptance.md#reliability-milestone) and [limitations](#current-limitations). Compose still needs validation on a Docker host.
+**Status: v0.1.0 · single-user initial implementation.** Core workflows run with local Qwen 1.5B and MiniLM weights. Restart and backup/restore have executed with real models on Windows. Windows-native acceptance is verified within the documented scope, and the current-environment milestone is closed. Linux and Docker acceptance are intentionally **DEFERRED / NOT YET TESTED** as future deployment tasks; they do not block continued development or a supervised first read-only homelab integration on Windows. See [Linux deployment and recovery](docs/deployment.md), [deployment results](docs/deployment-report.md), [AI reliability results](docs/real-model-acceptance.md#reliability-milestone) and [limitations](#current-limitations).
 
 ## Why Grimoire?
 
@@ -19,6 +19,16 @@ A homelab accumulates Compose files, service addresses, runbooks, troubleshootin
 It is also useful without a model: search indexed text and service records, identify log error patterns, and export an incident outline. The original project vision is preserved in [this planning document](docs/vision-original.md); this README describes what is actually implemented.
 
 ## Implemented workflows
+
+Manual HTTP/HTTPS monitoring is available through Services, the CLI and the API. Saved live
+observations are separate from indexed documentation and optional AI interpretation. See
+[service monitoring](docs/service-monitoring.md) for safe configuration, limits, evidence and
+real local acceptance. No continuous monitoring or infrastructure control is enabled.
+
+Read-only [DNS inspection](docs/dns-inspection.md) reuses configured hostnames and
+adds A/AAAA addresses, canonical-name hints and bounded history as distinct live
+evidence. Use **Inspect DNS** in Services or `grimoire services dns [service] --json`.
+See the [DNS acceptance report](docs/dns-report.md) for local checks and regressions.
 
 | Workflow | What works now |
 | --- | --- |
@@ -33,7 +43,7 @@ It is also useful without a model: search indexed text and service records, iden
 
 ## Quick start
 
-Requires Docker Engine/Desktop with Compose v2. The supplied image builds a CPU llama-cpp-python runtime; CUDA is not required. Provide your own compatible GGUF files. Qwen2.5 3B Instruct GGUF is an example generation model, not a bundled or validated model recommendation. Use a separate pooled embedding GGUF with its required input conventions. Model licenses and hardware requirements depend on the files you choose.
+Linux with Docker Engine and Compose v2 is the primary deployment target. The supplied image builds a CPU llama-cpp-python runtime; CUDA is not required. Provision the existing preferred Qwen2.5-1.5B Q4_K_M generation model and separate MiniLM F16 embedding GGUF; [the pinned revisions and checksums](docs/acceptance-models.json) record the tested files. Model licenses and hardware requirements depend on the files you choose. Follow the [deployment guide](docs/deployment.md) for Linux setup and the current acceptance boundary.
 
 ```bash
 git clone https://github.com/writchcraft/grimoire-ai.git
@@ -73,7 +83,7 @@ grimoire evaluate
 grimoire evaluate --json --output .cache/evaluation.json
 ```
 
-`serve` runs the UI/API on loopback port 7864. Other commands include `models list`, `models inspect`, explicit `models verify`, `knowledge search "grafana port"`, `logs analyse example.log`, `demo`, and `validate`. Diagnostics support `--json` and never download weights or install dependencies. See [CLI behavior and exit codes](docs/setup.md#command-line-interface).
+`serve` runs the UI/API on loopback port 7864. Other commands include `models list`, `models inspect`, explicit `models verify`, `knowledge search "grafana port"`, `logs analyse example.log`, `demo`, and `validate`. `backup create <directory>` snapshots persistent state; `backup restore <backup> <new-data-directory>` validates and restores it. Diagnostics support `--json` and never download weights or install dependencies. See [CLI behavior](docs/setup.md#command-line-interface) and [backup/restore](docs/deployment.md#backup-and-restore).
 
 ## Interface
 
@@ -233,10 +243,11 @@ Prompt injection remains a risk: source text is untrusted, models may ignore ins
 
 ## Current limitations
 
+- The original [held-out assessment](docs/heldout/report.md) is preserved. The [reliability follow-up](docs/heldout/after-general-fixes-report.md) reached 22/22 supported and oracle QA, 5/5 refusals and 2/2 adversarial passes. These exposed suites now provide regression checks; see [routing measurements](docs/routing/report.md) for the current milestone.
 - Real native CPU loading, generation, embeddings, RAG, CLI and browser workflows have executed with Qwen2.5 1.5B and MiniLM. [Measured acceptance results](docs/real-model-acceptance.md) document citation adherence and log-summary inaccuracies, plus process-level offline checks. Docker remains blocked because its CLI is unavailable. Ordinary tests remain weightless.
 - Single process, single trusted operator, local-scale corpus. Qdrant rebuilds in RAM; do not run multiple backend workers against one directory.
 - Use one backend worker. Native generation is serialized; cancellation waits for the current native call. CPU latency/RAM depend on model and context. GPU requires a compatible runtime build.
-- Knowledge answers are extractive: source IDs and complete quoted lines are validated before display. Selection relevance, outdated documentation and misleading combinations still need review. Empty/below-threshold retrieval refuses deterministically.
+- Knowledge answers use explicit answer slots and source-bound fact IDs. Complete evidence lines retain negation and scope; missing parts are marked unknown and alternative records stay separate. One constrained model call feeds deterministic rendering and citations. Selection relevance and outdated documentation still need review; empty retrieval refuses deterministically.
 - Chunking uses document structure and bounded long-line splits, not complete semantic/AST parsing. UTF-8 text only; no PDFs, images or compressed logs.
 - Log severity/repetition are heuristics, not anomaly detection. Event output is capped at 80; the model sees up to 12 complete highlighted events within a 5,000-character JSON event budget. Interpretation uses a small validated symptom vocabulary and fixed cautious explanations. Time ranges follow input order, without timezone normalization.
 - Inventory is searchable but not automatically embedded. No source watchers, ingestion jobs, inventory editing or durable conversations yet. Chat history lives in the tab.
@@ -250,8 +261,37 @@ Prompt injection remains a risk: source text is untrusted, models may ignore ins
 - [x] Milestone 4 initial scope: service inventory, UI polish, tests, request observability
 - [x] Windows CPU real-model operational acceptance (see quality limitations in the validation record)
 - [x] Labelled retrieval/evidence evaluation and deterministic output validation (see measured results)
-- [ ] Next: address measured reliability gaps; Linux Compose and backup/restore rehearsal
+- [x] Held-out reliability hardening and deterministic local generation registry/policy selection
+- [ ] Next: Linux Compose and backup/restore rehearsal; independent unseen reliability assessment
 - [ ] Later: indexing jobs, incremental reindex, inventory updates/RAG and authentication
 - [ ] Future: Prometheus/Grafana, Docker/Proxmox, Home Assistant, Wazuh, alert summaries, read-only diagnostics, dependency maps, multiple providers and MCP
 
 Future integrations are not implemented. [MIT license](LICENSE).
+
+
+### Evidence preservation follow-up — 29 October 2026
+
+The [FIRST RUN vs AFTER GENERAL FIXES report](docs/heldout/after-general-fixes-report.md)
+records 22/22 complete held-out packets, 22/22 retrieved and oracle QA, 5/5
+unsupported refusals in both modes, and 2/2 adversarial passes. Frozen development
+results remain perfect. The original first-run files and classifications are
+unchanged. These are exposed diagnostic regression results; no routing or new
+model was added. The final gate passes 332 backend and four frontend tests.
+
+## Windows host inspections
+
+Read-only Windows host inventory is available through `grimoire host status`, `/api/host` and
+**This host** in the UI. It includes deterministic OS/resources/disks/interfaces and bounded
+Windows service inspections, explicit service mapping and local incident evidence. No host control
+or model inventory transport is added. See the [host guide](docs/host-inspection.md) and
+[Windows acceptance and regression report](docs/host-report.md).
+
+## Generation registry and routing
+
+Generation model selection is deterministic and remains local. Set `GRIMOIRE_MODEL_REGISTRY_PATH` to a YAML/JSON registry; the [example](docs/models.example.yaml) registers the existing 1.5B default and optional 3B model. Auto stays on 1.5B for all tasks. Models load lazily, with one generation model owned at a time, and embedding identity remains isolated. No cloud or implicit Ollama fallback is introduced.
+
+Use `grimoire models list`, `models inspect <id>`, `models policy`, `models test <id>`, or `grimoire chat "question" --model <id> --debug`. The web composer has a collapsed model selector; Auto remains the default. See [configuration, policies and lifecycle](docs/models.md) and [measured routing value](docs/routing/report.md). Every indexed QA/log/incident route retains the same validators.
+
+TLS certificate inspection is read-only and reuses configured HTTPS monitors. See the [TLS guide](docs/tls-inspection.md) and [acceptance report](docs/tls-report.md).
+
+Windows host events are available through `grimoire events`, `/api/events`, and **Logs & incidents → Windows Events**. Reads are bounded, read-only and local. System/Application are supported; inaccessible Security logs are a normal state. See [Windows Event Log inspection](docs/windows-events.md) for filters, permissions, privacy controls and platform limitations, and [the milestone report](docs/windows-events-report.md) for acceptance/regression results.
