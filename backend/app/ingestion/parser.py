@@ -16,6 +16,7 @@ class Chunk:
     line_start: int
     line_end: int
     heading: str = ""
+    lineage: str = ""
 
 
 def safe_filename(value: str) -> str:
@@ -166,6 +167,34 @@ def chunk_document(text: str, kind: str, target: int = 1400) -> list[Chunk]:
         if kind == "txt" and re.match(r"^\[[^]]+\]$", stripped):
             headings = [(1, stripped)]
         contexts.append(" / ".join(value for _, value in headings))
+    # Carry ancestor mapping keys across the exceptional long-block fallback.
+    # Keep them separate from headings so retrieval ranking remains unchanged.
+    ancestry, paths, labels = [], [], []
+    qualifier_keys = {"service", "environment", "scope", "role", "profile", "name"}
+    for number, line in enumerate(lines, 1):
+        indent = len(line) - len(line.lstrip())
+        if line.strip() and not line.lstrip().startswith("#"):
+            while ancestry and ancestry[-1][0] >= indent:
+                ancestry.pop()
+            labels = [(depth, key, value) for depth, key, value in labels if depth <= indent]
+        if re.match(r"^#{1,6}\s", line):
+            labels = []
+        scalar = re.match(r"\s*(?:-\s+)?([\w.-]+):\s*(\S.*)", line)
+        if scalar and scalar[1].casefold() in qualifier_keys:
+            key = scalar[1].casefold()
+            labels = [
+                (depth, name, value)
+                for depth, name, value in labels
+                if not (depth == indent and (name == key or key in {"service", "name"}))
+            ]
+            labels.append((indent, key, f"{scalar[1]}: {scalar[2]} (L{number})"))
+        paths.append(
+            " / ".join([*(key for _, key in ancestry), *(value for _, _, value in labels)])
+        )
+        match = re.match(r"\s*([\w.-]+):\s*$", line)
+        if match:
+            ancestry.append((indent, match[1]))
     for chunk in chunks:
         chunk.heading = contexts[chunk.line_start - 1] if contexts else ""
+        chunk.lineage = paths[chunk.line_start - 1] if paths else ""
     return chunks

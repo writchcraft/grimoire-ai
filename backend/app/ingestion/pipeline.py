@@ -46,4 +46,5 @@ async def ingest(
         },
         chunks,
         vectors,
+        raw,
     )
