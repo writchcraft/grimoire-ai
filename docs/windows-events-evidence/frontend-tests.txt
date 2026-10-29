@@ -1,0 +1,64 @@
+
+> test
+> node --test tests/api.test.js tests/dns.test.js tests/tls.test.js tests/events.test.js
+
+TAP version 13
+# Subtest: NDJSON decoder handles split UTF-8 and split lines
+ok 1 - NDJSON decoder handles split UTF-8 and split lines
+  ---
+  duration_ms: 41.8753
+  ...
+# Subtest: model status identifies either provider and reports embedding failures
+ok 2 - model status identifies either provider and reports embedding failures
+  ---
+  duration_ms: 0.7266
+  ...
+# Subtest: model status shows lifecycle states and safe unconfigured identity
+ok 3 - model status shows lifecycle states and safe unconfigured identity
+  ---
+  duration_ms: 0.3016
+  ...
+# Subtest: API surfaces actionable provider error and request ID
+ok 4 - API surfaces actionable provider error and request ID
+  ---
+  duration_ms: 4.6052
+  ...
+# Subtest: routing status stays concise for Auto and manual selection
+ok 5 - routing status stays concise for Auto and manual selection
+  ---
+  duration_ms: 0.3108
+  ...
+# Subtest: DNS cards display deterministic states, addresses, changes and age
+ok 6 - DNS cards display deterministic states, addresses, changes and age
+  ---
+  duration_ms: 38.1381
+  ...
+# Subtest: event facts retain source identity and hostile text literally
+ok 7 - event facts retain source identity and hostile text literally
+  ---
+  duration_ms: 3.038
+  ...
+# Subtest: bounded time filters and correlation window
+ok 8 - bounded time filters and correlation window
+  ---
+  duration_ms: 37.879
+  ...
+# Subtest: TLS unknown and skipped
+ok 9 - TLS unknown and skipped
+  ---
+  duration_ms: 2.1755
+  ...
+# Subtest: TLS trust, hostname, expiry and staleness remain separate
+ok 10 - TLS trust, hostname, expiry and staleness remain separate
+  ---
+  duration_ms: 0.4226
+  ...
+1..10
+# tests 10
+# suites 0
+# pass 10
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 209.9716

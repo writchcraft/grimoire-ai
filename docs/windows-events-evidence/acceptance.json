@@ -1,0 +1,67 @@
+{
+  "channels": [
+    {
+      "channel": "System",
+      "status": "available"
+    },
+    {
+      "channel": "Application",
+      "status": "available"
+    },
+    {
+      "channel": "Security",
+      "status": "unavailable",
+      "reason": "permission denied",
+      "error_code": 5
+    }
+  ],
+  "scope": "Existing real local Windows events; no events generated; no elevation or permission changes",
+  "System": {
+    "count": 5,
+    "rendered_messages": 5,
+    "error_sample_count": 3,
+    "provider_event_filter": "PASS",
+    "time_window": "PASS",
+    "record_identity": "PASS",
+    "pagination": "PASS"
+  },
+  "Application": {
+    "count": 5,
+    "rendered_messages": 5,
+    "error_sample_count": 3,
+    "provider_event_filter": "PASS",
+    "time_window": "PASS",
+    "record_identity": "PASS",
+    "pagination": "PASS"
+  },
+  "cli": "PASS channels/recent/inspect",
+  "live_http_correlation": {
+    "http_state": "healthy",
+    "nearby_real_events": 9,
+    "relationships": 1,
+    "result": "PASS actual HTTP and native timestamp comparison",
+    "scope": "Test-owned healthy loopback endpoint; no service outage induced"
+  },
+  "api": "PASS channels/list/inspect/filters/bounds/selection/incident",
+  "ai": {
+    "quality": "validated",
+    "selected_events": 3,
+    "interpretation": {
+      "interpretations": [
+        {
+          "kind": "timeout",
+          "supporting_lines": [
+            1,
+            2,
+            3
+          ],
+          "confidence": "possible"
+        }
+      ]
+    },
+    "source_references": "PASS"
+  },
+  "correlation": "Fixtures cover positive and excluded time matches; real healthy HTTP comparison above; no real service outage induced",
+  "ui": "See browser acceptance result in windows-events-report.md",
+  "acceptance_process_administrator": false
+}
