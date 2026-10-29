@@ -5,7 +5,7 @@ from starlette.concurrency import run_in_threadpool
 from app.ai.base import EmbeddingProvider, Messages
 from app.core.config import Settings
 from app.models import ChatRequest, Citation, SearchHit
-from app.rag.search import complete, focus, search, select_evidence
+from app.rag.search import focus, search, select_evidence
 from app.services.storage import Storage
 
 SYSTEM = """You are Grimoire, a local homelab infrastructure assistant.
@@ -42,13 +42,58 @@ NO_EVIDENCE = (
 )
 
 
-def assemble_context(hits: list[SearchHit], budget: int) -> tuple[str, list[Citation]]:
+def assemble_context(
+    hits: list[SearchHit], budget: int, question: str = ""
+) -> tuple[str, list[Citation]]:
+    compacted = False
+    if question:
+        from app.rag.evidence import blocks, coverage_slots
+
+        # Atomic qualified blocks make scarce-slot evidence fit before large chunks.
+        # Keep whole chunks when they fit; otherwise use exact source-bound blocks.
+        if len(assemble_context(hits, 10**9)[0]) > budget:
+            compacted = True
+            compact = []
+            for hit in hits:
+                for b in blocks(hit):
+                    item = hit.model_copy(
+                        update={
+                            "text": b.text,
+                            "heading": " / ".join(filter(None, [b.heading, b.lineage])),
+                            "line_start": hit.line_start + b.start,
+                            "line_end": hit.line_start + b.end - 1,
+                        }
+                    )
+                    if coverage_slots(question, item):
+                        compact.append(item)
+            hits = compact
     sources: list[Citation] = []
     records: list[dict] = []
     used = 2
     seen = set()
-    for hit in hits:
-        fingerprint = " ".join(hit.text.split())
+    pending = list(hits)
+    covered = set()
+    while pending:
+        if question:
+            index = max(
+                range(len(pending)),
+                key=lambda i: (
+                    len(coverage_slots(question, pending[i]) - covered),
+                    -len(pending[i].text) if compacted else pending[i].score,
+                    pending[i].score if compacted else -len(pending[i].text),
+                ),
+            )
+            hit = pending.pop(index)
+        else:
+            hit = pending.pop(0)
+        fingerprint = (
+            hit.document_id,
+            hit.line_start,
+            hit.line_end,
+            hit.heading,
+            hit.lineage,
+            hit.text,
+        )
         if fingerprint in seen:
             continue
         seen.add(fingerprint)
@@ -64,12 +109,17 @@ def assemble_context(hits: list[SearchHit], budget: int) -> tuple[str, list[Cita
             record["heading"] = hit.heading
         if hit.service:
             record["service"] = hit.service
+        if hit.lineage:
+            record["lineage"] = hit.lineage
         encoded = json.dumps(record, ensure_ascii=False)
         if used + len(encoded) > budget:
             continue
         records.append(record)
-        sources.append(Citation(**hit.model_dump(), label=label))
+        sources.append(Citation(**{**hit.model_dump(), "label": label}))
         used += len(encoded) + 2
+        if question:
+            # A rejected oversized block cannot claim to cover a slot.
+            covered.update(coverage_slots(question, hit))
     return json.dumps(records, ensure_ascii=False), sources
 
 
@@ -100,8 +150,8 @@ async def prepare_chat(
         search, store, query, vector, settings.retrieval_threshold, request.service
     )
     evidence = await run_in_threadpool(select_evidence, store, request.message, hits)
-    context, sources = assemble_context(evidence, settings.context_chars)
-    if not sources or not complete(request.message, sources):
+    context, sources = assemble_context(evidence, settings.context_chars, request.message)
+    if not sources:
         return [], []
     return qa_messages(request.message, context, previous), sources
 

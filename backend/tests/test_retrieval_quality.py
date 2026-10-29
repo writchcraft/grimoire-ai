@@ -123,7 +123,7 @@ def test_scoped_exact_entity_ranks_ahead_of_vector_distractor(tmp_path):
         store.close()
 
 
-def test_multipart_collects_distinct_sources_and_refuses_missing_part(tmp_path):
+def test_multipart_collects_distinct_sources_and_retains_supported_part(tmp_path):
     store = Storage(tmp_path, "test")
     try:
         add(store, "placement.md", "# Atlas\nAtlas runs on host atlas-node.")
@@ -134,7 +134,8 @@ def test_multipart_collects_distinct_sources_and_refuses_missing_part(tmp_path):
         hits, _ = search(store, query, [1.0, 0.0])
         selected = select_evidence(store, query, hits)
         assert len(selected) == 2 and complete(query, selected)
-        assert not select_evidence(store, query, hits[:1])
+        partial = select_evidence(store, query, hits[:1])
+        assert partial and not complete(query, partial)
     finally:
         store.close()
 
@@ -197,16 +198,14 @@ def test_claims_require_each_requested_attribute_even_with_complete_sources():
     assert claims_complete(query, claims, [s])
 
 
-async def test_partial_model_answer_returns_insufficient_evidence():
+async def test_partial_model_answer_missing_a_required_slot_is_rejected():
     class Partial:
         async def chat(self, messages):
-            return json.dumps(
-                {"insufficient": False, "claims": [{"source": "S1", "quote": "Atlas port: 8123"}]}
-            )
+            return json.dumps({"Q1": ["E1"]})
 
     s = Citation(**hit("Atlas port: 8123\nAtlas subnet: 192.0.2.0/24").model_dump(), label="S1")
     result = await grounded_answer(Partial(), [], [s], "What port and subnet does Atlas use?")
-    assert result["quality"] == "insufficient_evidence" and not result["claims"]
+    assert result["quality"] == "rejected_output" and not result["claims"]
 
 
 async def test_weak_or_missing_entity_does_not_call_generation(settings, provider, tmp_path):

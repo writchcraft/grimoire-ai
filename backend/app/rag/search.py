@@ -225,7 +225,11 @@ def search(store, query, vector, threshold=0.45, service=None, limit=12):
         counts[hit.document_id] = counts.get(hit.document_id, 0) + 1
     unique = []
     for hit in diverse:
-        if any(near_duplicate(hit.text, h.text, entities) for h in unique):
+        if any(
+            (hit.heading, hit.lineage, hit.service) == (h.heading, h.lineage, h.service)
+            and near_duplicate(hit.text, h.text, entities)
+            for h in unique
+        ):
             continue
         unique.append(hit)
         if len(unique) >= limit:
@@ -243,40 +247,26 @@ def search(store, query, vector, threshold=0.45, service=None, limit=12):
 
 
 def select_evidence(store, query, hits):
-    """Cover every recognized fact, then add bounded same-section siblings."""
-    needs = plan(query)
-    pool = list(hits)
-    for hit in hits[:4]:
-        if hit.score >= 0.5 and any(coverage(n, hit.text, hit.heading)[0] >= 0.5 for n in needs):
-            for sibling in store.section_neighbors(hit):
-                if sibling.id not in {h.id for h in pool}:
-                    pool.append(sibling)
-    selected = []
-    for need in needs:
-        for fact in sorted(need.facts) or [None]:
-            eligible = []
-            for hit in pool:
-                e, _ = coverage(
-                    need, hit.text, hit.filename + " " + hit.heading + " " + (hit.service or "")
-                )
-                if hit.score >= 0.5 and e >= 0.5 and (not fact or fact_matches(fact, hit.text)):
-                    eligible.append(hit)
-            if not eligible:
-                return []
-            # Score each clause on its own, so one broad source cannot win every need
-            # merely because it matched another part of the original question.
-            eligible.sort(
-                key=lambda h: -(sum(components(need.query, h, 0).values()) + 0.05 * h.score)
-            )
-            if eligible[0].id not in {h.id for h in selected}:
-                selected.append(eligible[0])
-    selected.sort(key=lambda h: -h.score)
-    expanded = list(selected)
-    for hit in selected:
+    """Preserve coverage independently of global rank, including distinct source records."""
+    from app.rag.evidence import coverage_slots
+
+    pool = {h.id: h for h in hits}
+    for hit in hits:
         for sibling in store.section_neighbors(hit):
-            if sibling.id not in {h.id for h in expanded} and len(expanded) < 8:
-                expanded.append(sibling)
-    return expanded
+            pool.setdefault(sibling.id, sibling)
+    remaining = [(h, coverage_slots(query, h)) for h in pool.values()]
+    remaining = [(h, slots) for h, slots in remaining if slots]
+    selected, covered = [], set()
+    while remaining:
+        # First preserve independent slots; rank breaks ties only after coverage.
+        index = max(
+            range(len(remaining)),
+            key=lambda i: (len(remaining[i][1] - covered), remaining[i][0].score),
+        )
+        hit, slots = remaining.pop(index)
+        selected.append(hit)
+        covered.update(slots)
+    return selected
 
 
 def complete(query, sources):
