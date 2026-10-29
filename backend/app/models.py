@@ -2,6 +2,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict, Field, IPvAnyAddress, field_validator
 
+from app.services.probe import check_url
+
 
 class InputModel(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
@@ -14,6 +16,7 @@ class Message(InputModel):
 
 class SearchHit(BaseModel):
     heading: str = ""
+    lineage: str = ""
     id: str
     document_id: str
     filename: str
@@ -29,19 +32,61 @@ class SearchHit(BaseModel):
 
 class Citation(SearchHit):
     label: str
+    evidence_type: Literal["indexed_documentation", "live_observation"] = "indexed_documentation"
+    observation: dict | None = None
 
 
 class ChatRequest(InputModel):
+    debug: bool = False
+    model: str = Field(default="auto", pattern=r"^(auto|[a-z][a-z0-9_-]{0,63})$")
+    task: Literal[
+        "general", "config_explanation", "config_reasoning", "code_reasoning", "summarisation"
+    ] = "general"
     message: str = Field(min_length=1, max_length=8000)
     history: list[Message] = Field(default_factory=list, max_length=12)
     mode: Literal["knowledge", "general"] = "knowledge"
     stream: bool = False
     service: str | None = Field(default=None, max_length=100)
+    probe: bool = False  # Allow a fresh read-only probe when the question asks about live state.
+    explain: bool = False  # Add a separate, labelled model interpretation of live observations.
+
+
+class LiveEvidence(BaseModel):
+    """A traceable live observation; the live counterpart of a document Citation."""
+
+    evidence_type: Literal[
+        "http_observation", "dns_observation", "tls_observation", "windows_event"
+    ] = "http_observation"
+    windows_event: dict | None = None
+    tls: dict | None = None
+    hostname: str | None = None
+    addresses: list[str] = Field(default_factory=list)
+    record_types: list[str] = Field(default_factory=list)
+    records: list[dict[str, str]] = Field(default_factory=list)
+    canonical_name: str | None = None
+    addresses_changed: bool | None = None
+    label: str
+    observation_id: str | None = None
+    service: str
+    environment: str = ""
+    endpoint: str | None = None
+    observed_at: str | None = None
+    state: str
+    status_code: int | None = None
+    latency_ms: int | None = None
+    error: str | None = None
+    reason: str
+    probed_now: bool = False
+    health_endpoint: dict | None = None
+    recent_observations: list[dict] = Field(default_factory=list)
 
 
 class ChatResponse(BaseModel):
+    routing: dict | None = None
     answer: str
     sources: list[Citation]
+    live: list[LiveEvidence] = Field(default_factory=list)
+    interpretation: str | None = None
     grounded: bool
     quality: str = "unvalidated"
     claims: list[dict[str, str]] = Field(default_factory=list)
@@ -55,6 +100,8 @@ class IngestRequest(InputModel):
 
 
 class LogRequest(InputModel):
+    debug: bool = False
+    model: str = Field(default="auto", pattern=r"^(auto|[a-z][a-z0-9_-]{0,63})$")
     content: str = Field(min_length=1, max_length=200_000)
     service: str = Field(default="unknown", min_length=1, max_length=100)
     question: str = Field(
@@ -65,12 +112,38 @@ class LogRequest(InputModel):
     use_model: bool = False
 
 
+class EventReference(InputModel):
+    channel: Literal["System", "Application", "Security"]
+    record_id: int = Field(ge=1, le=2**63 - 1)
+    evidence_id: str = Field(pattern=r"^WE-[a-f0-9]{64}$")
+
+
 class IncidentRequest(LogRequest):
+    include_host: bool = False
+    event_selection: list[EventReference] = Field(default_factory=list, max_length=50)
     title: str = Field(default="Homelab incident", min_length=1, max_length=150)
     notes: str = Field(default="", max_length=8000)
 
 
+class MonitorConfig(InputModel):
+    """Read-only HTTP(S) monitoring target. Never carries credentials."""
+
+    url: str
+    health_url: str | None = None
+    expected_status: int = Field(default=200, ge=100, le=599)
+    timeout_seconds: float = Field(default=5.0, ge=0.1, le=30, allow_inf_nan=False)
+    slow_ms: int = Field(default=2000, ge=50, le=60_000)
+    environment: str = Field(default="", max_length=50)
+    verify_tls: Literal[True] = True
+
+    @field_validator("url", "health_url")
+    @classmethod
+    def valid_target(cls, value: str | None) -> str | None:
+        return None if value is None else check_url(value)
+
+
 class ServiceInput(InputModel):
+    local_windows_service: str | None = Field(default=None, min_length=1, max_length=256)
     name: str = Field(min_length=1, max_length=100, pattern=r"^[\w .-]+$")
     kind: Literal[
         "server", "vm", "container", "database", "proxy", "monitoring", "network", "other"
@@ -83,6 +156,7 @@ class ServiceInput(InputModel):
     operating_system: str = Field(default="", max_length=100)
     notes: str = Field(default="", max_length=4000)
     tags: list[str] = Field(default_factory=list, max_length=32)
+    monitor: MonitorConfig | None = None
 
     @field_validator("ports")
     @classmethod

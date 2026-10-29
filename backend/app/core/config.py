@@ -6,9 +6,13 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
+    host_disk_used_percent: float = Field(default=95, ge=50, le=100, allow_inf_nan=False)
+    host_disk_free_gib: float = Field(default=2, ge=0, le=1024, allow_inf_nan=False)
+    host_memory_used_percent: float = Field(default=90, ge=50, le=100, allow_inf_nan=False)
     model_config = SettingsConfigDict(env_prefix="GRIMOIRE_", extra="ignore")
 
     ai_provider: Literal["native", "ollama"] = "native"
+    model_registry_path: Path | None = None
     embedding_provider: Literal["native", "ollama"] = "native"
     native_model_path: Path | None = None
     native_embedding_model_path: Path | None = None
@@ -20,6 +24,7 @@ class Settings(BaseSettings):
     max_output_tokens: int = Field(default=2048, ge=1, le=8192)
 
     @field_validator(
+        "model_registry_path",
         "native_model_path",
         "native_embedding_model_path",
         "native_threads",
