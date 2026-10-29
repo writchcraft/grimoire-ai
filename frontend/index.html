@@ -78,6 +78,7 @@
             New conversation ↗
           </button>
         </div>
+        <p id="runtime-detail" class="runtime-detail" role="status" hidden></p>
         <div
           id="conversation"
           class="conversation"
@@ -159,7 +160,7 @@
       </section>
       <section id="view-knowledge" class="view content-view" hidden>
         <div class="section-heading">
-          <div class="eyebrow">THE CODEX</div>
+          <div class="eyebrow">LOCAL KNOWLEDGE</div>
           <h1>Your knowledge, connected.</h1>
           <p>
             Index local runbooks and configuration. Keep the source within
@@ -194,8 +195,8 @@
               </button>
             </div>
             <p class="helper">
-              A local embedding model must be configured. Files remain on this server;
-              never upload secrets.
+              Requires a local embedding model. Extracted text and vectors stay on
+              this server; original files are not retained. Never upload secrets.
             </p>
           </form>
         </div>
@@ -232,7 +233,7 @@
       </section>
       <section id="view-logs" class="view content-view" hidden>
         <div class="section-heading">
-          <div class="eyebrow">THE SCRYER</div>
+          <div class="eyebrow">LOG ANALYSIS</div>
           <h1>From noise to a working theory.</h1>
           <p>
             Inspect supplied logs. Separate observed events from possible

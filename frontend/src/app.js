@@ -63,8 +63,14 @@ async function refreshStatus() {
     $("#upload-limit").textContent =
       `${(status.upload_limit_bytes / 1048576).toFixed(1)} MiB`;
     $("#connection-label").title = display.detail;
+    $("#runtime-detail").textContent = display.detail;
+    $("#runtime-detail").hidden = ready;
   } catch {
     $("#connection-label").textContent = "Backend unavailable";
+    $("#model-tag").textContent = "Backend unavailable";
+    $("#runtime-detail").textContent =
+      "Cannot reach the backend. Check the server, then refresh connection status.";
+    $("#runtime-detail").hidden = false;
     $("#connection-dot").classList.remove("ready");
   }
 }
@@ -201,7 +207,7 @@ async function loadDocuments() {
       element(
         "div",
         "empty",
-        "Your codex is empty. Index a runbook or configuration file to begin.",
+        "No documents indexed. Add a runbook or configuration file to begin. Fictional examples are in data/examples/.",
       ),
     );
   for (const doc of docs) {
@@ -395,8 +401,13 @@ $("#log-form").addEventListener("submit", async (event) => {
         );
       if (analysis.explanation)
         report.append(
-          element("h2", "", "Local model explanation"),
+          element("h2", "", "Evidence-backed interpretation"),
           element("pre", "report", analysis.explanation),
+        );
+      if (analysis.suggested_investigation?.length)
+        report.append(
+          element("h2", "", "Suggested investigation"),
+          element("pre", "report", analysis.suggested_investigation.join("\n")),
         );
     }
     area.append(report);

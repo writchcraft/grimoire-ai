@@ -64,6 +64,6 @@ export function modelStatus(status) {
     label: ai.state === "ready"
       ? (embeddings.state === "ready" ? "Local models ready" : "Chat ready · embeddings unavailable")
       : `AI: ${ai.state.replaceAll("_", " ")}`,
-    detail: `${ai.backend} · ${ai.reason || ai.state}. Embeddings: ${embeddings.reason || embeddings.state}`,
+    detail: `${ai.backend} · ${(ai.reason || ai.state).replace(/\.+$/, "")}. Embeddings: ${embeddings.reason || embeddings.state}`,
   };
 }

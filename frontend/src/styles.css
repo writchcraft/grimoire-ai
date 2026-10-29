@@ -1072,3 +1072,10 @@ summary > span {
     font-size: 10px;
   }
 }
+
+.runtime-detail {
+  color: var(--muted);
+  font-size: 11px;
+  margin: 0 40px 8px;
+  overflow-wrap: anywhere;
+}

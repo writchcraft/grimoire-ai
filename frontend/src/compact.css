@@ -32,3 +32,29 @@
     margin-top: 3px;
   }
 }
+
+@media (min-width: 701px) and (max-height: 780px) {
+  .hero-sigil {
+    display: none;
+  }
+  .chat-toolbar {
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .welcome h1 {
+    font-size: 26px;
+    margin: 8px 0;
+  }
+  .welcome > p {
+    margin: 8px 0 16px;
+  }
+  .prompt-grid button {
+    padding: 10px 14px;
+  }
+  .prompt-icon {
+    font-size: 16px;
+  }
+  .conversation {
+    padding-bottom: 8px;
+  }
+}
