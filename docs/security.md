@@ -4,7 +4,7 @@
 
 One trusted operator on loopback. There is no authentication, encryption at rest or user isolation. Anyone who reaches the API can search, upload and delete knowledge/inventory. Use authenticated TLS ingress before widening access. Keep backend/model ports private.
 
-Default Compose publishes only `127.0.0.1:8080`. Trusted Host validation reduces DNS-rebinding exposure. Writes with an Origin header must match the Host; missing Origin is allowed for CLI clients. These checks are not authentication. CORS is disabled. Self-only CSP, anti-framing and referrer headers constrain the browser.
+Default Compose publishes only `127.0.0.1:7864`. Trusted Host validation reduces DNS-rebinding exposure. Writes with an Origin header must match the Host; missing Origin is allowed for CLI clients. These checks are not authentication. CORS is disabled. Self-only CSP, anti-framing and referrer headers constrain the browser.
 
 ## Data flow
 
