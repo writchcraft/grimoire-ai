@@ -1,0 +1,15 @@
+{
+  "name": "Grimoire",
+  "kind": "other",
+  "tags": ["local", "example"],
+  "notes": "Safe loopback example. Adjust the port to match your local Grimoire server.",
+  "monitor": {
+    "url": "http://127.0.0.1:7864/health",
+    "health_url": "http://127.0.0.1:7864/ready",
+    "expected_status": 200,
+    "timeout_seconds": 5,
+    "slow_ms": 2000,
+    "environment": "lab",
+    "verify_tls": true
+  }
+}

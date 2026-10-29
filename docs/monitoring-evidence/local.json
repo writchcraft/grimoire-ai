@@ -1,0 +1,341 @@
+{
+  "accepted_at": "2026-10-29T19:13:59.111451+00:00",
+  "result": "PASS",
+  "scope": "Real loopback TCP to a disposable Grimoire process; no fake providers. Models intentionally unconfigured; /ready correctly returns 503. No external endpoints requested; external networking not OS-blocked.",
+  "healthy_observation": {
+    "id": "5ddb6056-3af5-48c9-94d5-44a93c38437c",
+    "service_id": "74dee221-973a-48c7-908c-f497d16aa086",
+    "service": "Grimoire local acceptance",
+    "environment": "",
+    "checked_at": "2026-10-29T19:13:50.299574+00:00",
+    "state": "healthy",
+    "reason": "HTTP 200 as expected in 406 ms.",
+    "expected_status": 200,
+    "endpoint": {
+      "reachable": true,
+      "url": "http://127.0.0.1:54008/health",
+      "final_url": "http://127.0.0.1:54008/health",
+      "status_code": 200,
+      "latency_ms": 406,
+      "redirects": 0,
+      "error": null,
+      "error_kind": null,
+      "content_type": "application/json",
+      "content_length": 33,
+      "server": "uvicorn",
+      "body_bytes_read": 33,
+      "body_truncated": false
+    },
+    "health_endpoint": null
+  },
+  "degraded_readiness": {
+    "id": "b21904bf-33f0-4663-b9c9-15029df50a3f",
+    "service_id": "031c9f71-a66d-45a6-b97d-49444b0ac09d",
+    "service": "Grimoire dependency readiness",
+    "environment": "",
+    "checked_at": "2026-10-29T19:13:51.011966+00:00",
+    "state": "degraded",
+    "reason": "Main endpoint answered, but the health endpoint returned HTTP 503.",
+    "expected_status": 200,
+    "endpoint": {
+      "reachable": true,
+      "url": "http://127.0.0.1:54008/health",
+      "final_url": "http://127.0.0.1:54008/health",
+      "status_code": 200,
+      "latency_ms": 688,
+      "redirects": 0,
+      "error": null,
+      "error_kind": null,
+      "content_type": "application/json",
+      "content_length": 33,
+      "server": "uvicorn",
+      "body_bytes_read": 33,
+      "body_truncated": false
+    },
+    "health_endpoint": {
+      "reachable": true,
+      "url": "http://127.0.0.1:54008/ready",
+      "final_url": "http://127.0.0.1:54008/ready",
+      "status_code": 503,
+      "latency_ms": 344,
+      "redirects": 0,
+      "error": null,
+      "error_kind": null,
+      "content_type": "application/json",
+      "content_length": 414,
+      "server": "uvicorn",
+      "body_bytes_read": 414,
+      "body_truncated": false
+    }
+  },
+  "chat": {
+    "answer": "LIVE OBSERVATION\n1 service: 1 healthy.\n[L1] Grimoire local acceptance: HEALTHY. HTTP 200, 406 ms at http://127.0.0.1:54008/health; observed 2026-10-29T19:13:50.299574+00:00 (0 s ago, stored observation). HTTP 200 as expected in 406 ms.\nEach line is a point-in-time observation. It does not establish uptime or past availability.\nINDEXED DOCUMENTATION: not consulted for this live-state answer.",
+    "sources": [],
+    "live": [
+      {
+        "label": "L1",
+        "observation_id": "5ddb6056-3af5-48c9-94d5-44a93c38437c",
+        "service": "Grimoire local acceptance",
+        "environment": "",
+        "endpoint": "http://127.0.0.1:54008/health",
+        "observed_at": "2026-10-29T19:13:50.299574+00:00",
+        "state": "healthy",
+        "status_code": 200,
+        "latency_ms": 406,
+        "reason": "HTTP 200 as expected in 406 ms.",
+        "probed_now": false,
+        "recent_observations": []
+      }
+    ],
+    "grounded": true,
+    "quality": "live_observation",
+    "claims": []
+  },
+  "cli": [
+    {
+      "command": [
+        "services",
+        "list",
+        "--json"
+      ],
+      "result": {
+        "services": [
+          {
+            "id": "031c9f71-a66d-45a6-b97d-49444b0ac09d",
+            "name": "Grimoire dependency readiness",
+            "kind": "other",
+            "hostname": "",
+            "ip_address": null,
+            "ports": [],
+            "urls": [],
+            "dependencies": [],
+            "operating_system": "",
+            "notes": "",
+            "tags": [],
+            "monitor": {
+              "url": "http://127.0.0.1:54008/health",
+              "health_url": "http://127.0.0.1:54008/ready",
+              "expected_status": 200,
+              "timeout_seconds": 5.0,
+              "slow_ms": 2000,
+              "environment": "",
+              "verify_tls": true
+            }
+          },
+          {
+            "id": "74dee221-973a-48c7-908c-f497d16aa086",
+            "name": "Grimoire local acceptance",
+            "kind": "other",
+            "hostname": "",
+            "ip_address": null,
+            "ports": [],
+            "urls": [],
+            "dependencies": [],
+            "operating_system": "",
+            "notes": "",
+            "tags": [
+              "local",
+              "acceptance"
+            ],
+            "monitor": {
+              "url": "http://127.0.0.1:54008/health",
+              "health_url": null,
+              "expected_status": 200,
+              "timeout_seconds": 5.0,
+              "slow_ms": 2000,
+              "environment": "",
+              "verify_tls": true
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": [
+        "services",
+        "probe",
+        "Grimoire local acceptance",
+        "--json"
+      ],
+      "result": {
+        "service_results": [
+          {
+            "id": "60d239f3-de44-4ad1-bac2-3a92fdc0d570",
+            "service_id": "74dee221-973a-48c7-908c-f497d16aa086",
+            "service": "Grimoire local acceptance",
+            "environment": "",
+            "checked_at": "2026-10-29T19:13:55.332372+00:00",
+            "state": "healthy",
+            "reason": "HTTP 200 as expected in 438 ms.",
+            "expected_status": 200,
+            "endpoint": {
+              "reachable": true,
+              "url": "http://127.0.0.1:54008/health",
+              "final_url": "http://127.0.0.1:54008/health",
+              "status_code": 200,
+              "latency_ms": 438,
+              "redirects": 0,
+              "error": null,
+              "error_kind": null,
+              "content_type": "application/json",
+              "content_length": 33,
+              "server": "uvicorn",
+              "body_bytes_read": 33,
+              "body_truncated": false
+            },
+            "health_endpoint": null
+          }
+        ]
+      }
+    },
+    {
+      "command": [
+        "services",
+        "status",
+        "--json"
+      ],
+      "result": {
+        "service_results": [
+          {
+            "name": "Grimoire dependency readiness",
+            "state": "degraded",
+            "latest": {
+              "id": "b21904bf-33f0-4663-b9c9-15029df50a3f",
+              "service_id": "031c9f71-a66d-45a6-b97d-49444b0ac09d",
+              "service": "Grimoire dependency readiness",
+              "environment": "",
+              "checked_at": "2026-10-29T19:13:51.011966+00:00",
+              "state": "degraded",
+              "reason": "Main endpoint answered, but the health endpoint returned HTTP 503.",
+              "expected_status": 200,
+              "endpoint": {
+                "reachable": true,
+                "url": "http://127.0.0.1:54008/health",
+                "final_url": "http://127.0.0.1:54008/health",
+                "status_code": 200,
+                "latency_ms": 688,
+                "redirects": 0,
+                "error": null,
+                "error_kind": null,
+                "content_type": "application/json",
+                "content_length": 33,
+                "server": "uvicorn",
+                "body_bytes_read": 33,
+                "body_truncated": false
+              },
+              "health_endpoint": {
+                "reachable": true,
+                "url": "http://127.0.0.1:54008/ready",
+                "final_url": "http://127.0.0.1:54008/ready",
+                "status_code": 503,
+                "latency_ms": 344,
+                "redirects": 0,
+                "error": null,
+                "error_kind": null,
+                "content_type": "application/json",
+                "content_length": 414,
+                "server": "uvicorn",
+                "body_bytes_read": 414,
+                "body_truncated": false
+              }
+            }
+          },
+          {
+            "name": "Grimoire local acceptance",
+            "state": "healthy",
+            "latest": {
+              "id": "60d239f3-de44-4ad1-bac2-3a92fdc0d570",
+              "service_id": "74dee221-973a-48c7-908c-f497d16aa086",
+              "service": "Grimoire local acceptance",
+              "environment": "",
+              "checked_at": "2026-10-29T19:13:55.332372+00:00",
+              "state": "healthy",
+              "reason": "HTTP 200 as expected in 438 ms.",
+              "expected_status": 200,
+              "endpoint": {
+                "reachable": true,
+                "url": "http://127.0.0.1:54008/health",
+                "final_url": "http://127.0.0.1:54008/health",
+                "status_code": 200,
+                "latency_ms": 438,
+                "redirects": 0,
+                "error": null,
+                "error_kind": null,
+                "content_type": "application/json",
+                "content_length": 33,
+                "server": "uvicorn",
+                "body_bytes_read": 33,
+                "body_truncated": false
+              },
+              "health_endpoint": null
+            }
+          }
+        ]
+      }
+    },
+    {
+      "command": [
+        "chat",
+        "Summarise current service health.",
+        "--json"
+      ],
+      "result": {
+        "answer": "LIVE OBSERVATION\n2 services: 1 degraded, 1 healthy.\n[L1] Grimoire dependency readiness: DEGRADED. HTTP 200, 688 ms at http://127.0.0.1:54008/health; observed 2026-10-29T19:13:51.011966+00:00 (7 s ago, stored observation). Main endpoint answered, but the health endpoint returned HTTP 503.\n[L2] Grimoire local acceptance: HEALTHY. HTTP 200, 438 ms at http://127.0.0.1:54008/health; observed 2026-10-29T19:13:55.332372+00:00 (3 s ago, stored observation). HTTP 200 as expected in 438 ms.\nEach line is a point-in-time observation. It does not establish uptime or past availability.\nINDEXED DOCUMENTATION: not consulted for this live-state answer.",
+        "sources": [],
+        "live": [
+          {
+            "label": "L1",
+            "observation_id": "b21904bf-33f0-4663-b9c9-15029df50a3f",
+            "service": "Grimoire dependency readiness",
+            "environment": "",
+            "endpoint": "http://127.0.0.1:54008/health",
+            "observed_at": "2026-10-29T19:13:51.011966+00:00",
+            "state": "degraded",
+            "status_code": 200,
+            "latency_ms": 688,
+            "error": null,
+            "reason": "Main endpoint answered, but the health endpoint returned HTTP 503.",
+            "probed_now": false,
+            "health_endpoint": {
+              "reachable": true,
+              "url": "http://127.0.0.1:54008/ready",
+              "final_url": "http://127.0.0.1:54008/ready",
+              "status_code": 503,
+              "latency_ms": 344,
+              "redirects": 0,
+              "error": null,
+              "error_kind": null,
+              "content_type": "application/json",
+              "content_length": 414,
+              "server": "uvicorn",
+              "body_bytes_read": 414,
+              "body_truncated": false
+            },
+            "recent_observations": []
+          },
+          {
+            "label": "L2",
+            "observation_id": "60d239f3-de44-4ad1-bac2-3a92fdc0d570",
+            "service": "Grimoire local acceptance",
+            "environment": "",
+            "endpoint": "http://127.0.0.1:54008/health",
+            "observed_at": "2026-10-29T19:13:55.332372+00:00",
+            "state": "healthy",
+            "status_code": 200,
+            "latency_ms": 438,
+            "error": null,
+            "reason": "HTTP 200 as expected in 438 ms.",
+            "probed_now": false,
+            "health_endpoint": null,
+            "recent_observations": []
+          }
+        ],
+        "interpretation": null,
+        "grounded": true,
+        "quality": "live_observation",
+        "claims": []
+      }
+    }
+  ],
+  "server_stopped": true
+}
