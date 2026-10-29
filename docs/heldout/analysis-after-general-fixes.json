@@ -1,0 +1,1157 @@
+{
+  "FIRST RUN": {
+    "summary": {
+      "retrieval": {
+        "hit@1": {
+          "found": 18,
+          "total": 22
+        },
+        "hit@3": {
+          "found": 21,
+          "total": 22
+        },
+        "hit@5": {
+          "found": 22,
+          "total": 22
+        }
+      },
+      "grounded_qa": {
+        "PASS": 14,
+        "FAIL": 8
+      },
+      "oracle_qa": {
+        "PASS": 12,
+        "FAIL": 10
+      },
+      "unsupported": {
+        "PASS": 4,
+        "FAIL": 1
+      },
+      "oracle_unsupported": {
+        "PASS": 4,
+        "FAIL": 1
+      },
+      "citations": {
+        "traceable_claims": 59,
+        "validated_claims": 59,
+        "answers_with_claims": 20,
+        "rejected_outputs": 0
+      },
+      "logs": {
+        "PASS": 7
+      },
+      "log_extraction": {
+        "PASS": 7
+      },
+      "incidents": {
+        "PASS": 7
+      }
+    },
+    "complete_evidence_packets": 17,
+    "supported_total": 22,
+    "adversarial": {
+      "generation": {
+        "injected-port": "PASS",
+        "quoted-wrong-port": "FAIL"
+      },
+      "oracle_generation": {
+        "injected-port": "PASS",
+        "quoted-wrong-port": "FAIL"
+      }
+    },
+    "oracle_citations": {
+      "traceable": 49,
+      "total": 49
+    },
+    "latency": {
+      "supported_answer_seconds": {
+        "median": 2.04,
+        "max": 5.262,
+        "p95_nearest_rank": 4.653
+      },
+      "supported_end_to_end_seconds": {
+        "median": 2.0694875499994305,
+        "max": 5.2914751999999785,
+        "p95_nearest_rank": 4.680900199998839
+      },
+      "prepare_seconds": {
+        "median": 0.030073800000081974,
+        "max": 0.08390909999980067,
+        "p95_nearest_rank": 0.056409200000416604
+      },
+      "oracle_seconds": {
+        "median": 0.8574999999999999,
+        "max": 3.675,
+        "p95_nearest_rank": 3.435
+      }
+    }
+  },
+  "AFTER GENERAL FIXES": {
+    "summary": {
+      "retrieval": {
+        "hit@1": {
+          "found": 18,
+          "total": 22
+        },
+        "hit@3": {
+          "found": 21,
+          "total": 22
+        },
+        "hit@5": {
+          "found": 22,
+          "total": 22
+        }
+      },
+      "grounded_qa": {
+        "PASS": 22
+      },
+      "oracle_qa": {
+        "PASS": 22
+      },
+      "unsupported": {
+        "PASS": 5
+      },
+      "oracle_unsupported": {
+        "PASS": 5
+      },
+      "citations": {
+        "traceable_claims": 25,
+        "validated_claims": 25,
+        "answers_with_claims": 22,
+        "rejected_outputs": 0
+      },
+      "logs": {
+        "PASS": 7
+      },
+      "log_extraction": {
+        "PASS": 7
+      },
+      "incidents": {
+        "PASS": 7
+      }
+    },
+    "complete_evidence_packets": 22,
+    "supported_total": 22,
+    "adversarial": {
+      "generation": {
+        "injected-port": "PASS",
+        "quoted-wrong-port": "PASS"
+      },
+      "oracle_generation": {
+        "injected-port": "PASS",
+        "quoted-wrong-port": "PASS"
+      }
+    },
+    "oracle_citations": {
+      "traceable": 24,
+      "total": 24
+    },
+    "latency": {
+      "supported_answer_seconds": {
+        "median": 1.2570000000000001,
+        "max": 4.586,
+        "p95_nearest_rank": 3.08
+      },
+      "supported_end_to_end_seconds": {
+        "median": 1.2988301499994415,
+        "max": 4.6357236000010165,
+        "p95_nearest_rank": 3.137262799997261
+      },
+      "prepare_seconds": {
+        "median": 0.04180694999922707,
+        "max": 0.05726279999726103,
+        "p95_nearest_rank": 0.05468829999881564
+      },
+      "oracle_seconds": {
+        "median": 0.724,
+        "max": 2.172,
+        "p95_nearest_rank": 1.775
+      }
+    }
+  },
+  "DEVELOPMENT BEFORE": {
+    "summary": {
+      "retrieval": {
+        "hit@1": {
+          "found": 8,
+          "total": 10
+        },
+        "hit@3": {
+          "found": 10,
+          "total": 10
+        },
+        "hit@5": {
+          "found": 10,
+          "total": 10
+        }
+      },
+      "grounded_qa": {
+        "PASS": 10
+      },
+      "oracle_qa": {
+        "PASS": 10
+      },
+      "unsupported": {
+        "PASS": 4
+      },
+      "oracle_unsupported": {
+        "PASS": 4
+      },
+      "citations": {
+        "traceable_claims": 17,
+        "validated_claims": 17,
+        "answers_with_claims": 10,
+        "rejected_outputs": 0
+      },
+      "logs": {
+        "PASS": 6
+      },
+      "log_extraction": {
+        "PASS": 6
+      },
+      "incidents": {
+        "PASS": 6
+      }
+    },
+    "complete_evidence_packets": 10,
+    "supported_total": 10,
+    "adversarial": {
+      "generation": {},
+      "oracle_generation": {}
+    },
+    "oracle_citations": {
+      "traceable": 17,
+      "total": 17
+    },
+    "latency": {
+      "supported_answer_seconds": {
+        "median": 2.363,
+        "max": 4.101,
+        "p95_nearest_rank": 4.101
+      },
+      "supported_end_to_end_seconds": {
+        "median": 2.3924062499988286,
+        "max": 4.129399900000295,
+        "p95_nearest_rank": 4.129399900000295
+      },
+      "prepare_seconds": {
+        "median": 0.027218149999498564,
+        "max": 0.0447600000006787,
+        "p95_nearest_rank": 0.0447600000006787
+      },
+      "oracle_seconds": {
+        "median": 0.7595000000000001,
+        "max": 1.567,
+        "p95_nearest_rank": 1.567
+      }
+    }
+  },
+  "DEVELOPMENT AFTER GENERAL FIXES": {
+    "summary": {
+      "retrieval": {
+        "hit@1": {
+          "found": 8,
+          "total": 10
+        },
+        "hit@3": {
+          "found": 10,
+          "total": 10
+        },
+        "hit@5": {
+          "found": 10,
+          "total": 10
+        }
+      },
+      "grounded_qa": {
+        "PASS": 10
+      },
+      "oracle_qa": {
+        "PASS": 10
+      },
+      "unsupported": {
+        "PASS": 4
+      },
+      "oracle_unsupported": {
+        "PASS": 4
+      },
+      "citations": {
+        "traceable_claims": 18,
+        "validated_claims": 18,
+        "answers_with_claims": 10,
+        "rejected_outputs": 0
+      },
+      "logs": {
+        "PASS": 6
+      },
+      "log_extraction": {
+        "PASS": 6
+      },
+      "incidents": {
+        "PASS": 6
+      }
+    },
+    "complete_evidence_packets": 10,
+    "supported_total": 10,
+    "adversarial": {
+      "generation": {},
+      "oracle_generation": {}
+    },
+    "oracle_citations": {
+      "traceable": 15,
+      "total": 15
+    },
+    "latency": {
+      "supported_answer_seconds": {
+        "median": 2.24,
+        "max": 2.985,
+        "p95_nearest_rank": 2.985
+      },
+      "supported_end_to_end_seconds": {
+        "median": 2.276164849998386,
+        "max": 3.0267062999986227,
+        "p95_nearest_rank": 3.0267062999986227
+      },
+      "prepare_seconds": {
+        "median": 0.03410584999983257,
+        "max": 0.04170629999862285,
+        "p95_nearest_rank": 0.04170629999862285
+      },
+      "oracle_seconds": {
+        "median": 0.6659999999999999,
+        "max": 2.024,
+        "p95_nearest_rank": 2.024
+      }
+    }
+  },
+  "remaining_failed_cases": [],
+  "protected_baseline_verified": true,
+  "runtime_freeze_verified": true,
+  "INTERMEDIATE RUNS": {
+    "after-general-fixes-all.json": {
+      "development": {
+        "summary": {
+          "retrieval": {
+            "hit@1": {
+              "found": 8,
+              "total": 10
+            },
+            "hit@3": {
+              "found": 10,
+              "total": 10
+            },
+            "hit@5": {
+              "found": 10,
+              "total": 10
+            }
+          },
+          "grounded_qa": {
+            "PASS": 9,
+            "FAIL": 1
+          },
+          "oracle_qa": {
+            "PASS": 8,
+            "FAIL": 2
+          },
+          "unsupported": {
+            "PASS": 4
+          },
+          "oracle_unsupported": {
+            "PASS": 4
+          },
+          "citations": {
+            "traceable_claims": 24,
+            "validated_claims": 24,
+            "answers_with_claims": 10,
+            "rejected_outputs": 0
+          },
+          "logs": {
+            "PASS": 6
+          },
+          "log_extraction": {
+            "PASS": 6
+          },
+          "incidents": {
+            "PASS": 6
+          }
+        },
+        "complete_evidence_packets": 10,
+        "supported_total": 10,
+        "adversarial": {
+          "generation": {},
+          "oracle_generation": {}
+        },
+        "oracle_citations": {
+          "traceable": 15,
+          "total": 15
+        },
+        "latency": {
+          "supported_answer_seconds": {
+            "median": 2.586,
+            "max": 8.407,
+            "p95_nearest_rank": 8.407
+          },
+          "supported_end_to_end_seconds": {
+            "median": 2.6312491500000177,
+            "max": 8.445624500000878,
+            "p95_nearest_rank": 8.445624500000878
+          },
+          "prepare_seconds": {
+            "median": 0.038340099999913946,
+            "max": 0.04735179999988759,
+            "p95_nearest_rank": 0.04735179999988759
+          },
+          "oracle_seconds": {
+            "median": 1.28,
+            "max": 3.228,
+            "p95_nearest_rank": 3.228
+          }
+        }
+      },
+      "heldout": {
+        "summary": {
+          "retrieval": {
+            "hit@1": {
+              "found": 18,
+              "total": 22
+            },
+            "hit@3": {
+              "found": 21,
+              "total": 22
+            },
+            "hit@5": {
+              "found": 22,
+              "total": 22
+            }
+          },
+          "grounded_qa": {
+            "PASS": 17,
+            "FAIL": 5
+          },
+          "oracle_qa": {
+            "PASS": 15,
+            "FAIL": 7
+          },
+          "unsupported": {
+            "PASS": 4,
+            "FAIL": 1
+          },
+          "oracle_unsupported": {
+            "PASS": 4,
+            "FAIL": 1
+          },
+          "citations": {
+            "traceable_claims": 25,
+            "validated_claims": 25,
+            "answers_with_claims": 20,
+            "rejected_outputs": 0
+          },
+          "logs": {
+            "PASS": 7
+          },
+          "log_extraction": {
+            "PASS": 7
+          },
+          "incidents": {
+            "PASS": 7
+          }
+        },
+        "complete_evidence_packets": 18,
+        "supported_total": 22,
+        "adversarial": {
+          "generation": {
+            "injected-port": "PASS",
+            "quoted-wrong-port": "FAIL"
+          },
+          "oracle_generation": {
+            "injected-port": "PASS",
+            "quoted-wrong-port": "FAIL"
+          }
+        },
+        "oracle_citations": {
+          "traceable": 22,
+          "total": 22
+        },
+        "latency": {
+          "supported_answer_seconds": {
+            "median": 1.5255,
+            "max": 3.0,
+            "p95_nearest_rank": 2.869
+          },
+          "supported_end_to_end_seconds": {
+            "median": 1.5672526499995802,
+            "max": 3.0448605000001407,
+            "p95_nearest_rank": 2.9278180999984618
+          },
+          "prepare_seconds": {
+            "median": 0.043216649999521906,
+            "max": 0.06852140000046347,
+            "p95_nearest_rank": 0.05881809999846155
+          },
+          "oracle_seconds": {
+            "median": 0.7985,
+            "max": 2.14,
+            "p95_nearest_rank": 1.773
+          }
+        }
+      }
+    },
+    "final-general-fixes-all.json": {
+      "development": {
+        "summary": {
+          "retrieval": {
+            "hit@1": {
+              "found": 8,
+              "total": 10
+            },
+            "hit@3": {
+              "found": 10,
+              "total": 10
+            },
+            "hit@5": {
+              "found": 10,
+              "total": 10
+            }
+          },
+          "grounded_qa": {
+            "PASS": 9,
+            "FAIL": 1
+          },
+          "oracle_qa": {
+            "PASS": 8,
+            "FAIL": 2
+          },
+          "unsupported": {
+            "PASS": 4
+          },
+          "oracle_unsupported": {
+            "PASS": 4
+          },
+          "citations": {
+            "traceable_claims": 24,
+            "validated_claims": 24,
+            "answers_with_claims": 10,
+            "rejected_outputs": 0
+          },
+          "logs": {
+            "PASS": 6
+          },
+          "log_extraction": {
+            "PASS": 6
+          },
+          "incidents": {
+            "PASS": 6
+          }
+        },
+        "complete_evidence_packets": 10,
+        "supported_total": 10,
+        "adversarial": {
+          "generation": {},
+          "oracle_generation": {}
+        },
+        "oracle_citations": {
+          "traceable": 15,
+          "total": 15
+        },
+        "latency": {
+          "supported_answer_seconds": {
+            "median": 2.2275,
+            "max": 9.307,
+            "p95_nearest_rank": 9.307
+          },
+          "supported_end_to_end_seconds": {
+            "median": 2.259375349999609,
+            "max": 9.346972799999305,
+            "p95_nearest_rank": 9.346972799999305
+          },
+          "prepare_seconds": {
+            "median": 0.03426789999957691,
+            "max": 0.04128440000022238,
+            "p95_nearest_rank": 0.04128440000022238
+          },
+          "oracle_seconds": {
+            "median": 1.0005,
+            "max": 3.39,
+            "p95_nearest_rank": 3.39
+          }
+        }
+      },
+      "heldout": {
+        "summary": {
+          "retrieval": {
+            "hit@1": {
+              "found": 18,
+              "total": 22
+            },
+            "hit@3": {
+              "found": 21,
+              "total": 22
+            },
+            "hit@5": {
+              "found": 22,
+              "total": 22
+            }
+          },
+          "grounded_qa": {
+            "PASS": 17,
+            "FAIL": 5
+          },
+          "oracle_qa": {
+            "PASS": 15,
+            "FAIL": 7
+          },
+          "unsupported": {
+            "PASS": 4,
+            "FAIL": 1
+          },
+          "oracle_unsupported": {
+            "PASS": 4,
+            "FAIL": 1
+          },
+          "citations": {
+            "traceable_claims": 25,
+            "validated_claims": 25,
+            "answers_with_claims": 20,
+            "rejected_outputs": 0
+          },
+          "logs": {
+            "PASS": 7
+          },
+          "log_extraction": {
+            "PASS": 7
+          },
+          "incidents": {
+            "PASS": 7
+          }
+        },
+        "complete_evidence_packets": 18,
+        "supported_total": 22,
+        "adversarial": {
+          "generation": {
+            "injected-port": "PASS",
+            "quoted-wrong-port": "FAIL"
+          },
+          "oracle_generation": {
+            "injected-port": "PASS",
+            "quoted-wrong-port": "FAIL"
+          }
+        },
+        "oracle_citations": {
+          "traceable": 22,
+          "total": 22
+        },
+        "latency": {
+          "supported_answer_seconds": {
+            "median": 1.2934999999999999,
+            "max": 2.585,
+            "p95_nearest_rank": 2.304
+          },
+          "supported_end_to_end_seconds": {
+            "median": 1.3341538999995972,
+            "max": 2.643154400001513,
+            "p95_nearest_rank": 2.3490392000002465
+          },
+          "prepare_seconds": {
+            "median": 0.04187865000039892,
+            "max": 0.05815440000151284,
+            "p95_nearest_rank": 0.053554199999780394
+          },
+          "oracle_seconds": {
+            "median": 0.7104999999999999,
+            "max": 1.87,
+            "p95_nearest_rank": 1.595
+          }
+        }
+      }
+    },
+    "qualified-pipeline-v2-all.json": {
+      "development": {
+        "summary": {
+          "retrieval": {
+            "hit@1": {
+              "found": 8,
+              "total": 10
+            },
+            "hit@3": {
+              "found": 10,
+              "total": 10
+            },
+            "hit@5": {
+              "found": 10,
+              "total": 10
+            }
+          },
+          "grounded_qa": {
+            "PASS": 9,
+            "FAIL": 1
+          },
+          "oracle_qa": {
+            "PASS": 10
+          },
+          "unsupported": {
+            "PASS": 4
+          },
+          "oracle_unsupported": {
+            "PASS": 4
+          },
+          "citations": {
+            "traceable_claims": 19,
+            "validated_claims": 19,
+            "answers_with_claims": 10,
+            "rejected_outputs": 0
+          },
+          "logs": {
+            "PASS": 6
+          },
+          "log_extraction": {
+            "PASS": 6
+          },
+          "incidents": {
+            "PASS": 6
+          }
+        },
+        "complete_evidence_packets": 10,
+        "supported_total": 10,
+        "adversarial": {
+          "generation": {},
+          "oracle_generation": {}
+        },
+        "oracle_citations": {
+          "traceable": 15,
+          "total": 15
+        },
+        "latency": {
+          "supported_answer_seconds": {
+            "median": 2.678,
+            "max": 8.775,
+            "p95_nearest_rank": 8.775
+          },
+          "supported_end_to_end_seconds": {
+            "median": 2.72164865000025,
+            "max": 8.814973900000405,
+            "p95_nearest_rank": 8.814973900000405
+          },
+          "prepare_seconds": {
+            "median": 0.037430500000482425,
+            "max": 0.06673899999987043,
+            "p95_nearest_rank": 0.06673899999987043
+          },
+          "oracle_seconds": {
+            "median": 0.8125,
+            "max": 2.554,
+            "p95_nearest_rank": 2.554
+          }
+        }
+      },
+      "heldout": {
+        "summary": {
+          "retrieval": {
+            "hit@1": {
+              "found": 18,
+              "total": 22
+            },
+            "hit@3": {
+              "found": 21,
+              "total": 22
+            },
+            "hit@5": {
+              "found": 22,
+              "total": 22
+            }
+          },
+          "grounded_qa": {
+            "PASS": 21,
+            "FAIL": 1
+          },
+          "oracle_qa": {
+            "PASS": 22
+          },
+          "unsupported": {
+            "PASS": 5
+          },
+          "oracle_unsupported": {
+            "PASS": 5
+          },
+          "citations": {
+            "traceable_claims": 26,
+            "validated_claims": 26,
+            "answers_with_claims": 22,
+            "rejected_outputs": 0
+          },
+          "logs": {
+            "PASS": 7
+          },
+          "log_extraction": {
+            "PASS": 7
+          },
+          "incidents": {
+            "PASS": 7
+          }
+        },
+        "complete_evidence_packets": 22,
+        "supported_total": 22,
+        "adversarial": {
+          "generation": {
+            "injected-port": "PASS",
+            "quoted-wrong-port": "PASS"
+          },
+          "oracle_generation": {
+            "injected-port": "PASS",
+            "quoted-wrong-port": "PASS"
+          }
+        },
+        "oracle_citations": {
+          "traceable": 26,
+          "total": 26
+        },
+        "latency": {
+          "supported_answer_seconds": {
+            "median": 1.354,
+            "max": 4.72,
+            "p95_nearest_rank": 3.212
+          },
+          "supported_end_to_end_seconds": {
+            "median": 1.3956666999990412,
+            "max": 4.775581300000995,
+            "p95_nearest_rank": 3.267588599998373
+          },
+          "prepare_seconds": {
+            "median": 0.04261119999955554,
+            "max": 0.07268040000053588,
+            "p95_nearest_rank": 0.055777500001568114
+          },
+          "oracle_seconds": {
+            "median": 0.786,
+            "max": 2.512,
+            "p95_nearest_rank": 2.482
+          }
+        }
+      }
+    },
+    "final-evidence-all.json": {
+      "development": {
+        "summary": {
+          "retrieval": {
+            "hit@1": {
+              "found": 8,
+              "total": 10
+            },
+            "hit@3": {
+              "found": 10,
+              "total": 10
+            },
+            "hit@5": {
+              "found": 10,
+              "total": 10
+            }
+          },
+          "grounded_qa": {
+            "PASS": 10
+          },
+          "oracle_qa": {
+            "PASS": 10
+          },
+          "unsupported": {
+            "PASS": 4
+          },
+          "oracle_unsupported": {
+            "PASS": 4
+          },
+          "citations": {
+            "traceable_claims": 21,
+            "validated_claims": 21,
+            "answers_with_claims": 10,
+            "rejected_outputs": 0
+          },
+          "logs": {
+            "PASS": 6
+          },
+          "log_extraction": {
+            "PASS": 6
+          },
+          "incidents": {
+            "PASS": 6
+          }
+        },
+        "complete_evidence_packets": 10,
+        "supported_total": 10,
+        "adversarial": {
+          "generation": {},
+          "oracle_generation": {}
+        },
+        "oracle_citations": {
+          "traceable": 15,
+          "total": 15
+        },
+        "latency": {
+          "supported_answer_seconds": {
+            "median": 2.2115,
+            "max": 7.068,
+            "p95_nearest_rank": 7.068
+          },
+          "supported_end_to_end_seconds": {
+            "median": 2.2467346000008765,
+            "max": 7.106342100000591,
+            "p95_nearest_rank": 7.106342100000591
+          },
+          "prepare_seconds": {
+            "median": 0.0322176000008767,
+            "max": 0.03834210000059102,
+            "p95_nearest_rank": 0.03834210000059102
+          },
+          "oracle_seconds": {
+            "median": 0.657,
+            "max": 2.037,
+            "p95_nearest_rank": 2.037
+          }
+        }
+      },
+      "heldout": {
+        "summary": {
+          "retrieval": {
+            "hit@1": {
+              "found": 18,
+              "total": 22
+            },
+            "hit@3": {
+              "found": 21,
+              "total": 22
+            },
+            "hit@5": {
+              "found": 22,
+              "total": 22
+            }
+          },
+          "grounded_qa": {
+            "PASS": 22
+          },
+          "oracle_qa": {
+            "PASS": 22
+          },
+          "unsupported": {
+            "PASS": 5
+          },
+          "oracle_unsupported": {
+            "PASS": 5
+          },
+          "citations": {
+            "traceable_claims": 26,
+            "validated_claims": 26,
+            "answers_with_claims": 22,
+            "rejected_outputs": 0
+          },
+          "logs": {
+            "PASS": 7
+          },
+          "log_extraction": {
+            "PASS": 7
+          },
+          "incidents": {
+            "PASS": 7
+          }
+        },
+        "complete_evidence_packets": 22,
+        "supported_total": 22,
+        "adversarial": {
+          "generation": {
+            "injected-port": "PASS",
+            "quoted-wrong-port": "PASS"
+          },
+          "oracle_generation": {
+            "injected-port": "PASS",
+            "quoted-wrong-port": "PASS"
+          }
+        },
+        "oracle_citations": {
+          "traceable": 25,
+          "total": 25
+        },
+        "latency": {
+          "supported_answer_seconds": {
+            "median": 1.296,
+            "max": 4.685,
+            "p95_nearest_rank": 3.243
+          },
+          "supported_end_to_end_seconds": {
+            "median": 1.3692161999994787,
+            "max": 4.732884000001431,
+            "p95_nearest_rank": 3.3039383000009983
+          },
+          "prepare_seconds": {
+            "median": 0.040461049999066745,
+            "max": 0.1077566999992996,
+            "p95_nearest_rank": 0.060938300000998424
+          },
+          "oracle_seconds": {
+            "median": 0.7424999999999999,
+            "max": 2.241,
+            "p95_nearest_rank": 2.028
+          }
+        }
+      }
+    },
+    "semantic-final-all.json": {
+      "development": {
+        "summary": {
+          "retrieval": {
+            "hit@1": {
+              "found": 8,
+              "total": 10
+            },
+            "hit@3": {
+              "found": 10,
+              "total": 10
+            },
+            "hit@5": {
+              "found": 10,
+              "total": 10
+            }
+          },
+          "grounded_qa": {
+            "PASS": 10
+          },
+          "oracle_qa": {
+            "PASS": 10
+          },
+          "unsupported": {
+            "PASS": 4
+          },
+          "oracle_unsupported": {
+            "PASS": 4
+          },
+          "citations": {
+            "traceable_claims": 18,
+            "validated_claims": 18,
+            "answers_with_claims": 10,
+            "rejected_outputs": 0
+          },
+          "logs": {
+            "PASS": 6
+          },
+          "log_extraction": {
+            "PASS": 6
+          },
+          "incidents": {
+            "PASS": 6
+          }
+        },
+        "complete_evidence_packets": 10,
+        "supported_total": 10,
+        "adversarial": {
+          "generation": {},
+          "oracle_generation": {}
+        },
+        "oracle_citations": {
+          "traceable": 15,
+          "total": 15
+        },
+        "latency": {
+          "supported_answer_seconds": {
+            "median": 2.261,
+            "max": 3.551,
+            "p95_nearest_rank": 3.551
+          },
+          "supported_end_to_end_seconds": {
+            "median": 2.2996123500002215,
+            "max": 3.588938299999951,
+            "p95_nearest_rank": 3.588938299999951
+          },
+          "prepare_seconds": {
+            "median": 0.03498264999961975,
+            "max": 0.04023620000043593,
+            "p95_nearest_rank": 0.04023620000043593
+          },
+          "oracle_seconds": {
+            "median": 0.719,
+            "max": 2.702,
+            "p95_nearest_rank": 2.702
+          }
+        }
+      },
+      "heldout": {
+        "summary": {
+          "retrieval": {
+            "hit@1": {
+              "found": 18,
+              "total": 22
+            },
+            "hit@3": {
+              "found": 21,
+              "total": 22
+            },
+            "hit@5": {
+              "found": 22,
+              "total": 22
+            }
+          },
+          "grounded_qa": {
+            "PASS": 22
+          },
+          "oracle_qa": {
+            "PASS": 22
+          },
+          "unsupported": {
+            "PASS": 5
+          },
+          "oracle_unsupported": {
+            "PASS": 5
+          },
+          "citations": {
+            "traceable_claims": 25,
+            "validated_claims": 25,
+            "answers_with_claims": 22,
+            "rejected_outputs": 0
+          },
+          "logs": {
+            "PASS": 7
+          },
+          "log_extraction": {
+            "PASS": 7
+          },
+          "incidents": {
+            "PASS": 7
+          }
+        },
+        "complete_evidence_packets": 22,
+        "supported_total": 22,
+        "adversarial": {
+          "generation": {
+            "injected-port": "PASS",
+            "quoted-wrong-port": "PASS"
+          },
+          "oracle_generation": {
+            "injected-port": "PASS",
+            "quoted-wrong-port": "PASS"
+          }
+        },
+        "oracle_citations": {
+          "traceable": 24,
+          "total": 24
+        },
+        "latency": {
+          "supported_answer_seconds": {
+            "median": 1.9575,
+            "max": 5.151,
+            "p95_nearest_rank": 3.519
+          },
+          "supported_end_to_end_seconds": {
+            "median": 1.998752149999309,
+            "max": 5.205979900000035,
+            "p95_nearest_rank": 3.6124089999991558
+          },
+          "prepare_seconds": {
+            "median": 0.046158799998920585,
+            "max": 0.10365490000003774,
+            "p95_nearest_rank": 0.09340899999915564
+          },
+          "oracle_seconds": {
+            "median": 0.903,
+            "max": 2.609,
+            "p95_nearest_rank": 2.476
+          }
+        }
+      }
+    }
+  },
+  "iteration_policy": "All completed combined runs retained with source freezes. The first follow-up corrected quote bounds and flat qualifier lineage before held-out outcome review. Subsequent fixes address general planner, multiword key, anaphora, cross-reference and typed-value preservation defects, with model-independent tests. Manual review of the all-pass penultimate run then corrected equivalent-value conflict labels, hostname versus host-port extraction and elliptical scope inheritance. Two early inference attempts were cancelled after unit-test failures; they produced no complete result. No best-of-run selection or fixture/scorer changes.",
+  "evaluation_policy": "Identical suites, expectations, scorer, oracle helper, model and runtime settings. Previously exposed held-out suite is now regression material, not a new blind assessment."
+}

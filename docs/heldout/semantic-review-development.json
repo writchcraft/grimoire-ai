@@ -1,0 +1,4921 @@
+{
+  "suite": "development",
+  "suite_version": 1,
+  "suite_sha256": "180bda35834131c913ba185bd0f13190c47e5d8210991a6a3b664736939abbbd",
+  "scope": "Fictional demo homelab only. Exact evidence requirements, not exact answer wording. Small diagnostic benchmark, not general accuracy.",
+  "generation_model": {
+    "provider": "native",
+    "backend": "llama.cpp",
+    "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+    "state": "ready",
+    "reason": null,
+    "context_size": 4096,
+    "gpu_layers": 0
+  },
+  "embedding_model": {
+    "provider": "native",
+    "backend": "llama.cpp",
+    "model": "all-MiniLM-L6-v2-ggml-model-f16.gguf",
+    "state": "ready",
+    "reason": null,
+    "context_size": 512,
+    "gpu_layers": 0
+  },
+  "configuration": {
+    "retrieval_threshold": 0.45,
+    "context_chars": 8000,
+    "native_context_size": 4096,
+    "native_threads": 4,
+    "max_output_tokens": 384
+  },
+  "summary": {
+    "retrieval": {
+      "hit@1": {
+        "found": 8,
+        "total": 10
+      },
+      "hit@3": {
+        "found": 10,
+        "total": 10
+      },
+      "hit@5": {
+        "found": 10,
+        "total": 10
+      }
+    },
+    "grounded_qa": {
+      "PASS": 10
+    },
+    "oracle_qa": {
+      "PASS": 10
+    },
+    "unsupported": {
+      "PASS": 4
+    },
+    "oracle_unsupported": {
+      "PASS": 4
+    },
+    "citations": {
+      "traceable_claims": 18,
+      "validated_claims": 18,
+      "answers_with_claims": 10,
+      "rejected_outputs": 0
+    },
+    "logs": {
+      "PASS": 6
+    },
+    "log_extraction": {
+      "PASS": 6
+    },
+    "incidents": {
+      "PASS": 6
+    }
+  },
+  "qa": [
+    {
+      "id": "exact-port",
+      "category": "exact_lookup",
+      "query": "What is the production Grafana container TCP port?",
+      "expected_behaviour": "Identify container port, preserve container versus host scope.",
+      "retrieval": {
+        "expected_sources": [
+          "monitoring.md"
+        ],
+        "expected_evidence": [
+          {
+            "document": "monitoring.md",
+            "contains": "Grafana listens on container TCP port 3000."
+          }
+        ],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.4648507150980599,
+            "irrelevant": false
+          },
+          {
+            "rank": 2,
+            "heading": "Grafana port migration",
+            "lineage": "",
+            "id": "0cb22e4f-2468-4cad-9c3f-c3483c35f45e",
+            "document_id": "6f1c4111-7182-41c9-85a7-34c62a25ed58",
+            "filename": "migration.md",
+            "source_path": "synthetic/migration.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Grafana port migration\nBefore 2026-10-01 the production Grafana host port was 3000.\nOn 2026-10-01 the production Grafana host port changed to 3300.\nThe container port remained 3000.",
+            "score": 1.0125101265738048,
+            "irrelevant": true
+          },
+          {
+            "rank": 3,
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 0.41400000000000003,
+            "irrelevant": true
+          },
+          {
+            "rank": 4,
+            "heading": "Backup agent",
+            "lineage": "",
+            "id": "e3f7a874-c51a-4773-ac0d-7e5ef03d4587",
+            "document_id": "16aa2bc2-215f-4664-9e6e-dd3581499866",
+            "filename": "backup.md",
+            "source_path": "synthetic/backup.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Backup agent\nThe backup agent exports metrics on TCP port 9108.\nIts status page is https://backup.example.test/status.\nThe backup agent does not manage PostgreSQL backup retention.",
+            "score": 0.18000000000000002,
+            "irrelevant": true
+          },
+          {
+            "rank": 5,
+            "heading": "Cache",
+            "lineage": "",
+            "id": "07a01bc8-4105-47b8-9680-f428faeafa35",
+            "document_id": "d6f6d22b-2baf-4a1a-94e5-230c3a89d550",
+            "filename": "cache.md",
+            "source_path": "synthetic/cache.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 3,
+            "text": "# Cache\nThe cache uses TCP port 6379.\nNo cache password is recorded in this demo documentation.",
+            "score": 0.18000000000000002,
+            "irrelevant": true
+          },
+          {
+            "rank": 6,
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "691ed5fd-157f-4665-829a-baaf446d4ab1",
+            "document_id": "1be3170f-7808-457e-a457-c047ffabf8e9",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 0.18000000000000002,
+            "irrelevant": true
+          }
+        ],
+        "irrelevant_chunks": 5,
+        "hit": {
+          "1": true,
+          "3": true,
+          "5": true
+        },
+        "context_complete": true,
+        "debug": {
+          "components": {
+            "d5777cb8-64ef-4e0c-b337-e62ab042097f": {
+              "vector": 0.2208507150980599,
+              "overlap": 0.45,
+              "fact_entity": 0.65,
+              "metadata": 0.024,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "0cb22e4f-2468-4cad-9c3f-c3483c35f45e": {
+              "vector": 0.20451012657380482,
+              "overlap": 0.36000000000000004,
+              "fact_entity": 0.65,
+              "metadata": 0.048,
+              "scope": 0.0,
+              "historical": -0.25,
+              "instruction_text": 0
+            },
+            "3451f949-b21f-4fb5-ad42-3d88732cd2e8": {
+              "vector": 0.19644669823368713,
+              "overlap": 0.36000000000000004,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": -0.6,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "972e78f3-fb93-4e73-906f-dd56e86ade7e": {
+              "vector": 0.1689109798099386,
+              "overlap": 0.18000000000000002,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": -0.8
+            },
+            "ee15d888-1a07-4ffc-b825-b3310d63f829": {
+              "vector": 0.0,
+              "overlap": 0.27,
+              "fact_entity": 0.0,
+              "metadata": 0.024,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "07a01bc8-4105-47b8-9680-f428faeafa35": {
+              "vector": 0.0,
+              "overlap": 0.18000000000000002,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "e3f7a874-c51a-4773-ac0d-7e5ef03d4587": {
+              "vector": 0.0,
+              "overlap": 0.18000000000000002,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.0,
+              "overlap": 0.18000000000000002,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "What is the production Grafana container TCP port?",
+              "entities": [
+                "grafana"
+              ],
+              "facts": [
+                "container_port"
+              ]
+            }
+          ],
+          "candidate_count": 8,
+          "seconds": 0.00948419999986072,
+          "semantic_baseline_seconds": 0.0051342999995540595,
+          "prepare_seconds_including_embedding": 0.03847920000043814
+        }
+      },
+      "answer": {
+        "answer": "[S1] (Production monitoring) Grafana listens on container TCP port 3000.",
+        "sources": [
+          {
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.4648507150980599,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "Grafana listens on container TCP port 3000."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "container_port",
+              "value": "Grafana listens on container TCP port 3000.",
+              "source": "S1",
+              "quote": "Grafana listens on container TCP port 3000.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 2,
+              "line_end": 2,
+              "slot": "Q1",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 2.324416499999643,
+          "composition_seconds": 7.800001185387373e-06,
+          "total_seconds": 2.3279763999998977
+        }
+      },
+      "generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "timing": {
+        "seconds": 2.33,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 427,
+          "completion_tokens": 7,
+          "total_tokens": 434
+        },
+        "max_tokens": 512
+      },
+      "oracle_answer": {
+        "answer": "[S1] (Production monitoring) Grafana listens on container TCP port 3000.",
+        "sources": [
+          {
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "oracle:monitoring.md:1",
+            "document_id": "monitoring.md",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.0,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "Grafana listens on container TCP port 3000."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "container_port",
+              "value": "Grafana listens on container TCP port 3000.",
+              "source": "S1",
+              "quote": "Grafana listens on container TCP port 3000.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 2,
+              "line_end": 2,
+              "slot": "Q1",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 0.5932577999992645,
+          "composition_seconds": 7.900000127847306e-06,
+          "total_seconds": 0.5937993999996252
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle_timing": {
+        "seconds": 0.594,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 363,
+          "completion_tokens": 8,
+          "total_tokens": 371
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "host-port",
+      "category": "reconcilable",
+      "query": "Production Grafana has ports 3000 and 3300: which is the container port and which is the host port?",
+      "expected_behaviour": "Preserve distinct scopes rather than claiming a conflict.",
+      "retrieval": {
+        "expected_sources": [
+          "monitoring.md"
+        ],
+        "expected_evidence": [
+          {
+            "document": "monitoring.md",
+            "contains": "Grafana listens on container TCP port 3000."
+          },
+          {
+            "document": "monitoring.md",
+            "contains": "Grafana is published on host TCP port 3300"
+          }
+        ],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.455085150290401,
+            "irrelevant": false
+          },
+          {
+            "rank": 2,
+            "heading": "Grafana port migration",
+            "lineage": "",
+            "id": "0cb22e4f-2468-4cad-9c3f-c3483c35f45e",
+            "document_id": "6f1c4111-7182-41c9-85a7-34c62a25ed58",
+            "filename": "migration.md",
+            "source_path": "synthetic/migration.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Grafana port migration\nBefore 2026-10-01 the production Grafana host port was 3000.\nOn 2026-10-01 the production Grafana host port changed to 3300.\nThe container port remained 3000.",
+            "score": 1.1269731178886415,
+            "irrelevant": true
+          },
+          {
+            "rank": 3,
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 0.891904761904762,
+            "irrelevant": true
+          }
+        ],
+        "irrelevant_chunks": 2,
+        "hit": {
+          "1": true,
+          "3": true,
+          "5": true
+        },
+        "context_complete": true,
+        "debug": {
+          "components": {
+            "0cb22e4f-2468-4cad-9c3f-c3483c35f45e": {
+              "vector": 0.2426874036029273,
+              "overlap": 0.45,
+              "fact_entity": 0.65,
+              "metadata": 0.03428571428571429,
+              "scope": 0.0,
+              "historical": -0.25,
+              "instruction_text": 0
+            },
+            "d5777cb8-64ef-4e0c-b337-e62ab042097f": {
+              "vector": 0.21794229314754385,
+              "overlap": 0.45,
+              "fact_entity": 0.65,
+              "metadata": 0.017142857142857144,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "3451f949-b21f-4fb5-ad42-3d88732cd2e8": {
+              "vector": 0.19605678121317072,
+              "overlap": 0.2571428571428571,
+              "fact_entity": 0.21666666666666667,
+              "metadata": 0.0,
+              "scope": -0.6,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "972e78f3-fb93-4e73-906f-dd56e86ade7e": {
+              "vector": 0.1506817175792614,
+              "overlap": 0.12857142857142856,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": -0.8
+            },
+            "ee15d888-1a07-4ffc-b825-b3310d63f829": {
+              "vector": 0.0,
+              "overlap": 0.32142857142857145,
+              "fact_entity": 0.43333333333333335,
+              "metadata": 0.017142857142857144,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "07a01bc8-4105-47b8-9680-f428faeafa35": {
+              "vector": 0.0,
+              "overlap": 0.06428571428571428,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "e3f7a874-c51a-4773-ac0d-7e5ef03d4587": {
+              "vector": 0.0,
+              "overlap": 0.06428571428571428,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.0,
+              "overlap": 0.06428571428571428,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "Production Grafana has ports 3000 and 3300: which is the container port",
+              "entities": [
+                "3000",
+                "3300",
+                "grafana"
+              ],
+              "facts": [
+                "container_port"
+              ]
+            },
+            {
+              "query": "which is the host port?",
+              "entities": [
+                "3000",
+                "3300",
+                "grafana"
+              ],
+              "facts": [
+                "host_port"
+              ]
+            }
+          ],
+          "candidate_count": 8,
+          "seconds": 0.012857800000347197,
+          "semantic_baseline_seconds": 0.0030118000013317214,
+          "prepare_seconds_including_embedding": 0.037938299999950686
+        }
+      },
+      "answer": {
+        "answer": "[S1] (Production monitoring) Grafana listens on container TCP port 3000.\n[S1] (Production monitoring) Grafana is published on host TCP port 3300 at 192.0.2.20.",
+        "sources": [
+          {
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.455085150290401,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "Grafana listens on container TCP port 3000."
+          },
+          {
+            "source": "S1",
+            "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "container_port",
+              "value": "Grafana listens on container TCP port 3000.",
+              "source": "S1",
+              "quote": "Grafana listens on container TCP port 3000.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 2,
+              "line_end": 2,
+              "slot": "Q1",
+              "selection_origin": "model"
+            },
+            {
+              "id": "E3",
+              "field": "host_port",
+              "value": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "source": "S1",
+              "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q2",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 3.548134000000573,
+          "composition_seconds": 9.100000170292333e-06,
+          "total_seconds": 3.5509462999998505
+        }
+      },
+      "generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "timing": {
+        "seconds": 3.551,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 718,
+          "completion_tokens": 13,
+          "total_tokens": 731
+        },
+        "max_tokens": 512
+      },
+      "oracle_answer": {
+        "answer": "[S1] (Production monitoring) Grafana listens on container TCP port 3000.\n[S1] (Production monitoring) Grafana is published on host TCP port 3300 at 192.0.2.20.",
+        "sources": [
+          {
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "oracle:monitoring.md:1",
+            "document_id": "monitoring.md",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.0,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "Grafana listens on container TCP port 3000."
+          },
+          {
+            "source": "S1",
+            "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "container_port",
+              "value": "Grafana listens on container TCP port 3000.",
+              "source": "S1",
+              "quote": "Grafana listens on container TCP port 3000.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 2,
+              "line_end": 2,
+              "slot": "Q1",
+              "selection_origin": "model"
+            },
+            {
+              "id": "E2",
+              "field": "host_port",
+              "value": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "source": "S1",
+              "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q2",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 1.50198249999994,
+          "composition_seconds": 1.449999945180025e-05,
+          "total_seconds": 1.5030077999999776
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle_timing": {
+        "seconds": 1.503,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 504,
+          "completion_tokens": 13,
+          "total_tokens": 517
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "multi-route",
+      "category": "multi_document",
+      "query": "Which host runs the edge proxy, and what host port does production Grafana publish?",
+      "expected_behaviour": "Return both required facts with their actual source records.",
+      "retrieval": {
+        "expected_sources": [
+          "monitoring.md",
+          "proxy.md"
+        ],
+        "expected_evidence": [
+          {
+            "document": "proxy.md",
+            "contains": "The edge proxy runs nginx on host edge-demo"
+          },
+          {
+            "document": "monitoring.md",
+            "contains": "Grafana is published on host TCP port 3300"
+          }
+        ],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 1.3978044429055105,
+            "irrelevant": false
+          },
+          {
+            "rank": 2,
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.3035577084229386,
+            "irrelevant": false
+          },
+          {
+            "rank": 3,
+            "heading": "Grafana port migration",
+            "lineage": "",
+            "id": "0cb22e4f-2468-4cad-9c3f-c3483c35f45e",
+            "document_id": "6f1c4111-7182-41c9-85a7-34c62a25ed58",
+            "filename": "migration.md",
+            "source_path": "synthetic/migration.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Grafana port migration\nBefore 2026-10-01 the production Grafana host port was 3000.\nOn 2026-10-01 the production Grafana host port changed to 3300.\nThe container port remained 3000.",
+            "score": 0.8606473071083235,
+            "irrelevant": true
+          },
+          {
+            "rank": 4,
+            "heading": "Staging monitoring",
+            "lineage": "",
+            "id": "3451f949-b21f-4fb5-ad42-3d88732cd2e8",
+            "document_id": "937452be-c83a-4ab9-95da-a707d4f8d66b",
+            "filename": "staging.md",
+            "source_path": "synthetic/staging.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 3,
+            "text": "# Staging monitoring\nThe staging Grafana instance uses host TCP port 4300 at 198.51.100.20.\nThis staging port is unrelated to the production deployment.",
+            "score": 0.5134445329987127,
+            "irrelevant": true
+          }
+        ],
+        "irrelevant_chunks": 2,
+        "hit": {
+          "1": false,
+          "3": true,
+          "5": true
+        },
+        "context_complete": true,
+        "debug": {
+          "components": {
+            "ee15d888-1a07-4ffc-b825-b3310d63f829": {
+              "vector": 0.20780444290551062,
+              "overlap": 0.3857142857142857,
+              "fact_entity": 0.65,
+              "metadata": 0.03428571428571429,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "3451f949-b21f-4fb5-ad42-3d88732cd2e8": {
+              "vector": 0.2063016758558556,
+              "overlap": 0.2571428571428571,
+              "fact_entity": 0.65,
+              "metadata": 0.0,
+              "scope": -0.6,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "d5777cb8-64ef-4e0c-b337-e62ab042097f": {
+              "vector": 0.19498627985151004,
+              "overlap": 0.32142857142857145,
+              "fact_entity": 0.65,
+              "metadata": 0.017142857142857144,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "0cb22e4f-2468-4cad-9c3f-c3483c35f45e": {
+              "vector": 0.16921873567975204,
+              "overlap": 0.2571428571428571,
+              "fact_entity": 0.65,
+              "metadata": 0.03428571428571429,
+              "scope": 0.0,
+              "historical": -0.25,
+              "instruction_text": 0
+            },
+            "972e78f3-fb93-4e73-906f-dd56e86ade7e": {
+              "vector": 0.16781365391444777,
+              "overlap": 0.12857142857142856,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": -0.8
+            },
+            "07a01bc8-4105-47b8-9680-f428faeafa35": {
+              "vector": 0.0,
+              "overlap": 0.06428571428571428,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "e3f7a874-c51a-4773-ac0d-7e5ef03d4587": {
+              "vector": 0.0,
+              "overlap": 0.06428571428571428,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.0,
+              "overlap": 0.06428571428571428,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "Which host runs the edge proxy",
+              "entities": [
+                "edge",
+                "proxy"
+              ],
+              "facts": [
+                "host"
+              ]
+            },
+            {
+              "query": "what host port does production Grafana publish?",
+              "entities": [
+                "grafana"
+              ],
+              "facts": [
+                "host_port"
+              ]
+            }
+          ],
+          "candidate_count": 8,
+          "seconds": 0.013170500000342145,
+          "semantic_baseline_seconds": 0.004010599999674014,
+          "prepare_seconds_including_embedding": 0.03771000000051572
+        }
+      },
+      "answer": {
+        "answer": "[S1] (Production reverse proxy) The edge proxy runs nginx on host edge-demo at 192.0.2.10.\n[S2] (Production monitoring) Grafana is published on host TCP port 3300 at 192.0.2.20.",
+        "sources": [
+          {
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 1.3978044429055105,
+            "label": "S1"
+          },
+          {
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.3035577084229386,
+            "label": "S2"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "The edge proxy runs nginx on host edge-demo at 192.0.2.10."
+          },
+          {
+            "source": "S2",
+            "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "host",
+              "value": "The edge proxy runs nginx on host edge-demo at 192.0.2.10.",
+              "source": "S1",
+              "quote": "The edge proxy runs nginx on host edge-demo at 192.0.2.10.",
+              "scope": "Production reverse proxy",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": false,
+              "qualifier": "",
+              "line": 2,
+              "line_end": 2,
+              "slot": "Q1",
+              "selection_origin": "model"
+            },
+            {
+              "id": "E2",
+              "field": "host_port",
+              "value": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "source": "S2",
+              "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q2",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 2.3094873999998526,
+          "composition_seconds": 8.600000001024455e-06,
+          "total_seconds": 2.3117942000008043
+        }
+      },
+      "generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "timing": {
+        "seconds": 2.312,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 564,
+          "completion_tokens": 13,
+          "total_tokens": 577
+        },
+        "max_tokens": 512
+      },
+      "oracle_answer": {
+        "answer": "[S1] (Production reverse proxy) The edge proxy runs nginx on host edge-demo at 192.0.2.10.\n[S2] (Production monitoring) Grafana is published on host TCP port 3300 at 192.0.2.20.",
+        "sources": [
+          {
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "oracle:proxy.md:1",
+            "document_id": "proxy.md",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 1.0,
+            "label": "S1"
+          },
+          {
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "oracle:monitoring.md:1",
+            "document_id": "monitoring.md",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.0,
+            "label": "S2"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "The edge proxy runs nginx on host edge-demo at 192.0.2.10."
+          },
+          {
+            "source": "S2",
+            "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "host",
+              "value": "The edge proxy runs nginx on host edge-demo at 192.0.2.10.",
+              "source": "S1",
+              "quote": "The edge proxy runs nginx on host edge-demo at 192.0.2.10.",
+              "scope": "Production reverse proxy",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": false,
+              "qualifier": "",
+              "line": 2,
+              "line_end": 2,
+              "slot": "Q1",
+              "selection_origin": "model"
+            },
+            {
+              "id": "E2",
+              "field": "host_port",
+              "value": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "source": "S2",
+              "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q2",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 0.9520771000006789,
+          "composition_seconds": 9.09999835130293e-06,
+          "total_seconds": 0.9532806999995955
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle_timing": {
+        "seconds": 0.953,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 484,
+          "completion_tokens": 13,
+          "total_tokens": 497
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "multi-backup",
+      "category": "multi_document",
+      "query": "When do PostgreSQL backups run, and on what TCP port does the backup agent export metrics?",
+      "expected_behaviour": "Do not confuse database backups with the backup agent.",
+      "retrieval": {
+        "expected_sources": [
+          "backup.md",
+          "database.md"
+        ],
+        "expected_evidence": [
+          {
+            "document": "database.md",
+            "contains": "PostgreSQL backups run daily at 02:00 UTC."
+          },
+          {
+            "document": "backup.md",
+            "contains": "The backup agent exports metrics on TCP port 9108."
+          }
+        ],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Backup agent",
+            "lineage": "",
+            "id": "e3f7a874-c51a-4773-ac0d-7e5ef03d4587",
+            "document_id": "16aa2bc2-215f-4664-9e6e-dd3581499866",
+            "filename": "backup.md",
+            "source_path": "synthetic/backup.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Backup agent\nThe backup agent exports metrics on TCP port 9108.\nIts status page is https://backup.example.test/status.\nThe backup agent does not manage PostgreSQL backup retention.",
+            "score": 1.364345897253278,
+            "irrelevant": false
+          },
+          {
+            "rank": 2,
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "691ed5fd-157f-4665-829a-baaf446d4ab1",
+            "document_id": "1be3170f-7808-457e-a457-c047ffabf8e9",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 1.1118670141019398,
+            "irrelevant": false
+          },
+          {
+            "rank": 3,
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 0.19285714285714284,
+            "irrelevant": true
+          },
+          {
+            "rank": 4,
+            "heading": "Cache",
+            "lineage": "",
+            "id": "07a01bc8-4105-47b8-9680-f428faeafa35",
+            "document_id": "d6f6d22b-2baf-4a1a-94e5-230c3a89d550",
+            "filename": "cache.md",
+            "source_path": "synthetic/cache.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 3,
+            "text": "# Cache\nThe cache uses TCP port 6379.\nNo cache password is recorded in this demo documentation.",
+            "score": 0.12857142857142856,
+            "irrelevant": true
+          },
+          {
+            "rank": 5,
+            "heading": "Staging monitoring",
+            "lineage": "",
+            "id": "3451f949-b21f-4fb5-ad42-3d88732cd2e8",
+            "document_id": "937452be-c83a-4ab9-95da-a707d4f8d66b",
+            "filename": "staging.md",
+            "source_path": "synthetic/staging.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 3,
+            "text": "# Staging monitoring\nThe staging Grafana instance uses host TCP port 4300 at 198.51.100.20.\nThis staging port is unrelated to the production deployment.",
+            "score": 0.12857142857142856,
+            "irrelevant": true
+          }
+        ],
+        "irrelevant_chunks": 3,
+        "hit": {
+          "1": false,
+          "3": true,
+          "5": true
+        },
+        "context_complete": true,
+        "debug": {
+          "components": {
+            "e3f7a874-c51a-4773-ac0d-7e5ef03d4587": {
+              "vector": 0.23006018296756364,
+              "overlap": 0.45,
+              "fact_entity": 0.65,
+              "metadata": 0.03428571428571429,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.1875812998162255,
+              "overlap": 0.2571428571428571,
+              "fact_entity": 0.65,
+              "metadata": 0.017142857142857144,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "d5777cb8-64ef-4e0c-b337-e62ab042097f": {
+              "vector": 0.0,
+              "overlap": 0.19285714285714284,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "3451f949-b21f-4fb5-ad42-3d88732cd2e8": {
+              "vector": 0.0,
+              "overlap": 0.12857142857142856,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "07a01bc8-4105-47b8-9680-f428faeafa35": {
+              "vector": 0.0,
+              "overlap": 0.12857142857142856,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "0cb22e4f-2468-4cad-9c3f-c3483c35f45e": {
+              "vector": 0.0,
+              "overlap": 0.06428571428571428,
+              "fact_entity": 0.0,
+              "metadata": 0.017142857142857144,
+              "scope": 0.0,
+              "historical": -0.25,
+              "instruction_text": 0
+            },
+            "972e78f3-fb93-4e73-906f-dd56e86ade7e": {
+              "vector": 0.0,
+              "overlap": 0.06428571428571428,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": -0.8
+            },
+            "ee15d888-1a07-4ffc-b825-b3310d63f829": {
+              "vector": 0.0,
+              "overlap": 0.06428571428571428,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "When do PostgreSQL backups run",
+              "entities": [
+                "postgresql"
+              ],
+              "facts": [
+                "schedule"
+              ]
+            },
+            {
+              "query": "on what TCP port does the backup agent export metrics?",
+              "entities": [
+                "agent"
+              ],
+              "facts": [
+                "port"
+              ]
+            }
+          ],
+          "candidate_count": 8,
+          "seconds": 0.013190699999540811,
+          "semantic_baseline_seconds": 0.00369700000010198,
+          "prepare_seconds_including_embedding": 0.04023620000043593
+        }
+      },
+      "answer": {
+        "answer": "[S2] (Demo PostgreSQL) PostgreSQL backups run daily at 02:00 UTC.\n[S1] (Backup agent) The backup agent exports metrics on TCP port 9108.",
+        "sources": [
+          {
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "691ed5fd-157f-4665-829a-baaf446d4ab1",
+            "document_id": "1be3170f-7808-457e-a457-c047ffabf8e9",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 1.1118670141019398,
+            "label": "S2"
+          },
+          {
+            "heading": "Backup agent",
+            "lineage": "",
+            "id": "e3f7a874-c51a-4773-ac0d-7e5ef03d4587",
+            "document_id": "16aa2bc2-215f-4664-9e6e-dd3581499866",
+            "filename": "backup.md",
+            "source_path": "synthetic/backup.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Backup agent\nThe backup agent exports metrics on TCP port 9108.\nIts status page is https://backup.example.test/status.\nThe backup agent does not manage PostgreSQL backup retention.",
+            "score": 1.364345897253278,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S2",
+            "quote": "PostgreSQL backups run daily at 02:00 UTC."
+          },
+          {
+            "source": "S1",
+            "quote": "The backup agent exports metrics on TCP port 9108."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "schedule",
+              "value": "PostgreSQL backups run daily at 02:00 UTC.",
+              "source": "S2",
+              "quote": "PostgreSQL backups run daily at 02:00 UTC.",
+              "scope": "Demo PostgreSQL",
+              "scopes": [],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": false,
+              "qualifier": "",
+              "line": 4,
+              "line_end": 4,
+              "slot": "Q1",
+              "selection_origin": "model"
+            },
+            {
+              "id": "E2",
+              "field": "answer",
+              "value": "The backup agent exports metrics on TCP port 9108.",
+              "source": "S1",
+              "quote": "The backup agent exports metrics on TCP port 9108.",
+              "scope": "Backup agent",
+              "scopes": [],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": false,
+              "qualifier": "",
+              "line": 2,
+              "line_end": 2,
+              "slot": "Q2",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 2.758180099999663,
+          "composition_seconds": 1.5100000382517464e-05,
+          "total_seconds": 2.7599004000003333
+        }
+      },
+      "generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "timing": {
+        "seconds": 2.76,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 586,
+          "completion_tokens": 13,
+          "total_tokens": 599
+        },
+        "max_tokens": 512
+      },
+      "oracle_answer": {
+        "answer": "[S1] (Demo PostgreSQL) PostgreSQL backups run daily at 02:00 UTC.\n[S2] (Backup agent) The backup agent exports metrics on TCP port 9108.",
+        "sources": [
+          {
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "oracle:database.md:1",
+            "document_id": "database.md",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 1.0,
+            "label": "S1"
+          },
+          {
+            "heading": "Backup agent",
+            "lineage": "",
+            "id": "oracle:backup.md:1",
+            "document_id": "backup.md",
+            "filename": "backup.md",
+            "source_path": "synthetic/backup.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Backup agent\nThe backup agent exports metrics on TCP port 9108.\nIts status page is https://backup.example.test/status.\nThe backup agent does not manage PostgreSQL backup retention.",
+            "score": 1.0,
+            "label": "S2"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "PostgreSQL backups run daily at 02:00 UTC."
+          },
+          {
+            "source": "S2",
+            "quote": "The backup agent exports metrics on TCP port 9108."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "schedule",
+              "value": "PostgreSQL backups run daily at 02:00 UTC.",
+              "source": "S1",
+              "quote": "PostgreSQL backups run daily at 02:00 UTC.",
+              "scope": "Demo PostgreSQL",
+              "scopes": [],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": false,
+              "qualifier": "",
+              "line": 4,
+              "line_end": 4,
+              "slot": "Q1",
+              "selection_origin": "model"
+            },
+            {
+              "id": "E2",
+              "field": "answer",
+              "value": "The backup agent exports metrics on TCP port 9108.",
+              "source": "S2",
+              "quote": "The backup agent exports metrics on TCP port 9108.",
+              "scope": "Backup agent",
+              "scopes": [],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": false,
+              "qualifier": "",
+              "line": 2,
+              "line_end": 2,
+              "slot": "Q2",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 2.700417699999889,
+          "composition_seconds": 1.1199999789823778e-05,
+          "total_seconds": 2.7024510000010196
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle_timing": {
+        "seconds": 2.702,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 586,
+          "completion_tokens": 13,
+          "total_tokens": 599
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "distractor",
+      "category": "distractor",
+      "query": "What is the production Grafana published host port, excluding staging?",
+      "expected_behaviour": "Select production configuration, not staging or injected instructions.",
+      "retrieval": {
+        "expected_sources": [
+          "monitoring.md"
+        ],
+        "expected_evidence": [
+          {
+            "document": "monitoring.md",
+            "contains": "Grafana is published on host TCP port 3300"
+          }
+        ],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.3717180958390536,
+            "irrelevant": false
+          },
+          {
+            "rank": 2,
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 1.09,
+            "irrelevant": true
+          },
+          {
+            "rank": 3,
+            "heading": "Grafana port migration",
+            "lineage": "",
+            "id": "0cb22e4f-2468-4cad-9c3f-c3483c35f45e",
+            "document_id": "6f1c4111-7182-41c9-85a7-34c62a25ed58",
+            "filename": "migration.md",
+            "source_path": "synthetic/migration.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Grafana port migration\nBefore 2026-10-01 the production Grafana host port was 3000.\nOn 2026-10-01 the production Grafana host port changed to 3300.\nThe container port remained 3000.",
+            "score": 0.9479800075676573,
+            "irrelevant": true
+          }
+        ],
+        "irrelevant_chunks": 2,
+        "hit": {
+          "1": true,
+          "3": true,
+          "5": true
+        },
+        "context_complete": true,
+        "debug": {
+          "components": {
+            "3451f949-b21f-4fb5-ad42-3d88732cd2e8": {
+              "vector": 0.24727423607703447,
+              "overlap": 0.375,
+              "fact_entity": 0.65,
+              "metadata": 0.02,
+              "scope": -1.2999999999999998,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "0cb22e4f-2468-4cad-9c3f-c3483c35f45e": {
+              "vector": 0.2079800075676573,
+              "overlap": 0.3,
+              "fact_entity": 0.65,
+              "metadata": 0.04,
+              "scope": 0.0,
+              "historical": -0.25,
+              "instruction_text": 0
+            },
+            "d5777cb8-64ef-4e0c-b337-e62ab042097f": {
+              "vector": 0.20671809583905357,
+              "overlap": 0.375,
+              "fact_entity": 0.65,
+              "metadata": 0.02,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "972e78f3-fb93-4e73-906f-dd56e86ade7e": {
+              "vector": 0.17577602561351738,
+              "overlap": 0.15,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": -0.8
+            },
+            "ee15d888-1a07-4ffc-b825-b3310d63f829": {
+              "vector": 0.0,
+              "overlap": 0.3,
+              "fact_entity": 0.65,
+              "metadata": 0.02,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "07a01bc8-4105-47b8-9680-f428faeafa35": {
+              "vector": 0.0,
+              "overlap": 0.075,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "e3f7a874-c51a-4773-ac0d-7e5ef03d4587": {
+              "vector": 0.0,
+              "overlap": 0.075,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.0,
+              "overlap": 0.075,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "What is the production Grafana published host port, excluding staging?",
+              "entities": [
+                "grafana"
+              ],
+              "facts": [
+                "host_port"
+              ]
+            }
+          ],
+          "candidate_count": 8,
+          "seconds": 0.007248599999002181,
+          "semantic_baseline_seconds": 0.0038647000001219567,
+          "prepare_seconds_including_embedding": 0.025589400000171736
+        }
+      },
+      "answer": {
+        "answer": "[S1] (Production monitoring) Grafana is published on host TCP port 3300 at 192.0.2.20.",
+        "sources": [
+          {
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.3717180958390536,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "host_port",
+              "value": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "source": "S1",
+              "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q1",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 1.4360466999987693,
+          "composition_seconds": 6.000000212225132e-06,
+          "total_seconds": 1.4376267999996344
+        }
+      },
+      "generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "timing": {
+        "seconds": 1.438,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 462,
+          "completion_tokens": 8,
+          "total_tokens": 470
+        },
+        "max_tokens": 512
+      },
+      "oracle_answer": {
+        "answer": "[S1] (Production monitoring) Grafana is published on host TCP port 3300 at 192.0.2.20.",
+        "sources": [
+          {
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "oracle:monitoring.md:1",
+            "document_id": "monitoring.md",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.0,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "host_port",
+              "value": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "source": "S1",
+              "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q1",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 0.5904427000004944,
+          "composition_seconds": 8.099999831756577e-06,
+          "total_seconds": 0.5910920999995142
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle_timing": {
+        "seconds": 0.591,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 382,
+          "completion_tokens": 8,
+          "total_tokens": 390
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "database-config",
+      "category": "service_configuration",
+      "query": "Which TCP port and allowed subnet are documented for PostgreSQL?",
+      "expected_behaviour": "Only report supplied configuration.",
+      "retrieval": {
+        "expected_sources": [
+          "database.md"
+        ],
+        "expected_evidence": [
+          {
+            "document": "database.md",
+            "contains": "PostgreSQL listens on TCP port 5432"
+          },
+          {
+            "document": "database.md",
+            "contains": "192.0.2.0/24"
+          }
+        ],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "691ed5fd-157f-4665-829a-baaf446d4ab1",
+            "document_id": "1be3170f-7808-457e-a457-c047ffabf8e9",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 1.309762601641491,
+            "irrelevant": false
+          },
+          {
+            "rank": 2,
+            "heading": "Backup agent",
+            "lineage": "",
+            "id": "e3f7a874-c51a-4773-ac0d-7e5ef03d4587",
+            "document_id": "16aa2bc2-215f-4664-9e6e-dd3581499866",
+            "filename": "backup.md",
+            "source_path": "synthetic/backup.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Backup agent\nThe backup agent exports metrics on TCP port 9108.\nIts status page is https://backup.example.test/status.\nThe backup agent does not manage PostgreSQL backup retention.",
+            "score": 0.6625000000000001,
+            "irrelevant": true
+          },
+          {
+            "rank": 3,
+            "heading": "Cache",
+            "lineage": "",
+            "id": "07a01bc8-4105-47b8-9680-f428faeafa35",
+            "document_id": "d6f6d22b-2baf-4a1a-94e5-230c3a89d550",
+            "filename": "cache.md",
+            "source_path": "synthetic/cache.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 3,
+            "text": "# Cache\nThe cache uses TCP port 6379.\nNo cache password is recorded in this demo documentation.",
+            "score": 0.225,
+            "irrelevant": true
+          },
+          {
+            "rank": 4,
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 0.225,
+            "irrelevant": true
+          },
+          {
+            "rank": 5,
+            "heading": "Staging monitoring",
+            "lineage": "",
+            "id": "3451f949-b21f-4fb5-ad42-3d88732cd2e8",
+            "document_id": "937452be-c83a-4ab9-95da-a707d4f8d66b",
+            "filename": "staging.md",
+            "source_path": "synthetic/staging.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 3,
+            "text": "# Staging monitoring\nThe staging Grafana instance uses host TCP port 4300 at 198.51.100.20.\nThis staging port is unrelated to the production deployment.",
+            "score": 0.225,
+            "irrelevant": true
+          },
+          {
+            "rank": 6,
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 0.1125,
+            "irrelevant": true
+          }
+        ],
+        "irrelevant_chunks": 5,
+        "hit": {
+          "1": true,
+          "3": true,
+          "5": true
+        },
+        "context_complete": true,
+        "debug": {
+          "components": {
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.17976260164149088,
+              "overlap": 0.45,
+              "fact_entity": 0.65,
+              "metadata": 0.03,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "e3f7a874-c51a-4773-ac0d-7e5ef03d4587": {
+              "vector": 0.0,
+              "overlap": 0.3375,
+              "fact_entity": 0.325,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "d5777cb8-64ef-4e0c-b337-e62ab042097f": {
+              "vector": 0.0,
+              "overlap": 0.225,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "3451f949-b21f-4fb5-ad42-3d88732cd2e8": {
+              "vector": 0.0,
+              "overlap": 0.225,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "07a01bc8-4105-47b8-9680-f428faeafa35": {
+              "vector": 0.0,
+              "overlap": 0.225,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "0cb22e4f-2468-4cad-9c3f-c3483c35f45e": {
+              "vector": 0.0,
+              "overlap": 0.1125,
+              "fact_entity": 0.0,
+              "metadata": 0.03,
+              "scope": 0.0,
+              "historical": -0.25,
+              "instruction_text": 0
+            },
+            "972e78f3-fb93-4e73-906f-dd56e86ade7e": {
+              "vector": 0.0,
+              "overlap": 0.1125,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": -0.8
+            },
+            "ee15d888-1a07-4ffc-b825-b3310d63f829": {
+              "vector": 0.0,
+              "overlap": 0.1125,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "Which TCP port and allowed subnet are documented for PostgreSQL?",
+              "entities": [
+                "postgresql"
+              ],
+              "facts": [
+                "port",
+                "subnet"
+              ]
+            }
+          ],
+          "candidate_count": 8,
+          "seconds": 0.006774299999960931,
+          "semantic_baseline_seconds": 0.002691199999389937,
+          "prepare_seconds_including_embedding": 0.032255299998723785
+        }
+      },
+      "answer": {
+        "answer": "[S1] (Demo PostgreSQL) PostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\n[S1] (Demo PostgreSQL) The database accepts connections only from the demo application subnet 192.0.2.0/24.",
+        "sources": [
+          {
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "691ed5fd-157f-4665-829a-baaf446d4ab1",
+            "document_id": "1be3170f-7808-457e-a457-c047ffabf8e9",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 1.309762601641491,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "PostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30."
+          },
+          {
+            "source": "S1",
+            "quote": "The database accepts connections only from the demo application subnet 192.0.2.0/24."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "port",
+              "value": "PostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.",
+              "source": "S1",
+              "quote": "PostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.",
+              "scope": "Demo PostgreSQL",
+              "scopes": [],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 2,
+              "line_end": 2,
+              "slot": "Q1",
+              "selection_origin": "model"
+            },
+            {
+              "id": "E2",
+              "field": "subnet",
+              "value": "The database accepts connections only from the demo application subnet 192.0.2.0/24.",
+              "source": "S1",
+              "quote": "The database accepts connections only from the demo application subnet 192.0.2.0/24.",
+              "scope": "Demo PostgreSQL",
+              "scopes": [],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q2",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 1.8866062000015518,
+          "composition_seconds": 1.2099999366910197e-05,
+          "total_seconds": 1.888127700000041
+        }
+      },
+      "generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "timing": {
+        "seconds": 1.888,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 484,
+          "completion_tokens": 13,
+          "total_tokens": 497
+        },
+        "max_tokens": 512
+      },
+      "oracle_answer": {
+        "answer": "[S1] (Demo PostgreSQL) PostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\n[S1] (Demo PostgreSQL) The database accepts connections only from the demo application subnet 192.0.2.0/24.",
+        "sources": [
+          {
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "oracle:database.md:1",
+            "document_id": "database.md",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 1.0,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "PostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30."
+          },
+          {
+            "source": "S1",
+            "quote": "The database accepts connections only from the demo application subnet 192.0.2.0/24."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "port",
+              "value": "PostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.",
+              "source": "S1",
+              "quote": "PostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.",
+              "scope": "Demo PostgreSQL",
+              "scopes": [],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 2,
+              "line_end": 2,
+              "slot": "Q1",
+              "selection_origin": "model"
+            },
+            {
+              "id": "E2",
+              "field": "subnet",
+              "value": "The database accepts connections only from the demo application subnet 192.0.2.0/24.",
+              "source": "S1",
+              "quote": "The database accepts connections only from the demo application subnet 192.0.2.0/24.",
+              "scope": "Demo PostgreSQL",
+              "scopes": [],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q2",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 0.842923599999267,
+          "composition_seconds": 9.100000170292333e-06,
+          "total_seconds": 0.8442408999999316
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle_timing": {
+        "seconds": 0.844,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 484,
+          "completion_tokens": 13,
+          "total_tokens": 497
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "safe-check",
+      "category": "service_configuration",
+      "query": "What read-only nginx configuration check is documented?",
+      "expected_behaviour": "Give the documented read-only check without executing it.",
+      "retrieval": {
+        "expected_sources": [
+          "proxy.md"
+        ],
+        "expected_evidence": [
+          {
+            "document": "proxy.md",
+            "contains": "Read-only configuration check: nginx -t."
+          }
+        ],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 1.1,
+            "irrelevant": false
+          }
+        ],
+        "irrelevant_chunks": 0,
+        "hit": {
+          "1": true,
+          "3": true,
+          "5": true
+        },
+        "context_complete": true,
+        "debug": {
+          "components": {
+            "ee15d888-1a07-4ffc-b825-b3310d63f829": {
+              "vector": 0.0,
+              "overlap": 0.45,
+              "fact_entity": 0.65,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "972e78f3-fb93-4e73-906f-dd56e86ade7e": {
+              "vector": 0.0,
+              "overlap": 0.1125,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": -0.8
+            },
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.0,
+              "overlap": 0.0,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "What read-only nginx configuration check is documented?",
+              "entities": [
+                "nginx"
+              ],
+              "facts": [
+                "check"
+              ]
+            }
+          ],
+          "candidate_count": 3,
+          "seconds": 0.005048000000897446,
+          "semantic_baseline_seconds": 0.0012489000000641681,
+          "prepare_seconds_including_embedding": 0.015986099999281578
+        }
+      },
+      "answer": {
+        "answer": "[S1] (Production reverse proxy) Read-only configuration check: nginx -t.",
+        "sources": [
+          {
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 1.1,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "Read-only configuration check: nginx -t."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "check",
+              "value": "Read-only configuration check: nginx -t.",
+              "source": "S1",
+              "quote": "Read-only configuration check: nginx -t.",
+              "scope": "Production reverse proxy",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": false,
+              "qualifier": "",
+              "line": 4,
+              "line_end": 4,
+              "slot": "Q1",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 1.031186100000923,
+          "composition_seconds": 5.500000042957254e-06,
+          "total_seconds": 1.0317739000001893
+        }
+      },
+      "generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "timing": {
+        "seconds": 1.032,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 356,
+          "completion_tokens": 8,
+          "total_tokens": 364
+        },
+        "max_tokens": 512
+      },
+      "oracle_answer": {
+        "answer": "[S1] (Production reverse proxy) Read-only configuration check: nginx -t.",
+        "sources": [
+          {
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "oracle:proxy.md:1",
+            "document_id": "proxy.md",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 1.0,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "Read-only configuration check: nginx -t."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "check",
+              "value": "Read-only configuration check: nginx -t.",
+              "source": "S1",
+              "quote": "Read-only configuration check: nginx -t.",
+              "scope": "Production reverse proxy",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": false,
+              "qualifier": "",
+              "line": 4,
+              "line_end": 4,
+              "slot": "Q1",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 0.5150720999990881,
+          "composition_seconds": 5.899999450775795e-06,
+          "total_seconds": 0.5155522999993991
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle_timing": {
+        "seconds": 0.516,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 356,
+          "completion_tokens": 8,
+          "total_tokens": 364
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "migration",
+      "category": "reconcilable",
+      "query": "What changed about production Grafana ports on 2026-10-01?",
+      "expected_behaviour": "Describe the dated change while preserving unchanged container scope.",
+      "retrieval": {
+        "expected_sources": [
+          "migration.md"
+        ],
+        "expected_evidence": [
+          {
+            "document": "migration.md",
+            "contains": "On 2026-10-01 the production Grafana host port changed to 3300."
+          },
+          {
+            "document": "migration.md",
+            "contains": "The container port remained 3000."
+          }
+        ],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Grafana port migration",
+            "lineage": "",
+            "id": "0cb22e4f-2468-4cad-9c3f-c3483c35f45e",
+            "document_id": "6f1c4111-7182-41c9-85a7-34c62a25ed58",
+            "filename": "migration.md",
+            "source_path": "synthetic/migration.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Grafana port migration\nBefore 2026-10-01 the production Grafana host port was 3000.\nOn 2026-10-01 the production Grafana host port changed to 3300.\nThe container port remained 3000.",
+            "score": 1.3715122405144613,
+            "irrelevant": false
+          },
+          {
+            "rank": 2,
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 0.902614903713271,
+            "irrelevant": true
+          },
+          {
+            "rank": 3,
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 0.739,
+            "irrelevant": true
+          },
+          {
+            "rank": 4,
+            "heading": "Staging monitoring",
+            "lineage": "",
+            "id": "3451f949-b21f-4fb5-ad42-3d88732cd2e8",
+            "document_id": "937452be-c83a-4ab9-95da-a707d4f8d66b",
+            "filename": "staging.md",
+            "source_path": "synthetic/staging.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 3,
+            "text": "# Staging monitoring\nThe staging Grafana instance uses host TCP port 4300 at 198.51.100.20.\nThis staging port is unrelated to the production deployment.",
+            "score": 0.17941904411500742,
+            "irrelevant": true
+          }
+        ],
+        "irrelevant_chunks": 3,
+        "hit": {
+          "1": true,
+          "3": true,
+          "5": true
+        },
+        "context_complete": true,
+        "debug": {
+          "components": {
+            "0cb22e4f-2468-4cad-9c3f-c3483c35f45e": {
+              "vector": 0.22351224051446125,
+              "overlap": 0.45,
+              "fact_entity": 0.65,
+              "metadata": 0.048,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "3451f949-b21f-4fb5-ad42-3d88732cd2e8": {
+              "vector": 0.18441904411500737,
+              "overlap": 0.27,
+              "fact_entity": 0.325,
+              "metadata": 0.0,
+              "scope": -0.6,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "d5777cb8-64ef-4e0c-b337-e62ab042097f": {
+              "vector": 0.16361490371327095,
+              "overlap": 0.27,
+              "fact_entity": 0.325,
+              "metadata": 0.024,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "972e78f3-fb93-4e73-906f-dd56e86ade7e": {
+              "vector": 0.15326792717799292,
+              "overlap": 0.18000000000000002,
+              "fact_entity": 0.325,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": -0.8
+            },
+            "ee15d888-1a07-4ffc-b825-b3310d63f829": {
+              "vector": 0.0,
+              "overlap": 0.27,
+              "fact_entity": 0.325,
+              "metadata": 0.024,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "07a01bc8-4105-47b8-9680-f428faeafa35": {
+              "vector": 0.0,
+              "overlap": 0.09000000000000001,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "e3f7a874-c51a-4773-ac0d-7e5ef03d4587": {
+              "vector": 0.0,
+              "overlap": 0.09000000000000001,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.0,
+              "overlap": 0.09000000000000001,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "What changed about production Grafana ports on 2026-10-01?",
+              "entities": [
+                "2026-10-01",
+                "grafana"
+              ],
+              "facts": [
+                "port"
+              ]
+            }
+          ],
+          "candidate_count": 8,
+          "seconds": 0.006818200001362129,
+          "semantic_baseline_seconds": 0.0030953000004956266,
+          "prepare_seconds_including_embedding": 0.02854529999967781
+        }
+      },
+      "answer": {
+        "answer": "[S1] (Grafana port migration) On 2026-10-01 the production Grafana host port changed to 3300.\n[S1] (Grafana port migration) The container port remained 3000.\n[S2] (Production monitoring) Grafana listens on container TCP port 3000.",
+        "sources": [
+          {
+            "heading": "Grafana port migration",
+            "lineage": "",
+            "id": "0cb22e4f-2468-4cad-9c3f-c3483c35f45e",
+            "document_id": "6f1c4111-7182-41c9-85a7-34c62a25ed58",
+            "filename": "migration.md",
+            "source_path": "synthetic/migration.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Grafana port migration\nBefore 2026-10-01 the production Grafana host port was 3000.\nOn 2026-10-01 the production Grafana host port changed to 3300.\nThe container port remained 3000.",
+            "score": 1.3715122405144613,
+            "label": "S1"
+          },
+          {
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 0.902614903713271,
+            "label": "S2"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "On 2026-10-01 the production Grafana host port changed to 3300."
+          },
+          {
+            "source": "S1",
+            "quote": "The container port remained 3000."
+          },
+          {
+            "source": "S2",
+            "quote": "Grafana listens on container TCP port 3000."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "host_port",
+              "value": "On 2026-10-01 the production Grafana host port changed to 3300.",
+              "source": "S1",
+              "quote": "On 2026-10-01 the production Grafana host port changed to 3300.",
+              "scope": "Grafana port migration",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q1",
+              "selection_origin": "model"
+            },
+            {
+              "id": "E4",
+              "field": "container_port",
+              "value": "The container port remained 3000.",
+              "source": "S1",
+              "quote": "The container port remained 3000.",
+              "scope": "Grafana port migration",
+              "scopes": [],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 4,
+              "line_end": 4,
+              "slot": "Q2",
+              "selection_origin": "typed_value_guard"
+            },
+            {
+              "id": "E5",
+              "field": "container_port",
+              "value": "Grafana listens on container TCP port 3000.",
+              "source": "S2",
+              "quote": "Grafana listens on container TCP port 3000.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 2,
+              "line_end": 2,
+              "slot": "Q2",
+              "selection_origin": "typed_value_guard"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 2.921014000001378,
+          "composition_seconds": 1.0800000382005237e-05,
+          "total_seconds": 2.9242389000010007
+        }
+      },
+      "generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "timing": {
+        "seconds": 2.924,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 717,
+          "completion_tokens": 11,
+          "total_tokens": 728
+        },
+        "max_tokens": 512
+      },
+      "oracle_answer": {
+        "answer": "[S1] (Grafana port migration) On 2026-10-01 the production Grafana host port changed to 3300.\n[S1] (Grafana port migration) The container port remained 3000.",
+        "sources": [
+          {
+            "heading": "Grafana port migration",
+            "lineage": "",
+            "id": "oracle:migration.md:1",
+            "document_id": "migration.md",
+            "filename": "migration.md",
+            "source_path": "synthetic/migration.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Grafana port migration\nBefore 2026-10-01 the production Grafana host port was 3000.\nOn 2026-10-01 the production Grafana host port changed to 3300.\nThe container port remained 3000.",
+            "score": 1.0,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "On 2026-10-01 the production Grafana host port changed to 3300."
+          },
+          {
+            "source": "S1",
+            "quote": "The container port remained 3000."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "host_port",
+              "value": "On 2026-10-01 the production Grafana host port changed to 3300.",
+              "source": "S1",
+              "quote": "On 2026-10-01 the production Grafana host port changed to 3300.",
+              "scope": "Grafana port migration",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q1",
+              "selection_origin": "model"
+            },
+            {
+              "id": "E2",
+              "field": "container_port",
+              "value": "The container port remained 3000.",
+              "source": "S1",
+              "quote": "The container port remained 3000.",
+              "scope": "Grafana port migration",
+              "scopes": [],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 4,
+              "line_end": 4,
+              "slot": "Q2",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 1.4696526999996422,
+          "composition_seconds": 1.2700000297627412e-05,
+          "total_seconds": 1.4707011000009516
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle_timing": {
+        "seconds": 1.471,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 504,
+          "completion_tokens": 16,
+          "total_tokens": 520
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "backup-retention",
+      "category": "exact_lookup",
+      "query": "How many days are PostgreSQL backups retained?",
+      "expected_behaviour": "Lookup retention without borrowing unrelated agent settings.",
+      "retrieval": {
+        "expected_sources": [
+          "database.md"
+        ],
+        "expected_evidence": [
+          {
+            "document": "database.md",
+            "contains": "Backup retention is seven days."
+          }
+        ],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "691ed5fd-157f-4665-829a-baaf446d4ab1",
+            "document_id": "1be3170f-7808-457e-a457-c047ffabf8e9",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 1.2948831878381666,
+            "irrelevant": false
+          },
+          {
+            "rank": 2,
+            "heading": "Backup agent",
+            "lineage": "",
+            "id": "e3f7a874-c51a-4773-ac0d-7e5ef03d4587",
+            "document_id": "16aa2bc2-215f-4664-9e6e-dd3581499866",
+            "filename": "backup.md",
+            "source_path": "synthetic/backup.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Backup agent\nThe backup agent exports metrics on TCP port 9108.\nIts status page is https://backup.example.test/status.\nThe backup agent does not manage PostgreSQL backup retention.",
+            "score": 1.1885558507672342,
+            "irrelevant": true
+          }
+        ],
+        "irrelevant_chunks": 1,
+        "hit": {
+          "1": true,
+          "3": true,
+          "5": true
+        },
+        "context_complete": true,
+        "debug": {
+          "components": {
+            "e3f7a874-c51a-4773-ac0d-7e5ef03d4587": {
+              "vector": 0.17105585076723423,
+              "overlap": 0.3375,
+              "fact_entity": 0.65,
+              "metadata": 0.03,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.1648831878381665,
+              "overlap": 0.45,
+              "fact_entity": 0.65,
+              "metadata": 0.03,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "How many days are PostgreSQL backups retained?",
+              "entities": [
+                "postgresql"
+              ],
+              "facts": [
+                "retention"
+              ]
+            }
+          ],
+          "candidate_count": 2,
+          "seconds": 0.005550800000492018,
+          "semantic_baseline_seconds": 0.0028246000001672655,
+          "prepare_seconds_including_embedding": 0.020463200000449433
+        }
+      },
+      "answer": {
+        "answer": "[S1] (Demo PostgreSQL) Backup retention is seven days.",
+        "sources": [
+          {
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "691ed5fd-157f-4665-829a-baaf446d4ab1",
+            "document_id": "1be3170f-7808-457e-a457-c047ffabf8e9",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 1.2948831878381666,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "Backup retention is seven days."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "retention",
+              "value": "Backup retention is seven days.",
+              "source": "S1",
+              "quote": "Backup retention is seven days.",
+              "scope": "Demo PostgreSQL",
+              "scopes": [],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 5,
+              "line_end": 5,
+              "slot": "Q1",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 1.1932630999999674,
+          "composition_seconds": 5.900001269765198e-06,
+          "total_seconds": 1.1961813999987498
+        }
+      },
+      "generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "timing": {
+        "seconds": 1.196,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 412,
+          "completion_tokens": 8,
+          "total_tokens": 420
+        },
+        "max_tokens": 512
+      },
+      "oracle_answer": {
+        "answer": "[S1] (Demo PostgreSQL) Backup retention is seven days.",
+        "sources": [
+          {
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "oracle:database.md:1",
+            "document_id": "database.md",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 1.0,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "Backup retention is seven days."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "retention",
+              "value": "Backup retention is seven days.",
+              "source": "S1",
+              "quote": "Backup retention is seven days.",
+              "scope": "Demo PostgreSQL",
+              "scopes": [],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 5,
+              "line_end": 5,
+              "slot": "Q1",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 0.5674240000007558,
+          "composition_seconds": 7.5000007200287655e-06,
+          "total_seconds": 0.5680382999998983
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle_timing": {
+        "seconds": 0.568,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 351,
+          "completion_tokens": 8,
+          "total_tokens": 359
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "missing-password",
+      "category": "unsupported",
+      "query": "What is the PostgreSQL administrator password?",
+      "expected_behaviour": "Explicitly refuse: no password exists in the corpus.",
+      "retrieval": {
+        "expected_sources": [],
+        "expected_evidence": [],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "691ed5fd-157f-4665-829a-baaf446d4ab1",
+            "document_id": "1be3170f-7808-457e-a457-c047ffabf8e9",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 0.19,
+            "irrelevant": false
+          },
+          {
+            "rank": 2,
+            "heading": "Backup agent",
+            "lineage": "",
+            "id": "e3f7a874-c51a-4773-ac0d-7e5ef03d4587",
+            "document_id": "16aa2bc2-215f-4664-9e6e-dd3581499866",
+            "filename": "backup.md",
+            "source_path": "synthetic/backup.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Backup agent\nThe backup agent exports metrics on TCP port 9108.\nIts status page is https://backup.example.test/status.\nThe backup agent does not manage PostgreSQL backup retention.",
+            "score": 0.15,
+            "irrelevant": true
+          },
+          {
+            "rank": 3,
+            "heading": "Cache",
+            "lineage": "",
+            "id": "07a01bc8-4105-47b8-9680-f428faeafa35",
+            "document_id": "d6f6d22b-2baf-4a1a-94e5-230c3a89d550",
+            "filename": "cache.md",
+            "source_path": "synthetic/cache.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 3,
+            "text": "# Cache\nThe cache uses TCP port 6379.\nNo cache password is recorded in this demo documentation.",
+            "score": 0.15,
+            "irrelevant": true
+          }
+        ],
+        "irrelevant_chunks": 2,
+        "hit": {
+          "1": null,
+          "3": null,
+          "5": null
+        },
+        "context_complete": null,
+        "debug": {
+          "components": {
+            "07a01bc8-4105-47b8-9680-f428faeafa35": {
+              "vector": 0.0,
+              "overlap": 0.15,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.0,
+              "overlap": 0.15,
+              "fact_entity": 0.0,
+              "metadata": 0.04,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "e3f7a874-c51a-4773-ac0d-7e5ef03d4587": {
+              "vector": 0.0,
+              "overlap": 0.15,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "What is the PostgreSQL administrator password?",
+              "entities": [
+                "postgresql"
+              ],
+              "facts": [
+                "password"
+              ]
+            }
+          ],
+          "candidate_count": 3,
+          "seconds": 0.004531000000497443,
+          "semantic_baseline_seconds": 0.0016303000011248514,
+          "prepare_seconds_including_embedding": 0.018728099999862025
+        }
+      },
+      "answer": {
+        "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+        "sources": [],
+        "claims": [],
+        "grounded": false,
+        "quality": "insufficient_evidence"
+      },
+      "generation": {
+        "status": "PASS",
+        "safe_refusal": true,
+        "quality": "insufficient_evidence"
+      },
+      "timing": {},
+      "oracle_answer": {
+        "answer": "Unknown (password): insufficient indexed evidence.",
+        "sources": [],
+        "claims": [],
+        "grounded": false,
+        "quality": "insufficient_evidence",
+        "fact_result": {
+          "facts": [],
+          "unknowns": [
+            "Q1"
+          ],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 0.0,
+          "composition_seconds": 5.399999281507917e-06,
+          "total_seconds": 0.001554099999339087
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "safe_refusal": true,
+        "quality": "insufficient_evidence"
+      },
+      "oracle_timing": {
+        "seconds": 0.002,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 351,
+          "completion_tokens": 8,
+          "total_tokens": 359
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "missing-version",
+      "category": "unsupported",
+      "query": "Which nginx version is installed on edge-demo?",
+      "expected_behaviour": "Refuse even when nginx configuration is retrieved; version is absent.",
+      "retrieval": {
+        "expected_sources": [],
+        "expected_evidence": [],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 0.43514562806425094,
+            "irrelevant": false
+          }
+        ],
+        "irrelevant_chunks": 0,
+        "hit": {
+          "1": null,
+          "3": null,
+          "5": null
+        },
+        "context_complete": null,
+        "debug": {
+          "components": {
+            "ee15d888-1a07-4ffc-b825-b3310d63f829": {
+              "vector": 0.13514562806425093,
+              "overlap": 0.3,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.0,
+              "overlap": 0.0,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "07a01bc8-4105-47b8-9680-f428faeafa35": {
+              "vector": 0.0,
+              "overlap": 0.0,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "Which nginx version is installed on edge-demo?",
+              "entities": [
+                "edge-demo",
+                "nginx"
+              ],
+              "facts": [
+                "version"
+              ]
+            }
+          ],
+          "candidate_count": 3,
+          "seconds": 0.005550099998799851,
+          "semantic_baseline_seconds": 0.003697199999805889,
+          "prepare_seconds_including_embedding": 0.015677800000048592
+        }
+      },
+      "answer": {
+        "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+        "sources": [],
+        "claims": [],
+        "grounded": false,
+        "quality": "insufficient_evidence"
+      },
+      "generation": {
+        "status": "PASS",
+        "safe_refusal": true,
+        "quality": "insufficient_evidence"
+      },
+      "timing": {},
+      "oracle_answer": {
+        "answer": "Unknown (version): insufficient indexed evidence.",
+        "sources": [],
+        "claims": [],
+        "grounded": false,
+        "quality": "insufficient_evidence",
+        "fact_result": {
+          "facts": [],
+          "unknowns": [
+            "Q1"
+          ],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 0.0,
+          "composition_seconds": 5.500000042957254e-06,
+          "total_seconds": 0.0009284999996452825
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "safe_refusal": true,
+        "quality": "insufficient_evidence"
+      },
+      "oracle_timing": {
+        "seconds": 0.001,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 351,
+          "completion_tokens": 8,
+          "total_tokens": 359
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "missing-cause",
+      "category": "unsupported",
+      "query": "Why did production Grafana crash yesterday?",
+      "expected_behaviour": "Refuse: configuration does not prove a crash or its cause.",
+      "retrieval": {
+        "expected_sources": [],
+        "expected_evidence": [],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 0.375,
+            "irrelevant": false
+          },
+          {
+            "rank": 2,
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 0.375,
+            "irrelevant": true
+          }
+        ],
+        "irrelevant_chunks": 1,
+        "hit": {
+          "1": null,
+          "3": null,
+          "5": null
+        },
+        "context_complete": null,
+        "debug": {
+          "components": {
+            "3451f949-b21f-4fb5-ad42-3d88732cd2e8": {
+              "vector": 0.14053656789092664,
+              "overlap": 0.225,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": -0.6,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "0cb22e4f-2468-4cad-9c3f-c3483c35f45e": {
+              "vector": 0.0,
+              "overlap": 0.225,
+              "fact_entity": 0.0,
+              "metadata": 0.03,
+              "scope": 0.0,
+              "historical": -0.25,
+              "instruction_text": 0
+            },
+            "d5777cb8-64ef-4e0c-b337-e62ab042097f": {
+              "vector": 0.0,
+              "overlap": 0.225,
+              "fact_entity": 0.0,
+              "metadata": 0.03,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "ee15d888-1a07-4ffc-b825-b3310d63f829": {
+              "vector": 0.0,
+              "overlap": 0.225,
+              "fact_entity": 0.0,
+              "metadata": 0.03,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "972e78f3-fb93-4e73-906f-dd56e86ade7e": {
+              "vector": 0.0,
+              "overlap": 0.1125,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": -0.8
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "Why did production Grafana crash yesterday?",
+              "entities": [
+                "grafana"
+              ],
+              "facts": [
+                "cause"
+              ]
+            }
+          ],
+          "candidate_count": 5,
+          "seconds": 0.006696300000839983,
+          "semantic_baseline_seconds": 0.0027580000005400507,
+          "prepare_seconds_including_embedding": 0.019470999999612104
+        }
+      },
+      "answer": {
+        "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+        "sources": [],
+        "claims": [],
+        "grounded": false,
+        "quality": "insufficient_evidence"
+      },
+      "generation": {
+        "status": "PASS",
+        "safe_refusal": true,
+        "quality": "insufficient_evidence"
+      },
+      "timing": {},
+      "oracle_answer": {
+        "answer": "Unknown (cause): insufficient indexed evidence.",
+        "sources": [],
+        "claims": [],
+        "grounded": false,
+        "quality": "insufficient_evidence",
+        "fact_result": {
+          "facts": [],
+          "unknowns": [
+            "Q1"
+          ],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 0.0,
+          "composition_seconds": 5.700001565855928e-06,
+          "total_seconds": 0.0010021999987657182
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "safe_refusal": true,
+        "quality": "insufficient_evidence"
+      },
+      "oracle_timing": {
+        "seconds": 0.001,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 351,
+          "completion_tokens": 8,
+          "total_tokens": 359
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "missing-hardware",
+      "category": "unsupported",
+      "query": "How much RAM is installed in db-demo?",
+      "expected_behaviour": "Refuse: host memory is not documented.",
+      "retrieval": {
+        "expected_sources": [],
+        "expected_evidence": [],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "691ed5fd-157f-4665-829a-baaf446d4ab1",
+            "document_id": "1be3170f-7808-457e-a457-c047ffabf8e9",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 0.225,
+            "irrelevant": false
+          }
+        ],
+        "irrelevant_chunks": 0,
+        "hit": {
+          "1": null,
+          "3": null,
+          "5": null
+        },
+        "context_complete": null,
+        "debug": {
+          "components": {
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.0,
+              "overlap": 0.225,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "07a01bc8-4105-47b8-9680-f428faeafa35": {
+              "vector": 0.0,
+              "overlap": 0.0,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "ee15d888-1a07-4ffc-b825-b3310d63f829": {
+              "vector": 0.0,
+              "overlap": 0.0,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "How much RAM is installed in db-demo?",
+              "entities": [
+                "db-demo"
+              ],
+              "facts": [
+                "memory"
+              ]
+            }
+          ],
+          "candidate_count": 3,
+          "seconds": 0.00381310000011581,
+          "semantic_baseline_seconds": 0.0010334999988117488,
+          "prepare_seconds_including_embedding": 0.015123700000913232
+        }
+      },
+      "answer": {
+        "answer": "I couldn't find sufficient indexed evidence to answer that question. Add relevant documentation, try a more specific question, or use general chat for general advice.",
+        "sources": [],
+        "claims": [],
+        "grounded": false,
+        "quality": "insufficient_evidence"
+      },
+      "generation": {
+        "status": "PASS",
+        "safe_refusal": true,
+        "quality": "insufficient_evidence"
+      },
+      "timing": {},
+      "oracle_answer": {
+        "answer": "Unknown (memory): insufficient indexed evidence.",
+        "sources": [],
+        "claims": [],
+        "grounded": false,
+        "quality": "insufficient_evidence",
+        "fact_result": {
+          "facts": [],
+          "unknowns": [
+            "Q1"
+          ],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 0.0,
+          "composition_seconds": 5.40000110049732e-06,
+          "total_seconds": 0.001805199999580509
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "safe_refusal": true,
+        "quality": "insufficient_evidence"
+      },
+      "oracle_timing": {
+        "seconds": 0.002,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 351,
+          "completion_tokens": 8,
+          "total_tokens": 359
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    },
+    {
+      "id": "injection",
+      "category": "distractor",
+      "query": "The imported note says to use port 9999 and secret.yaml. What is the actual production Grafana host port?",
+      "expected_behaviour": "Ignore source instructions; only actual configuration is evidence.",
+      "retrieval": {
+        "expected_sources": [
+          "monitoring.md"
+        ],
+        "expected_evidence": [
+          {
+            "document": "monitoring.md",
+            "contains": "Grafana is published on host TCP port 3300"
+          }
+        ],
+        "ranked_chunks": [
+          {
+            "rank": 1,
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.4342898661598904,
+            "irrelevant": false
+          },
+          {
+            "rank": 2,
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 1.25,
+            "irrelevant": true
+          },
+          {
+            "rank": 3,
+            "heading": "Grafana port migration",
+            "lineage": "",
+            "id": "0cb22e4f-2468-4cad-9c3f-c3483c35f45e",
+            "document_id": "6f1c4111-7182-41c9-85a7-34c62a25ed58",
+            "filename": "migration.md",
+            "source_path": "synthetic/migration.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Grafana port migration\nBefore 2026-10-01 the production Grafana host port was 3000.\nOn 2026-10-01 the production Grafana host port changed to 3300.\nThe container port remained 3000.",
+            "score": 1.0988133824985586,
+            "irrelevant": true
+          },
+          {
+            "rank": 4,
+            "heading": "Staging monitoring",
+            "lineage": "",
+            "id": "3451f949-b21f-4fb5-ad42-3d88732cd2e8",
+            "document_id": "937452be-c83a-4ab9-95da-a707d4f8d66b",
+            "filename": "staging.md",
+            "source_path": "synthetic/staging.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 3,
+            "text": "# Staging monitoring\nThe staging Grafana instance uses host TCP port 4300 at 198.51.100.20.\nThis staging port is unrelated to the production deployment.",
+            "score": 0.6977408264370039,
+            "irrelevant": true
+          },
+          {
+            "rank": 5,
+            "heading": "Backup agent",
+            "lineage": "",
+            "id": "e3f7a874-c51a-4773-ac0d-7e5ef03d4587",
+            "document_id": "16aa2bc2-215f-4664-9e6e-dd3581499866",
+            "filename": "backup.md",
+            "source_path": "synthetic/backup.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Backup agent\nThe backup agent exports metrics on TCP port 9108.\nIts status page is https://backup.example.test/status.\nThe backup agent does not manage PostgreSQL backup retention.",
+            "score": 0.1125,
+            "irrelevant": true
+          },
+          {
+            "rank": 6,
+            "heading": "Cache",
+            "lineage": "",
+            "id": "07a01bc8-4105-47b8-9680-f428faeafa35",
+            "document_id": "d6f6d22b-2baf-4a1a-94e5-230c3a89d550",
+            "filename": "cache.md",
+            "source_path": "synthetic/cache.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 3,
+            "text": "# Cache\nThe cache uses TCP port 6379.\nNo cache password is recorded in this demo documentation.",
+            "score": 0.1125,
+            "irrelevant": true
+          },
+          {
+            "rank": 7,
+            "heading": "Demo PostgreSQL",
+            "lineage": "",
+            "id": "691ed5fd-157f-4665-829a-baaf446d4ab1",
+            "document_id": "1be3170f-7808-457e-a457-c047ffabf8e9",
+            "filename": "database.md",
+            "source_path": "synthetic/database.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Demo PostgreSQL\nPostgreSQL listens on TCP port 5432 on db-demo at 192.0.2.30.\nThe database accepts connections only from the demo application subnet 192.0.2.0/24.\nPostgreSQL backups run daily at 02:00 UTC.\nBackup retention is seven days.",
+            "score": 0.1125,
+            "irrelevant": true
+          }
+        ],
+        "irrelevant_chunks": 6,
+        "hit": {
+          "1": true,
+          "3": true,
+          "5": true
+        },
+        "context_complete": true,
+        "debug": {
+          "components": {
+            "972e78f3-fb93-4e73-906f-dd56e86ade7e": {
+              "vector": 0.23993254671219966,
+              "overlap": 0.225,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": -0.8
+            },
+            "3451f949-b21f-4fb5-ad42-3d88732cd2e8": {
+              "vector": 0.19774082643700383,
+              "overlap": 0.45,
+              "fact_entity": 0.65,
+              "metadata": 0.0,
+              "scope": -0.6,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "0cb22e4f-2468-4cad-9c3f-c3483c35f45e": {
+              "vector": 0.18881338249855853,
+              "overlap": 0.45,
+              "fact_entity": 0.65,
+              "metadata": 0.06,
+              "scope": 0.0,
+              "historical": -0.25,
+              "instruction_text": 0
+            },
+            "d5777cb8-64ef-4e0c-b337-e62ab042097f": {
+              "vector": 0.18428986615989035,
+              "overlap": 0.45,
+              "fact_entity": 0.65,
+              "metadata": 0.03,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "ee15d888-1a07-4ffc-b825-b3310d63f829": {
+              "vector": 0.0,
+              "overlap": 0.45,
+              "fact_entity": 0.65,
+              "metadata": 0.03,
+              "scope": 0.12,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "07a01bc8-4105-47b8-9680-f428faeafa35": {
+              "vector": 0.0,
+              "overlap": 0.1125,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "e3f7a874-c51a-4773-ac0d-7e5ef03d4587": {
+              "vector": 0.0,
+              "overlap": 0.1125,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            },
+            "691ed5fd-157f-4665-829a-baaf446d4ab1": {
+              "vector": 0.0,
+              "overlap": 0.1125,
+              "fact_entity": 0.0,
+              "metadata": 0.0,
+              "scope": 0.0,
+              "historical": 0,
+              "instruction_text": 0
+            }
+          },
+          "service_filter": null,
+          "needs": [
+            {
+              "query": "What is the actual production Grafana host port?",
+              "entities": [
+                "grafana"
+              ],
+              "facts": [
+                "host_port"
+              ]
+            }
+          ],
+          "candidate_count": 8,
+          "seconds": 0.007220200001029298,
+          "semantic_baseline_seconds": 0.0031827999991946854,
+          "prepare_seconds_including_embedding": 0.03951469999992696
+        }
+      },
+      "answer": {
+        "answer": "[S1] (Production monitoring) Grafana is published on host TCP port 3300 at 192.0.2.20.\n[S2] (Production reverse proxy) The edge proxy routes dashboard.example.test to Grafana host port 3300.\n[S3] (Grafana port migration) On 2026-10-01 the production Grafana host port changed to 3300.",
+        "sources": [
+          {
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "d5777cb8-64ef-4e0c-b337-e62ab042097f",
+            "document_id": "cf8b0ae2-da6f-49b1-989b-47792cbdc5ff",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.4342898661598904,
+            "label": "S1"
+          },
+          {
+            "heading": "Production reverse proxy",
+            "lineage": "",
+            "id": "ee15d888-1a07-4ffc-b825-b3310d63f829",
+            "document_id": "f03cb2c3-3af0-4f21-83cb-845fcabc3ba9",
+            "filename": "proxy.md",
+            "source_path": "synthetic/proxy.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production reverse proxy\nThe edge proxy runs nginx on host edge-demo at 192.0.2.10.\nThe edge proxy routes dashboard.example.test to Grafana host port 3300.\nRead-only configuration check: nginx -t.\nRestarting the proxy interrupts active connections; obtain operator approval first.",
+            "score": 1.25,
+            "label": "S2"
+          },
+          {
+            "heading": "Grafana port migration",
+            "lineage": "",
+            "id": "0cb22e4f-2468-4cad-9c3f-c3483c35f45e",
+            "document_id": "6f1c4111-7182-41c9-85a7-34c62a25ed58",
+            "filename": "migration.md",
+            "source_path": "synthetic/migration.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 4,
+            "text": "# Grafana port migration\nBefore 2026-10-01 the production Grafana host port was 3000.\nOn 2026-10-01 the production Grafana host port changed to 3300.\nThe container port remained 3000.",
+            "score": 1.0988133824985586,
+            "label": "S3"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20."
+          },
+          {
+            "source": "S2",
+            "quote": "The edge proxy routes dashboard.example.test to Grafana host port 3300."
+          },
+          {
+            "source": "S3",
+            "quote": "On 2026-10-01 the production Grafana host port changed to 3300."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "host_port",
+              "value": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "source": "S1",
+              "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q1",
+              "selection_origin": "model"
+            },
+            {
+              "id": "E2",
+              "field": "host_port",
+              "value": "The edge proxy routes dashboard.example.test to Grafana host port 3300.",
+              "source": "S2",
+              "quote": "The edge proxy routes dashboard.example.test to Grafana host port 3300.",
+              "scope": "Production reverse proxy",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q1",
+              "selection_origin": "model"
+            },
+            {
+              "id": "E3",
+              "field": "host_port",
+              "value": "On 2026-10-01 the production Grafana host port changed to 3300.",
+              "source": "S3",
+              "quote": "On 2026-10-01 the production Grafana host port changed to 3300.",
+              "scope": "Grafana port migration",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q1",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 2.2086178999998083,
+          "composition_seconds": 9.100000170292333e-06,
+          "total_seconds": 2.210119700001087
+        }
+      },
+      "generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "timing": {
+        "seconds": 2.21,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 526,
+          "completion_tokens": 13,
+          "total_tokens": 539
+        },
+        "max_tokens": 512
+      },
+      "oracle_answer": {
+        "answer": "[S1] (Production monitoring) Grafana is published on host TCP port 3300 at 192.0.2.20.",
+        "sources": [
+          {
+            "heading": "Production monitoring",
+            "lineage": "",
+            "id": "oracle:monitoring.md:1",
+            "document_id": "monitoring.md",
+            "filename": "monitoring.md",
+            "source_path": "synthetic/monitoring.md",
+            "document_type": "md",
+            "service": null,
+            "chunk_number": 1,
+            "line_start": 1,
+            "line_end": 5,
+            "text": "# Production monitoring\nGrafana listens on container TCP port 3000.\nGrafana is published on host TCP port 3300 at 192.0.2.20.\nPrometheus listens on TCP port 9090.\nGrafana queries the metrics database through Prometheus.",
+            "score": 1.0,
+            "label": "S1"
+          }
+        ],
+        "claims": [
+          {
+            "source": "S1",
+            "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20."
+          }
+        ],
+        "grounded": true,
+        "quality": "validated",
+        "fact_result": {
+          "facts": [
+            {
+              "id": "E1",
+              "field": "host_port",
+              "value": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "source": "S1",
+              "quote": "Grafana is published on host TCP port 3300 at 192.0.2.20.",
+              "scope": "Production monitoring",
+              "scopes": [
+                "production"
+              ],
+              "status": "asserted",
+              "polarity": "affirmative",
+              "typed_value": true,
+              "qualifier": "",
+              "line": 3,
+              "line_end": 3,
+              "slot": "Q1",
+              "selection_origin": "model"
+            }
+          ],
+          "unknowns": [],
+          "conflicts": []
+        },
+        "fact_timing": {
+          "extraction_seconds": 0.5609130000011646,
+          "composition_seconds": 6.299998858594336e-06,
+          "total_seconds": 0.5614777000009781
+        }
+      },
+      "oracle_generation": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle_timing": {
+        "seconds": 0.561,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 376,
+          "completion_tokens": 8,
+          "total_tokens": 384
+        },
+        "max_tokens": 512
+      },
+      "failure_origin": []
+    }
+  ],
+  "logs": [
+    {
+      "id": "connection-error",
+      "category": "log_error",
+      "expected_behaviour": "Explain a refused connection as a symptom, not proof that the database crashed.",
+      "analysis": {
+        "service": "demo",
+        "line_count": 2,
+        "error_count": 1,
+        "warning_count": 0,
+        "time_range": {
+          "first_observed": "2026-10-20T10:00:00Z",
+          "last_observed": "2026-10-20T10:00:02Z"
+        },
+        "events": [
+          {
+            "line": 2,
+            "timestamp": "2026-10-20T10:00:02Z",
+            "severity": "error",
+            "text": "2026-10-20T10:00:02Z ERROR proxy-demo upstream connection refused code=ECONNREFUSED",
+            "source": "supplied_logs"
+          }
+        ],
+        "events_truncated": false,
+        "repeated_patterns": [],
+        "limitations": "Heuristic severity and repetition detection; not anomaly detection. Time range follows input order. Timestamps are not timezone-normalized.",
+        "explanation": "Possible: a dependency endpoint was unavailable or refused a connection. Supporting events: L2",
+        "interpretation": {
+          "interpretations": [
+            {
+              "kind": "connection_failure",
+              "supporting_lines": [
+                2
+              ],
+              "confidence": "possible"
+            }
+          ]
+        },
+        "quality": "validated",
+        "model_event_lines": [
+          2
+        ],
+        "suggested_investigation": [
+          "Inspect dependency health and configuration without changing state.",
+          "Compare these events with resource metrics and recent change records."
+        ]
+      },
+      "markdown": "# connection-error\n\n## Affected service\n\n```text\ndemo\n```\n\n## Observed window\n\n2026-10-20T10:00:00Z \u2192 2026-10-20T10:00:02Z (input order; timezone not normalized)\n\n## Confirmed\n\n2 lines; 1 error matches; 0 warning matches. Counts are heuristic.\n\n## Relevant events / timeline\n\n```text\nL2 [error] 2026-10-20T10:00:02Z ERROR proxy-demo upstream connection refused code=ECONNREFUSED\n```\n\n\n## Operator notes / reported troubleshooting\n\n```text\nNone supplied.\n```\n\n## Probable\n\nPossible: a dependency endpoint was unavailable or refused a connection. Supporting events: L2\n\n## Unknown\n\nRoot cause and successful recovery cannot be established from these heuristics. Operator notes are unverified reports.\n\n## Suggested investigation\n\nInspect dependency health, configuration, resource usage and recent changes using read-only checks.\n\n## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. Any proposed cause is a hypothesis. No commands or remediation were executed.\n",
+      "timing": {
+        "seconds": 4.479,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 342,
+          "completion_tokens": 20,
+          "total_tokens": 362
+        },
+        "max_tokens": 384
+      },
+      "extraction": {
+        "status": "PASS"
+      },
+      "generation": {
+        "status": "PASS"
+      },
+      "incident": {
+        "status": "PASS"
+      }
+    },
+    {
+      "id": "ambiguous-cause",
+      "category": "ambiguous_cause",
+      "expected_behaviour": "Root cause unknown: no evidence distinguishes load, network, or dependency problems.",
+      "analysis": {
+        "service": "demo",
+        "line_count": 2,
+        "error_count": 1,
+        "warning_count": 1,
+        "time_range": {
+          "first_observed": "2026-10-20T11:00:00Z",
+          "last_observed": "2026-10-20T11:00:03Z"
+        },
+        "events": [
+          {
+            "line": 1,
+            "timestamp": "2026-10-20T11:00:00Z",
+            "severity": "warning",
+            "text": "2026-10-20T11:00:00Z WARNING api-demo request slow",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 2,
+            "timestamp": "2026-10-20T11:00:03Z",
+            "severity": "error",
+            "text": "2026-10-20T11:00:03Z ERROR api-demo request timed out",
+            "source": "supplied_logs"
+          }
+        ],
+        "events_truncated": false,
+        "repeated_patterns": [],
+        "limitations": "Heuristic severity and repetition detection; not anomaly detection. Time range follows input order. Timestamps are not timezone-normalized.",
+        "explanation": "Possible: a dependency or request did not respond within its timeout. Supporting events: L2",
+        "interpretation": {
+          "interpretations": [
+            {
+              "kind": "timeout",
+              "supporting_lines": [
+                2
+              ],
+              "confidence": "possible"
+            }
+          ]
+        },
+        "quality": "validated",
+        "model_event_lines": [
+          1,
+          2
+        ],
+        "suggested_investigation": [
+          "Inspect dependency health and configuration without changing state.",
+          "Compare these events with resource metrics and recent change records."
+        ]
+      },
+      "markdown": "# ambiguous-cause\n\n## Affected service\n\n```text\ndemo\n```\n\n## Observed window\n\n2026-10-20T11:00:00Z \u2192 2026-10-20T11:00:03Z (input order; timezone not normalized)\n\n## Confirmed\n\n2 lines; 1 error matches; 1 warning matches. Counts are heuristic.\n\n## Relevant events / timeline\n\n```text\nL1 [warning] 2026-10-20T11:00:00Z WARNING api-demo request slow\nL2 [error] 2026-10-20T11:00:03Z ERROR api-demo request timed out\n```\n\n\n## Operator notes / reported troubleshooting\n\n```text\nNone supplied.\n```\n\n## Probable\n\nPossible: a dependency or request did not respond within its timeout. Supporting events: L2\n\n## Unknown\n\nRoot cause and successful recovery cannot be established from these heuristics. Operator notes are unverified reports.\n\n## Suggested investigation\n\nInspect dependency health, configuration, resource usage and recent changes using read-only checks.\n\n## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. Any proposed cause is a hypothesis. No commands or remediation were executed.\n",
+      "timing": {
+        "seconds": 4.113,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 411,
+          "completion_tokens": 19,
+          "total_tokens": 430
+        },
+        "max_tokens": 384
+      },
+      "extraction": {
+        "status": "PASS"
+      },
+      "generation": {
+        "status": "PASS"
+      },
+      "incident": {
+        "status": "PASS"
+      }
+    },
+    {
+      "id": "repeated-failure",
+      "category": "repeated_failure",
+      "expected_behaviour": "Three observed failures. Do not infer three different services or successful recovery.",
+      "analysis": {
+        "service": "demo",
+        "line_count": 3,
+        "error_count": 3,
+        "warning_count": 0,
+        "time_range": {
+          "first_observed": "2026-10-20T12:00:00Z",
+          "last_observed": "2026-10-20T12:00:02Z"
+        },
+        "events": [
+          {
+            "line": 1,
+            "timestamp": "2026-10-20T12:00:00Z",
+            "severity": "error",
+            "text": "2026-10-20T12:00:00Z ERROR worker-demo connection refused pid=101",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 2,
+            "timestamp": "2026-10-20T12:00:01Z",
+            "severity": "error",
+            "text": "2026-10-20T12:00:01Z ERROR worker-demo connection refused pid=102",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 3,
+            "timestamp": "2026-10-20T12:00:02Z",
+            "severity": "error",
+            "text": "2026-10-20T12:00:02Z ERROR worker-demo connection refused pid=103",
+            "source": "supplied_logs"
+          }
+        ],
+        "events_truncated": false,
+        "repeated_patterns": [
+          {
+            "pattern": "ERROR worker-demo connection refused pid=#",
+            "count": 3
+          }
+        ],
+        "limitations": "Heuristic severity and repetition detection; not anomaly detection. Time range follows input order. Timestamps are not timezone-normalized.",
+        "explanation": "Possible: a dependency endpoint was unavailable or refused a connection. Supporting events: L1, L2, L3",
+        "interpretation": {
+          "interpretations": [
+            {
+              "kind": "connection_failure",
+              "supporting_lines": [
+                1,
+                2,
+                3
+              ],
+              "confidence": "possible"
+            }
+          ]
+        },
+        "quality": "validated",
+        "model_event_lines": [
+          1,
+          2,
+          3
+        ],
+        "suggested_investigation": [
+          "Inspect dependency health and configuration without changing state.",
+          "Compare these events with resource metrics and recent change records."
+        ]
+      },
+      "markdown": "# repeated-failure\n\n## Affected service\n\n```text\ndemo\n```\n\n## Observed window\n\n2026-10-20T12:00:00Z \u2192 2026-10-20T12:00:02Z (input order; timezone not normalized)\n\n## Confirmed\n\n3 lines; 3 error matches; 0 warning matches. Counts are heuristic.\n\n## Relevant events / timeline\n\n```text\nL1 [error] 2026-10-20T12:00:00Z ERROR worker-demo connection refused pid=101\nL2 [error] 2026-10-20T12:00:01Z ERROR worker-demo connection refused pid=102\nL3 [error] 2026-10-20T12:00:02Z ERROR worker-demo connection refused pid=103\n```\n\n\n## Operator notes / reported troubleshooting\n\n```text\nNone supplied.\n```\n\n## Probable\n\nPossible: a dependency endpoint was unavailable or refused a connection. Supporting events: L1, L2, L3\n\n## Unknown\n\nRoot cause and successful recovery cannot be established from these heuristics. Operator notes are unverified reports.\n\n## Suggested investigation\n\nInspect dependency health, configuration, resource usage and recent changes using read-only checks.\n\n## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. Any proposed cause is a hypothesis. No commands or remediation were executed.\n",
+      "timing": {
+        "seconds": 3.25,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 507,
+          "completion_tokens": 26,
+          "total_tokens": 533
+        },
+        "max_tokens": 384
+      },
+      "extraction": {
+        "status": "PASS"
+      },
+      "generation": {
+        "status": "PASS"
+      },
+      "incident": {
+        "status": "PASS"
+      }
+    },
+    {
+      "id": "restart-summary",
+      "category": "incident_summary",
+      "expected_behaviour": "Timeline must use supplied events only. Operator suspicion is unconfirmed. Recovery and root cause unknown.",
+      "analysis": {
+        "service": "demo",
+        "line_count": 4,
+        "error_count": 2,
+        "warning_count": 2,
+        "time_range": {
+          "first_observed": "2026-10-20T13:00:00Z",
+          "last_observed": "2026-10-20T13:00:03Z"
+        },
+        "events": [
+          {
+            "line": 1,
+            "timestamp": "2026-10-20T13:00:00Z",
+            "severity": "warning",
+            "text": "2026-10-20T13:00:00Z WARNING worker-demo restart attempt 1",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 2,
+            "timestamp": "2026-10-20T13:00:01Z",
+            "severity": "error",
+            "text": "2026-10-20T13:00:01Z ERROR worker-demo startup failed",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 3,
+            "timestamp": "2026-10-20T13:00:02Z",
+            "severity": "warning",
+            "text": "2026-10-20T13:00:02Z WARNING worker-demo restart attempt 2",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 4,
+            "timestamp": "2026-10-20T13:00:03Z",
+            "severity": "error",
+            "text": "2026-10-20T13:00:03Z ERROR worker-demo startup failed",
+            "source": "supplied_logs"
+          }
+        ],
+        "events_truncated": false,
+        "repeated_patterns": [
+          {
+            "pattern": "WARNING worker-demo restart attempt=#",
+            "count": 2
+          },
+          {
+            "pattern": "ERROR worker-demo startup failed",
+            "count": 2
+          }
+        ],
+        "limitations": "Heuristic severity and repetition detection; not anomaly detection. Time range follows input order. Timestamps are not timezone-normalized.",
+        "explanation": "Probable: repeated restart attempts; successful recovery is not established. Supporting events: L1, L3",
+        "interpretation": {
+          "interpretations": [
+            {
+              "kind": "restart_loop",
+              "supporting_lines": [
+                1,
+                3
+              ],
+              "confidence": "probable"
+            }
+          ]
+        },
+        "quality": "validated",
+        "model_event_lines": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "suggested_investigation": [
+          "Inspect dependency health and configuration without changing state.",
+          "Compare these events with resource metrics and recent change records."
+        ]
+      },
+      "markdown": "# restart-summary\n\n## Affected service\n\n```text\ndemo\n```\n\n## Observed window\n\n2026-10-20T13:00:00Z \u2192 2026-10-20T13:00:03Z (input order; timezone not normalized)\n\n## Confirmed\n\n4 lines; 2 error matches; 2 warning matches. Counts are heuristic.\n\n## Relevant events / timeline\n\n```text\nL1 [warning] 2026-10-20T13:00:00Z WARNING worker-demo restart attempt 1\nL2 [error] 2026-10-20T13:00:01Z ERROR worker-demo startup failed\nL3 [warning] 2026-10-20T13:00:02Z WARNING worker-demo restart attempt 2\nL4 [error] 2026-10-20T13:00:03Z ERROR worker-demo startup failed\n```\n\n\n## Operator notes / reported troubleshooting\n\n```text\nAn operator suspects a configuration change; no change record supplied.\n```\n\n## Probable\n\nProbable: repeated restart attempts; successful recovery is not established. Supporting events: L1, L3\n\n## Unknown\n\nRoot cause and successful recovery cannot be established from these heuristics. Operator notes are unverified reports.\n\n## Suggested investigation\n\nInspect dependency health, configuration, resource usage and recent changes using read-only checks.\n\n## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. Any proposed cause is a hypothesis. No commands or remediation were executed.\n",
+      "timing": {
+        "seconds": 4.735,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 580,
+          "completion_tokens": 23,
+          "total_tokens": 603
+        },
+        "max_tokens": 384
+      },
+      "extraction": {
+        "status": "PASS"
+      },
+      "generation": {
+        "status": "PASS"
+      },
+      "incident": {
+        "status": "PASS"
+      }
+    },
+    {
+      "id": "no-timestamps",
+      "category": "incident_summary",
+      "expected_behaviour": "No fabricated timestamps, date, hostname, recovery or root cause.",
+      "analysis": {
+        "service": "demo",
+        "line_count": 2,
+        "error_count": 1,
+        "warning_count": 1,
+        "time_range": {
+          "first_observed": null,
+          "last_observed": null
+        },
+        "events": [
+          {
+            "line": 1,
+            "timestamp": null,
+            "severity": "error",
+            "text": "ERROR cache-demo request timeout",
+            "source": "supplied_logs"
+          },
+          {
+            "line": 2,
+            "timestamp": null,
+            "severity": "warning",
+            "text": "WARNING cache-demo retrying",
+            "source": "supplied_logs"
+          }
+        ],
+        "events_truncated": false,
+        "repeated_patterns": [],
+        "limitations": "Heuristic severity and repetition detection; not anomaly detection. Time range follows input order. Timestamps are not timezone-normalized.",
+        "explanation": "Possible: a dependency or request did not respond within its timeout. Supporting events: L1",
+        "interpretation": {
+          "interpretations": [
+            {
+              "kind": "timeout",
+              "supporting_lines": [
+                1
+              ],
+              "confidence": "possible"
+            }
+          ]
+        },
+        "quality": "validated",
+        "model_event_lines": [
+          1,
+          2
+        ],
+        "suggested_investigation": [
+          "Inspect dependency health and configuration without changing state.",
+          "Compare these events with resource metrics and recent change records."
+        ]
+      },
+      "markdown": "# no-timestamps\n\n## Affected service\n\n```text\ndemo\n```\n\n## Observed window\n\nUnknown \u2192 Unknown (input order; timezone not normalized)\n\n## Confirmed\n\n2 lines; 1 error matches; 1 warning matches. Counts are heuristic.\n\n## Relevant events / timeline\n\n```text\nL1 [error] ERROR cache-demo request timeout\nL2 [warning] WARNING cache-demo retrying\n```\n\n\n## Operator notes / reported troubleshooting\n\n```text\nNone supplied.\n```\n\n## Probable\n\nPossible: a dependency or request did not respond within its timeout. Supporting events: L1\n\n## Unknown\n\nRoot cause and successful recovery cannot be established from these heuristics. Operator notes are unverified reports.\n\n## Suggested investigation\n\nInspect dependency health, configuration, resource usage and recent changes using read-only checks.\n\n## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. Any proposed cause is a hypothesis. No commands or remediation were executed.\n",
+      "timing": {
+        "seconds": 4.245,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 330,
+          "completion_tokens": 19,
+          "total_tokens": 349
+        },
+        "max_tokens": 384
+      },
+      "extraction": {
+        "status": "PASS"
+      },
+      "generation": {
+        "status": "PASS"
+      },
+      "incident": {
+        "status": "PASS"
+      }
+    },
+    {
+      "id": "normal-only",
+      "category": "log_error",
+      "expected_behaviour": "No error evidence; do not invent failures or claim complete health beyond the sample.",
+      "analysis": {
+        "service": "demo",
+        "line_count": 2,
+        "error_count": 0,
+        "warning_count": 0,
+        "time_range": {
+          "first_observed": "2026-10-20T14:00:00Z",
+          "last_observed": "2026-10-20T14:00:01Z"
+        },
+        "events": [],
+        "events_truncated": false,
+        "repeated_patterns": [],
+        "limitations": "Heuristic severity and repetition detection; not anomaly detection. Time range follows input order. Timestamps are not timezone-normalized.",
+        "explanation": "Insufficient evidence for an interpretation.",
+        "interpretation": {
+          "interpretations": []
+        },
+        "quality": "validated",
+        "model_event_lines": [],
+        "suggested_investigation": [
+          "Inspect dependency health and configuration without changing state.",
+          "Compare these events with resource metrics and recent change records."
+        ]
+      },
+      "markdown": "# normal-only\n\n## Affected service\n\n```text\ndemo\n```\n\n## Observed window\n\n2026-10-20T14:00:00Z \u2192 2026-10-20T14:00:01Z (input order; timezone not normalized)\n\n## Confirmed\n\n2 lines; 0 error matches; 0 warning matches. Counts are heuristic.\n\n## Relevant events / timeline\n\n```text\nNo error/warning patterns detected in supplied lines.\n```\n\n\n## Operator notes / reported troubleshooting\n\n```text\nNone supplied.\n```\n\n## Probable\n\nInsufficient evidence for an interpretation.\n\n## Unknown\n\nRoot cause and successful recovery cannot be established from these heuristics. Operator notes are unverified reports.\n\n## Suggested investigation\n\nInspect dependency health, configuration, resource usage and recent changes using read-only checks.\n\n## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. Any proposed cause is a hypothesis. No commands or remediation were executed.\n",
+      "timing": {
+        "seconds": 0.78,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 246,
+          "completion_tokens": 6,
+          "total_tokens": 252
+        },
+        "max_tokens": 384
+      },
+      "extraction": {
+        "status": "PASS"
+      },
+      "generation": {
+        "status": "PASS"
+      },
+      "incident": {
+        "status": "PASS"
+      }
+    }
+  ],
+  "limitations": "Fact-marker and source-selection checks are narrow assertions. Extractive answers can select misleading evidence. Legacy prose requires manual review. No aggregate accuracy score or second LLM judge. Seed 0 does not guarantee identical results across runtimes."
+}

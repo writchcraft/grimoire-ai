@@ -1,0 +1,520 @@
+{
+  "first_run_sha256": "a0fae7e02edd7fcb10a842a5b358625d51b5ff236473df0380367406985b3491",
+  "heldout_first_and_final": {
+    "summary": {
+      "retrieval": {
+        "hit@1": {
+          "found": 18,
+          "total": 22
+        },
+        "hit@3": {
+          "found": 21,
+          "total": 22
+        },
+        "hit@5": {
+          "found": 22,
+          "total": 22
+        }
+      },
+      "grounded_qa": {
+        "PASS": 14,
+        "FAIL": 8
+      },
+      "oracle_qa": {
+        "PASS": 12,
+        "FAIL": 10
+      },
+      "unsupported": {
+        "PASS": 4,
+        "FAIL": 1
+      },
+      "oracle_unsupported": {
+        "PASS": 4,
+        "FAIL": 1
+      },
+      "citations": {
+        "traceable_claims": 59,
+        "validated_claims": 59,
+        "answers_with_claims": 20,
+        "rejected_outputs": 0
+      },
+      "logs": {
+        "PASS": 7
+      },
+      "log_extraction": {
+        "PASS": 7
+      },
+      "incidents": {
+        "PASS": 7
+      }
+    },
+    "complete_supplied_context": 17,
+    "supported_total": 22,
+    "missing_required_markers": 8,
+    "latency": {
+      "supported_answer_seconds": {
+        "median": 2.04,
+        "max": 5.262,
+        "p95_nearest_rank": 4.653
+      },
+      "oracle_answer_seconds": {
+        "median": 0.8574999999999999,
+        "max": 3.675,
+        "p95_nearest_rank": 3.435
+      },
+      "retrieval_prepare_including_embedding_seconds": {
+        "median": 0.030073800000081974,
+        "max": 0.08390909999980067,
+        "p95_nearest_rank": 0.056409200000416604
+      },
+      "hybrid_search_seconds": {
+        "median": 0.012980599999991682,
+        "max": 0.029746500000328524,
+        "p95_nearest_rank": 0.019325499999467866
+      },
+      "supported_end_to_end_seconds": {
+        "median": 2.0694875499994305,
+        "max": 5.2914751999999785,
+        "p95_nearest_rank": 4.680900199998839
+      },
+      "log_answer_seconds": {
+        "median": 2.89,
+        "max": 4.586,
+        "p95_nearest_rank": 4.586
+      }
+    }
+  },
+  "development_regression": {
+    "summary": {
+      "retrieval": {
+        "hit@1": {
+          "found": 8,
+          "total": 10
+        },
+        "hit@3": {
+          "found": 10,
+          "total": 10
+        },
+        "hit@5": {
+          "found": 10,
+          "total": 10
+        }
+      },
+      "grounded_qa": {
+        "PASS": 10
+      },
+      "oracle_qa": {
+        "PASS": 10
+      },
+      "unsupported": {
+        "PASS": 4
+      },
+      "oracle_unsupported": {
+        "PASS": 4
+      },
+      "citations": {
+        "traceable_claims": 17,
+        "validated_claims": 17,
+        "answers_with_claims": 10,
+        "rejected_outputs": 0
+      },
+      "logs": {
+        "PASS": 6
+      },
+      "log_extraction": {
+        "PASS": 6
+      },
+      "incidents": {
+        "PASS": 6
+      }
+    },
+    "complete_supplied_context": 10,
+    "supported_total": 10,
+    "missing_required_markers": 0,
+    "latency": {
+      "supported_answer_seconds": {
+        "median": 2.363,
+        "max": 4.101,
+        "p95_nearest_rank": 4.101
+      },
+      "oracle_answer_seconds": {
+        "median": 0.7595000000000001,
+        "max": 1.567,
+        "p95_nearest_rank": 1.567
+      },
+      "retrieval_prepare_including_embedding_seconds": {
+        "median": 0.027218149999498564,
+        "max": 0.0447600000006787,
+        "p95_nearest_rank": 0.0447600000006787
+      },
+      "hybrid_search_seconds": {
+        "median": 0.008241200000156823,
+        "max": 0.01692419999926642,
+        "p95_nearest_rank": 0.01692419999926642
+      },
+      "supported_end_to_end_seconds": {
+        "median": 2.3924062499988286,
+        "max": 4.129399900000295,
+        "p95_nearest_rank": 4.129399900000295
+      },
+      "log_answer_seconds": {
+        "median": 2.46,
+        "max": 3.561,
+        "p95_nearest_rank": 3.561
+      }
+    }
+  },
+  "failure_classification": [
+    {
+      "id": "leaf-database",
+      "categories": [
+        "evidence selection",
+        "qualification spanning lines",
+        "lexical relevance",
+        "over-refusal"
+      ],
+      "diagnosis": "Compose evidence is ranked but dropped. Retrieved inventory supplies the right value from a different file, so the exact-evidence assertion fails. Oracle Compose refuses; nested DATABASE_NAME is not connected to its service in line candidates.",
+      "retrieved": {
+        "status": "FAIL",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": false,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle": {
+        "status": "FAIL",
+        "missing_facts": [
+          "leaf_archive"
+        ],
+        "forbidden_facts": [],
+        "required_sources_selected": false,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "insufficient_evidence"
+      },
+      "context_complete": false
+    },
+    {
+      "id": "queue-link",
+      "categories": [
+        "evidence selection",
+        "qualification spanning lines",
+        "expected-slot inference",
+        "over-refusal"
+      ],
+      "diagnosis": "Ranked depends_on evidence is not supplied. Oracle also refuses; a YAML list child is not represented as the dependency relationship of its parent service. Retrieved answer emits unrelated inventory properties.",
+      "retrieved": {
+        "status": "FAIL",
+        "missing_facts": [
+          "rabbit-broker"
+        ],
+        "forbidden_facts": [],
+        "required_sources_selected": false,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle": {
+        "status": "FAIL",
+        "missing_facts": [
+          "rabbit-broker"
+        ],
+        "forbidden_facts": [],
+        "required_sources_selected": false,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "insufficient_evidence"
+      },
+      "context_complete": false
+    },
+    {
+      "id": "secondary-url",
+      "categories": [
+        "overly broad alternatives",
+        "scope reconciliation"
+      ],
+      "diagnosis": "Retrieved answer passes; full-document oracle includes the primary repository too. The validator expands an accepted slot to every eligible candidate, beyond model selections.",
+      "retrieved": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle": {
+        "status": "FAIL",
+        "missing_facts": [],
+        "forbidden_facts": [
+          "leaf-primary"
+        ],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "context_complete": true
+    },
+    {
+      "id": "retention-pair",
+      "categories": [
+        "evidence selection",
+        "expected-slot inference",
+        "lexical relevance",
+        "over-refusal"
+      ],
+      "diagnosis": "Two retention subjects in one question are not decomposed; both run modes refuse. All required text is top-5 but selected context is incomplete.",
+      "retrieved": {
+        "status": "FAIL",
+        "missing_facts": [
+          "11",
+          "61"
+        ],
+        "forbidden_facts": [],
+        "required_sources_selected": false,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "insufficient_evidence"
+      },
+      "oracle": {
+        "status": "FAIL",
+        "missing_facts": [
+          "11",
+          "61"
+        ],
+        "forbidden_facts": [],
+        "required_sources_selected": false,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "insufficient_evidence"
+      },
+      "context_complete": false
+    },
+    {
+      "id": "leaf-ports",
+      "categories": [
+        "expected-slot inference",
+        "qualification spanning lines"
+      ],
+      "diagnosis": "Both required lines are supplied. The host-port slot does not cover the separately requested internal port; both runs omit 8126.",
+      "retrieved": {
+        "status": "FAIL",
+        "missing_facts": [
+          "8126"
+        ],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle": {
+        "status": "FAIL",
+        "missing_facts": [
+          "8126"
+        ],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "context_complete": true
+    },
+    {
+      "id": "exporter-list",
+      "categories": [
+        "lexical relevance",
+        "qualification spanning lines",
+        "over-refusal"
+      ],
+      "diagnosis": "Both lines are supplied but the list-level Telegraf qualifier is disconnected from host/port lines under an Exporter list heading. Both modes refuse.",
+      "retrieved": {
+        "status": "FAIL",
+        "missing_facts": [
+          "maple-14",
+          "9284"
+        ],
+        "forbidden_facts": [],
+        "required_sources_selected": false,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "insufficient_evidence"
+      },
+      "oracle": {
+        "status": "FAIL",
+        "missing_facts": [
+          "maple-14",
+          "9284"
+        ],
+        "forbidden_facts": [],
+        "required_sources_selected": false,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "insufficient_evidence"
+      },
+      "context_complete": true
+    },
+    {
+      "id": "database-groups",
+      "categories": [
+        "scope reconciliation",
+        "qualification spanning lines",
+        "lexical relevance",
+        "overly broad alternatives"
+      ],
+      "diagnosis": "Production and staging YAML groups share chunk metadata. Both ports are rendered; allowed_subnet is not matched as the subnet attribute. Both modes fail.",
+      "retrieved": {
+        "status": "FAIL",
+        "missing_facts": [
+          "203.0.113.128/27"
+        ],
+        "forbidden_facts": [
+          "3327"
+        ],
+        "required_sources_selected": true,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle": {
+        "status": "FAIL",
+        "missing_facts": [
+          "203.0.113.128/27"
+        ],
+        "forbidden_facts": [
+          "3327"
+        ],
+        "required_sources_selected": true,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "context_complete": true
+    },
+    {
+      "id": "replication-off",
+      "categories": [
+        "evidence selection",
+        "negative/unchanged fact handling",
+        "qualification spanning lines",
+        "over-refusal"
+      ],
+      "diagnosis": "Nested replication_enabled is not tied to its production service scope. Required evidence is ranked but dropped; full oracle also refuses.",
+      "retrieved": {
+        "status": "FAIL",
+        "missing_facts": [
+          "false"
+        ],
+        "forbidden_facts": [],
+        "required_sources_selected": false,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "insufficient_evidence"
+      },
+      "oracle": {
+        "status": "FAIL",
+        "missing_facts": [
+          "false"
+        ],
+        "forbidden_facts": [],
+        "required_sources_selected": false,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "insufficient_evidence"
+      },
+      "context_complete": false
+    },
+    {
+      "id": "spare-radio",
+      "categories": [
+        "overly broad alternatives",
+        "scope reconciliation",
+        "qualification spanning lines"
+      ],
+      "diagnosis": "Retrieved answer passes. Full oracle adds the production port to a spare/rehearsal question; adjacent prose qualification does not constrain eligible alternatives.",
+      "retrieved": {
+        "status": "PASS",
+        "missing_facts": [],
+        "forbidden_facts": [],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle": {
+        "status": "FAIL",
+        "missing_facts": [],
+        "forbidden_facts": [
+          "8187"
+        ],
+        "required_sources_selected": true,
+        "required_evidence_selected": true,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "context_complete": true
+    },
+    {
+      "id": "quoted-wrong-port",
+      "categories": [
+        "evidence selection",
+        "lexical relevance",
+        "conflict handling",
+        "overly broad alternatives",
+        "over-refusal"
+      ],
+      "diagnosis": "Retrieved answer quotes a disproved 6543 guess as an answer alternative alongside its correction. Expected inventory line is ranked but dropped. Oracle refuses even with that line available. Provenance validation accepts the faithfully quoted wrong guess.",
+      "retrieved": {
+        "status": "FAIL",
+        "missing_facts": [],
+        "forbidden_facts": [
+          "6543"
+        ],
+        "required_sources_selected": false,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "validated"
+      },
+      "oracle": {
+        "status": "FAIL",
+        "missing_facts": [
+          "4537"
+        ],
+        "forbidden_facts": [],
+        "required_sources_selected": false,
+        "required_evidence_selected": false,
+        "citation_traceable": true,
+        "quality": "insufficient_evidence"
+      },
+      "context_complete": false
+    },
+    {
+      "id": "absent-firmware",
+      "categories": [
+        "lexical relevance",
+        "unsupported claim",
+        "validation"
+      ],
+      "diagnosis": "Both runs mark the answer grounded by selecting a sentence prohibiting inference of firmware version. No version is invented, but an explicit refusal is required. Lexical attribute matching mistakes a limitation for positive evidence.",
+      "retrieved": {
+        "status": "FAIL",
+        "safe_refusal": false,
+        "quality": "validated"
+      },
+      "oracle": {
+        "status": "FAIL",
+        "safe_refusal": false,
+        "quality": "validated"
+      },
+      "context_complete": null
+    }
+  ],
+  "runtime_changes_after_freeze": [],
+  "general_fixes": [],
+  "decision": "NO: complete ranked evidence does not reliably survive selection; scope, attribute inference and relevance defects dominate. No routing introduced.",
+  "final_run_policy": "No reliability changes or repeat held-out inference. First run is also the final measured result, not an after-fixes result."
+}
