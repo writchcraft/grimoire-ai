@@ -8,6 +8,12 @@ services:
       backend:
         condition: service_healthy
     restart: unless-stopped
+    init: true
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     security_opt:
       - no-new-privileges:true
   backend:
@@ -26,14 +32,31 @@ services:
       GRIMOIRE_OLLAMA_URL: ${GRIMOIRE_OLLAMA_URL:-http://ollama:11434}
       GRIMOIRE_MODEL: ${GRIMOIRE_MODEL:-qwen2.5:3b}
       GRIMOIRE_EMBEDDING_MODEL: ${GRIMOIRE_EMBEDDING_MODEL:-nomic-embed-text}
-      GRIMOIRE_DATA_DIR: /app/data
+      GRIMOIRE_DATA_DIR: ${GRIMOIRE_DATA_DIR:-/app/data}
       GRIMOIRE_MAX_UPLOAD_BYTES: ${GRIMOIRE_MAX_UPLOAD_BYTES:-2097152}
       GRIMOIRE_RETRIEVAL_THRESHOLD: ${GRIMOIRE_RETRIEVAL_THRESHOLD:-0.45}
       GRIMOIRE_LOG_LEVEL: ${GRIMOIRE_LOG_LEVEL:-INFO}
+      GRIMOIRE_ALLOWED_HOSTS: ${GRIMOIRE_ALLOWED_HOSTS:-["localhost","127.0.0.1","[::1]"]}
     volumes:
       - grimoire-data:/app/data
-      - ${GRIMOIRE_MODELS_DIR:-./models}:/models:ro
+      - type: bind
+        source: ${GRIMOIRE_MODELS_DIR:-./models}
+        target: /models
+        read_only: true
+        bind:
+          create_host_path: false
     restart: unless-stopped
+    init: true
+    stop_grace_period: 2m
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=128m,mode=1777
+    cap_drop: [ALL]
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
     security_opt:
       - no-new-privileges:true
   ollama:

@@ -15,6 +15,7 @@ __pycache__/
 .coverage
 htmlcov/
 data/runtime/
+backups/
 node_modules/
 dist/
 *.sqlite3*

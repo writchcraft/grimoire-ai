@@ -1,0 +1,26 @@
+[Unit]
+Description=Grimoire local knowledge service
+After=network.target
+
+[Service]
+Type=simple
+User=grimoire
+Group=grimoire
+WorkingDirectory=/opt/grimoire-ai
+EnvironmentFile=/etc/grimoire/grimoire.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/opt/grimoire-ai/.venv/bin/grimoire serve
+Restart=on-failure
+RestartSec=5s
+TimeoutStopSec=120s
+KillSignal=SIGTERM
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/grimoire
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,11 @@
+# Optional starting experiment for the provisioned 1.5B CPU model, not a capacity guarantee.
+# docker compose -f docker-compose.yml -f deploy/compose.resources.example.yml up -d
+services:
+  backend:
+    cpus: "2.0"
+    mem_limit: 4g
+    environment:
+      GRIMOIRE_NATIVE_THREADS: "2"
+  frontend:
+    cpus: "0.5"
+    mem_limit: 128m
