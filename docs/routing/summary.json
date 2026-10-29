@@ -1,0 +1,347 @@
+{
+  "protected_baseline_hashes_match": true,
+  "runs": {
+    "fixed": {
+      "report_sha256": "0cd100fc05c23b40f6e9d272596747f2ae24e98ab11c00741999edb2d60033a9",
+      "seconds": 116.99274469999727,
+      "peak_rss_mib": 2010.28125,
+      "load_seconds": [
+        1.2003026999991562,
+        1.3225318000004336
+      ],
+      "suites": [
+        {
+          "suite": "development",
+          "suite_sha256": "180bda35834131c913ba185bd0f13190c47e5d8210991a6a3b664736939abbbd",
+          "summary": {
+            "retrieval": {
+              "hit@1": {
+                "found": 8,
+                "total": 10
+              },
+              "hit@3": {
+                "found": 10,
+                "total": 10
+              },
+              "hit@5": {
+                "found": 10,
+                "total": 10
+              }
+            },
+            "grounded_qa": {
+              "PASS": 10
+            },
+            "oracle_qa": {
+              "PASS": 10
+            },
+            "unsupported": {
+              "PASS": 4
+            },
+            "oracle_unsupported": {
+              "PASS": 4
+            },
+            "citations": {
+              "traceable_claims": 18,
+              "validated_claims": 18,
+              "answers_with_claims": 10,
+              "rejected_outputs": 0
+            },
+            "logs": {
+              "PASS": 6
+            },
+            "log_extraction": {
+              "PASS": 6
+            },
+            "incidents": {
+              "PASS": 6
+            }
+          },
+          "complete_evidence": 10,
+          "mean_log_seconds_including_switch": 2.088833333333333
+        },
+        {
+          "suite": "heldout",
+          "suite_sha256": "09df3fb0e6a53233d46dfc3ae1db42044c184465b706dd10aae10db137664ca5",
+          "summary": {
+            "retrieval": {
+              "hit@1": {
+                "found": 18,
+                "total": 22
+              },
+              "hit@3": {
+                "found": 21,
+                "total": 22
+              },
+              "hit@5": {
+                "found": 22,
+                "total": 22
+              }
+            },
+            "grounded_qa": {
+              "PASS": 22
+            },
+            "oracle_qa": {
+              "PASS": 22
+            },
+            "unsupported": {
+              "PASS": 5
+            },
+            "oracle_unsupported": {
+              "PASS": 5
+            },
+            "citations": {
+              "traceable_claims": 25,
+              "validated_claims": 25,
+              "answers_with_claims": 22,
+              "rejected_outputs": 0
+            },
+            "logs": {
+              "PASS": 7
+            },
+            "log_extraction": {
+              "PASS": 7
+            },
+            "incidents": {
+              "PASS": 7
+            }
+          },
+          "complete_evidence": 22,
+          "mean_log_seconds_including_switch": 2.3408571428571427
+        }
+      ]
+    },
+    "policy": {
+      "report_sha256": "76d812d65a3942e0ad6a0a3dc0bc6193982e2d1a0d2248068a3be09ae8cab39f",
+      "seconds": 116.4834880999988,
+      "peak_rss_mib": 2017.23828125,
+      "load_seconds": [
+        1.0603311999984726,
+        1.1904032999991614
+      ],
+      "suites": [
+        {
+          "suite": "development",
+          "suite_sha256": "180bda35834131c913ba185bd0f13190c47e5d8210991a6a3b664736939abbbd",
+          "summary": {
+            "retrieval": {
+              "hit@1": {
+                "found": 8,
+                "total": 10
+              },
+              "hit@3": {
+                "found": 10,
+                "total": 10
+              },
+              "hit@5": {
+                "found": 10,
+                "total": 10
+              }
+            },
+            "grounded_qa": {
+              "PASS": 10
+            },
+            "oracle_qa": {
+              "PASS": 10
+            },
+            "unsupported": {
+              "PASS": 4
+            },
+            "oracle_unsupported": {
+              "PASS": 4
+            },
+            "citations": {
+              "traceable_claims": 18,
+              "validated_claims": 18,
+              "answers_with_claims": 10,
+              "rejected_outputs": 0
+            },
+            "logs": {
+              "PASS": 6
+            },
+            "log_extraction": {
+              "PASS": 6
+            },
+            "incidents": {
+              "PASS": 6
+            }
+          },
+          "complete_evidence": 10,
+          "mean_log_seconds_including_switch": 1.9003333333333334
+        },
+        {
+          "suite": "heldout",
+          "suite_sha256": "09df3fb0e6a53233d46dfc3ae1db42044c184465b706dd10aae10db137664ca5",
+          "summary": {
+            "retrieval": {
+              "hit@1": {
+                "found": 18,
+                "total": 22
+              },
+              "hit@3": {
+                "found": 21,
+                "total": 22
+              },
+              "hit@5": {
+                "found": 22,
+                "total": 22
+              }
+            },
+            "grounded_qa": {
+              "PASS": 22
+            },
+            "oracle_qa": {
+              "PASS": 22
+            },
+            "unsupported": {
+              "PASS": 5
+            },
+            "oracle_unsupported": {
+              "PASS": 5
+            },
+            "citations": {
+              "traceable_claims": 25,
+              "validated_claims": 25,
+              "answers_with_claims": 22,
+              "rejected_outputs": 0
+            },
+            "logs": {
+              "PASS": 7
+            },
+            "log_extraction": {
+              "PASS": 7
+            },
+            "incidents": {
+              "PASS": 7
+            }
+          },
+          "complete_evidence": 22,
+          "mean_log_seconds_including_switch": 2.261857142857143
+        }
+      ]
+    },
+    "log-experiment": {
+      "report_sha256": "7ed5de8b78a02299a041966860c56604ad8e51b268c689ba35b0a1342c8bbbbc",
+      "seconds": 138.92956250000134,
+      "peak_rss_mib": 3627.19140625,
+      "load_seconds": [
+        1.0633515000008629,
+        2.575759499999549,
+        1.1202998000007938,
+        1.948218599998654
+      ],
+      "suites": [
+        {
+          "suite": "development",
+          "suite_sha256": "180bda35834131c913ba185bd0f13190c47e5d8210991a6a3b664736939abbbd",
+          "summary": {
+            "retrieval": {
+              "hit@1": {
+                "found": 8,
+                "total": 10
+              },
+              "hit@3": {
+                "found": 10,
+                "total": 10
+              },
+              "hit@5": {
+                "found": 10,
+                "total": 10
+              }
+            },
+            "grounded_qa": {
+              "PASS": 10
+            },
+            "oracle_qa": {
+              "PASS": 10
+            },
+            "unsupported": {
+              "PASS": 4
+            },
+            "oracle_unsupported": {
+              "PASS": 4
+            },
+            "citations": {
+              "traceable_claims": 18,
+              "validated_claims": 18,
+              "answers_with_claims": 10,
+              "rejected_outputs": 0
+            },
+            "logs": {
+              "PASS": 6
+            },
+            "log_extraction": {
+              "PASS": 6
+            },
+            "incidents": {
+              "PASS": 6
+            }
+          },
+          "complete_evidence": 10,
+          "mean_log_seconds_including_switch": 3.8885
+        },
+        {
+          "suite": "heldout",
+          "suite_sha256": "09df3fb0e6a53233d46dfc3ae1db42044c184465b706dd10aae10db137664ca5",
+          "summary": {
+            "retrieval": {
+              "hit@1": {
+                "found": 18,
+                "total": 22
+              },
+              "hit@3": {
+                "found": 21,
+                "total": 22
+              },
+              "hit@5": {
+                "found": 22,
+                "total": 22
+              }
+            },
+            "grounded_qa": {
+              "PASS": 22
+            },
+            "oracle_qa": {
+              "PASS": 22
+            },
+            "unsupported": {
+              "PASS": 5
+            },
+            "oracle_unsupported": {
+              "PASS": 5
+            },
+            "citations": {
+              "traceable_claims": 25,
+              "validated_claims": 25,
+              "answers_with_claims": 22,
+              "rejected_outputs": 0
+            },
+            "logs": {
+              "PASS": 7
+            },
+            "log_extraction": {
+              "PASS": 7
+            },
+            "incidents": {
+              "PASS": 7
+            }
+          },
+          "complete_evidence": 22,
+          "mean_log_seconds_including_switch": 4.421
+        }
+      ]
+    },
+    "switch": {
+      "report_sha256": "31c029699584e4b3f72dd75b076f1834e43f31317c75bb740ad91e272f400efa",
+      "seconds": 6.313063999998121,
+      "peak_rss_mib": 3413.8046875,
+      "load_seconds": [
+        1.150237499998184,
+        2.0093978000004427,
+        1.2113262000020768
+      ],
+      "suites": []
+    }
+  },
+  "real_switch_and_fallback_pass": true,
+  "default_policy_decision": "Keep Auto effectively single-model: no measured quality gain from the bounded 3B log experiment."
+}

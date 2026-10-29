@@ -1,0 +1,175 @@
+{
+  "mode": "switch",
+  "scope": "single local CPU run; OS file cache and run order uncontrolled; no significance claim",
+  "before": {
+    "rss": 88436736,
+    "peak_rss": 88436736,
+    "page": 579567616
+  },
+  "events": [
+    {
+      "event": "load",
+      "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "seconds": 1.150237499998184,
+      "before": {
+        "rss": 88637440,
+        "peak_rss": 88637440,
+        "page": 579567616
+      },
+      "after": {
+        "rss": 1524490240,
+        "peak_rss": 1524490240,
+        "page": 2087653376
+      }
+    },
+    {
+      "event": "close",
+      "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "seconds": 0.20564130000275327,
+      "after": {
+        "rss": 102891520,
+        "peak_rss": 1897656320,
+        "page": 591769600
+      }
+    },
+    {
+      "event": "load",
+      "model": "qwen2.5-3b-instruct-q4_k_m.gguf",
+      "seconds": 2.0093978000004427,
+      "before": {
+        "rss": 102891520,
+        "peak_rss": 1897656320,
+        "page": 591769600
+      },
+      "after": {
+        "rss": 2964172800,
+        "peak_rss": 2965565440,
+        "page": 2843734016
+      }
+    },
+    {
+      "event": "close",
+      "model": "qwen2.5-3b-instruct-q4_k_m.gguf",
+      "seconds": 0.3881543999996211,
+      "after": {
+        "rss": 102748160,
+        "peak_rss": 3579633664,
+        "page": 592322560
+      }
+    },
+    {
+      "event": "load",
+      "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "seconds": 1.2113262000020768,
+      "before": {
+        "rss": 102748160,
+        "peak_rss": 3579633664,
+        "page": 592322560
+      },
+      "after": {
+        "rss": 1528602624,
+        "peak_rss": 3579633664,
+        "page": 2091958272
+      }
+    },
+    {
+      "event": "close",
+      "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "seconds": 0.20581940000192844,
+      "after": {
+        "rss": 107323392,
+        "peak_rss": 3579633664,
+        "page": 597573632
+      }
+    }
+  ],
+  "suites": [],
+  "requests": [
+    {
+      "routing": {
+        "task": "general",
+        "selected_model": "qwen-small",
+        "display_name": "Qwen2.5 1.5B Q4_K_M",
+        "policy_rule": "manual override",
+        "mode": "qwen-small",
+        "fallback_used": false,
+        "attempts": [],
+        "provider": "native",
+        "readiness": "ready",
+        "selection_seconds": 1.1503860000011628
+      },
+      "answer": "OK",
+      "seconds": 1.4077330000000075,
+      "memory": {
+        "rss": 1897447424,
+        "peak_rss": 1897656320,
+        "page": 2099875840
+      }
+    },
+    {
+      "routing": {
+        "task": "general",
+        "selected_model": "qwen-large",
+        "display_name": "Qwen2.5 3B Q4_K_M",
+        "policy_rule": "manual override",
+        "mode": "qwen-large",
+        "fallback_used": false,
+        "attempts": [],
+        "provider": "native",
+        "readiness": "ready",
+        "selection_seconds": 2.21527999999671
+      },
+      "answer": "OK.",
+      "seconds": 2.8041855999981635,
+      "memory": {
+        "rss": 3579400192,
+        "peak_rss": 3579633664,
+        "page": 2855923712
+      }
+    },
+    {
+      "routing": {
+        "task": "general",
+        "selected_model": "qwen-small",
+        "display_name": "Qwen2.5 1.5B Q4_K_M",
+        "policy_rule": "manual override",
+        "mode": "qwen-small",
+        "fallback_used": false,
+        "attempts": [],
+        "provider": "native",
+        "readiness": "ready",
+        "selection_seconds": 1.5997057999993558
+      },
+      "answer": "OK",
+      "seconds": 1.8368539000002784,
+      "memory": {
+        "rss": 1900814336,
+        "peak_rss": 3579633664,
+        "page": 2103672832
+      }
+    }
+  ],
+  "fallback": {
+    "task": "general",
+    "selected_model": "qwen-small",
+    "display_name": "Qwen2.5 1.5B Q4_K_M",
+    "policy_rule": "manual override",
+    "mode": "qwen-large",
+    "fallback_used": true,
+    "attempts": [
+      {
+        "model": "qwen-large",
+        "readiness": "model_missing"
+      }
+    ],
+    "provider": "native",
+    "readiness": "ready",
+    "selection_seconds": 3.4999975468963385e-06
+  },
+  "seconds": 6.313063999998121,
+  "after": {
+    "rss": 107323392,
+    "peak_rss": 3579633664,
+    "page": 597573632
+  }
+}
