@@ -1,0 +1,563 @@
+{
+  "scope": "Real loopback TLS sockets; generated disposable certificates; no public endpoints.",
+  "configured_https_count": 0,
+  "lan": "No configured HTTPS service available; real LAN TLS not tested.",
+  "valid": {
+    "hostname": "127.0.0.1",
+    "port": 62906,
+    "state": "valid",
+    "applicable": true,
+    "connection_success": true,
+    "certificate_presented": true,
+    "trust": "trusted",
+    "trust_reason": "Local runtime validation succeeded",
+    "trust_verify_code": null,
+    "hostname_match": "match",
+    "validity": "valid",
+    "protocol": "TLSv1.3",
+    "cipher": [
+      "TLS_AES_256_GCM_SHA384",
+      "TLSv1.3",
+      256
+    ],
+    "error": null,
+    "reason": "Certificate presented; see separate validity, trust and hostname results.",
+    "expiring_days": 30,
+    "address": "127.0.0.1",
+    "subject": "CN=Local acceptance",
+    "issuer": "CN=Local acceptance",
+    "serial_number": "38c8f87b0a620d82bc4018b2e6c088f76570d0e3",
+    "fingerprint_sha256": "c0d350c2cf67496adeac91a8d7ceb5e81339f9bb5584e3af97122d324ef10bd8",
+    "valid_from": "2026-10-28T20:23:11+00:00",
+    "expires_at": "2027-01-27T20:23:11+00:00",
+    "remaining_seconds": 7776000,
+    "remaining_days": 90.0,
+    "sans": [
+      {
+        "type": "IP Address",
+        "value": "127.0.0.1"
+      }
+    ],
+    "expiring_soon": false,
+    "observed_at": "2026-10-29T20:23:11.370483+00:00",
+    "latency_ms": 16
+  },
+  "untrusted": {
+    "hostname": "127.0.0.1",
+    "port": 62911,
+    "state": "untrusted",
+    "applicable": true,
+    "connection_success": true,
+    "certificate_presented": true,
+    "trust": "failed",
+    "trust_reason": "self-signed certificate",
+    "trust_verify_code": 18,
+    "hostname_match": "match",
+    "validity": "valid",
+    "protocol": "TLSv1.3",
+    "cipher": [
+      "TLS_AES_256_GCM_SHA384",
+      "TLSv1.3",
+      256
+    ],
+    "error": null,
+    "reason": "Certificate presented; see separate validity, trust and hostname results.",
+    "expiring_days": 30,
+    "address": "127.0.0.1",
+    "subject": "CN=Local acceptance",
+    "issuer": "CN=Local acceptance",
+    "serial_number": "72df6af24abfdd3f892ae918a386bde7f0571f21",
+    "fingerprint_sha256": "1aff5b27993d3d03ffae7a80225dbef4f6d91c7379d889a9698f8899f484c9b9",
+    "valid_from": "2026-10-28T20:23:11+00:00",
+    "expires_at": "2027-01-27T20:23:11+00:00",
+    "remaining_seconds": 7775999,
+    "remaining_days": 90.0,
+    "sans": [
+      {
+        "type": "IP Address",
+        "value": "127.0.0.1"
+      }
+    ],
+    "expiring_soon": false,
+    "observed_at": "2026-10-29T20:23:11.962380+00:00",
+    "latency_ms": 78
+  },
+  "api": {
+    "hostname": "127.0.0.1",
+    "port": 62911,
+    "state": "untrusted",
+    "applicable": true,
+    "connection_success": true,
+    "certificate_presented": true,
+    "trust": "failed",
+    "trust_reason": "self-signed certificate",
+    "trust_verify_code": 18,
+    "hostname_match": "match",
+    "validity": "valid",
+    "protocol": "TLSv1.3",
+    "cipher": [
+      "TLS_AES_256_GCM_SHA384",
+      "TLSv1.3",
+      256
+    ],
+    "error": null,
+    "reason": "Certificate presented; see separate validity, trust and hostname results.",
+    "expiring_days": 30,
+    "address": "127.0.0.1",
+    "subject": "CN=Local acceptance",
+    "issuer": "CN=Local acceptance",
+    "serial_number": "72df6af24abfdd3f892ae918a386bde7f0571f21",
+    "fingerprint_sha256": "1aff5b27993d3d03ffae7a80225dbef4f6d91c7379d889a9698f8899f484c9b9",
+    "valid_from": "2026-10-28T20:23:11+00:00",
+    "expires_at": "2027-01-27T20:23:11+00:00",
+    "remaining_seconds": 7775999,
+    "remaining_days": 90.0,
+    "sans": [
+      {
+        "type": "IP Address",
+        "value": "127.0.0.1"
+      }
+    ],
+    "expiring_soon": false,
+    "observed_at": "2026-10-29T20:23:12.158057+00:00",
+    "latency_ms": 0,
+    "id": "22cc90be-25d5-40cc-8e99-1d8ae4a8d9e5",
+    "service_id": "29d4042a-e12f-4265-8c97-288592f1e48e",
+    "service": "Local TLS",
+    "checked_at": "2026-10-29T20:23:12.158057+00:00"
+  },
+  "http": {
+    "id": "b0115ed1-afb4-43ca-ad48-2622579371c6",
+    "service_id": "29d4042a-e12f-4265-8c97-288592f1e48e",
+    "service": "Local TLS",
+    "environment": "",
+    "checked_at": "2026-10-29T20:23:12.632549+00:00",
+    "state": "unreachable",
+    "reason": "TLS handshake or certificate verification failed.",
+    "expected_status": 200,
+    "endpoint": {
+      "reachable": false,
+      "url": "https://127.0.0.1:62911",
+      "final_url": null,
+      "status_code": null,
+      "latency_ms": 469,
+      "redirects": 0,
+      "error": "TLS handshake or certificate verification failed",
+      "error_kind": "tls_error",
+      "content_type": null,
+      "content_length": null,
+      "server": null,
+      "body_bytes_read": 0,
+      "body_truncated": false
+    },
+    "health_endpoint": null
+  },
+  "chat": {
+    "answer": "LIVE OBSERVATION\n1 service: 1 unreachable.\n[L1] Local TLS: UNREACHABLE. TLS handshake or certificate verification failed at https://127.0.0.1:62911; observed 2026-10-29T20:23:12.632549+00:00 (0 s ago, stored observation). TLS handshake or certificate verification failed.\n\nRECORDED OBSERVATIONS (only the probes that were run)\n[L1] Local TLS: 1 recorded observation between 2026-10-29T20:23:12.632549+00:00 and 2026-10-29T20:23:12.632549+00:00; 1 not healthy (unreachable at 2026-10-29T20:23:12.632549+00:00: TLS handshake or certificate verification failed.).\nProbes run only on request, so gaps between observations are unobserved; this is not continuous monitoring.\nEach line is a point-in-time observation. It does not establish uptime or past availability.\nINDEXED DOCUMENTATION: not consulted for this live-state answer.\n\nDNS OBSERVATIONS (system resolver; separate from HTTP)\nLocal TLS: DNS UNKNOWN; no DNS observation recorded. Inspect DNS first.\nOnly recorded samples are compared; no claim of long-term DNS stability. DNS success does not establish HTTP reachability.\n\nTLS OBSERVATIONS (separate certificate, trust and hostname facts)\n[T1] Local TLS: TLS UNTRUSTED; 127.0.0.1:62911; certificate presented: True; subject: CN=Local acceptance; issuer: CN=Local acceptance; valid from: 2026-10-28T20:23:11+00:00; expires: 2027-01-27T20:23:11+00:00; remaining at check: 90.0 days; date validity: valid; hostname: match; runtime trust: failed (self-signed certificate); protocol: TLSv1.3; observed: 2026-10-29T20:23:12.158057+00:00; 0 ms. Certificate presented; see separate validity, trust and hostname results.\n[T1][L1] Separate observations: TLS untrusted at 2026-10-29T20:23:12.158057+00:00; http_observation unreachable at 2026-10-29T20:23:12.632549+00:00; these do not establish causation.\nOnly retained samples support comparisons. No automatic HTTP verification bypass.",
+    "sources": [],
+    "live": [
+      {
+        "evidence_type": "http_observation",
+        "addresses": [],
+        "record_types": [],
+        "records": [],
+        "label": "L1",
+        "observation_id": "b0115ed1-afb4-43ca-ad48-2622579371c6",
+        "service": "Local TLS",
+        "environment": "",
+        "endpoint": "https://127.0.0.1:62911",
+        "observed_at": "2026-10-29T20:23:12.632549+00:00",
+        "state": "unreachable",
+        "latency_ms": 469,
+        "error": "TLS handshake or certificate verification failed",
+        "reason": "TLS handshake or certificate verification failed.",
+        "probed_now": false,
+        "recent_observations": [
+          {
+            "id": "b0115ed1-afb4-43ca-ad48-2622579371c6",
+            "service_id": "29d4042a-e12f-4265-8c97-288592f1e48e",
+            "service": "Local TLS",
+            "environment": "",
+            "checked_at": "2026-10-29T20:23:12.632549+00:00",
+            "state": "unreachable",
+            "reason": "TLS handshake or certificate verification failed.",
+            "expected_status": 200,
+            "endpoint": {
+              "reachable": false,
+              "url": "https://127.0.0.1:62911",
+              "final_url": null,
+              "status_code": null,
+              "latency_ms": 469,
+              "redirects": 0,
+              "error": "TLS handshake or certificate verification failed",
+              "error_kind": "tls_error",
+              "content_type": null,
+              "content_length": null,
+              "server": null,
+              "body_bytes_read": 0,
+              "body_truncated": false
+            },
+            "health_endpoint": null
+          }
+        ]
+      },
+      {
+        "evidence_type": "tls_observation",
+        "tls": {
+          "hostname": "127.0.0.1",
+          "port": 62911,
+          "state": "untrusted",
+          "applicable": true,
+          "connection_success": true,
+          "certificate_presented": true,
+          "trust": "failed",
+          "trust_reason": "self-signed certificate",
+          "trust_verify_code": 18,
+          "hostname_match": "match",
+          "validity": "valid",
+          "protocol": "TLSv1.3",
+          "cipher": [
+            "TLS_AES_256_GCM_SHA384",
+            "TLSv1.3",
+            256
+          ],
+          "error": null,
+          "reason": "Certificate presented; see separate validity, trust and hostname results.",
+          "expiring_days": 30,
+          "address": "127.0.0.1",
+          "subject": "CN=Local acceptance",
+          "issuer": "CN=Local acceptance",
+          "serial_number": "72df6af24abfdd3f892ae918a386bde7f0571f21",
+          "fingerprint_sha256": "1aff5b27993d3d03ffae7a80225dbef4f6d91c7379d889a9698f8899f484c9b9",
+          "valid_from": "2026-10-28T20:23:11+00:00",
+          "expires_at": "2027-01-27T20:23:11+00:00",
+          "remaining_seconds": 7775999,
+          "remaining_days": 90.0,
+          "sans": [
+            {
+              "type": "IP Address",
+              "value": "127.0.0.1"
+            }
+          ],
+          "expiring_soon": false,
+          "observed_at": "2026-10-29T20:23:12.158057+00:00",
+          "latency_ms": 0,
+          "id": "22cc90be-25d5-40cc-8e99-1d8ae4a8d9e5",
+          "service_id": "29d4042a-e12f-4265-8c97-288592f1e48e",
+          "service": "Local TLS",
+          "checked_at": "2026-10-29T20:23:12.158057+00:00"
+        },
+        "hostname": "127.0.0.1",
+        "addresses": [],
+        "record_types": [],
+        "records": [],
+        "label": "T1",
+        "observation_id": "22cc90be-25d5-40cc-8e99-1d8ae4a8d9e5",
+        "service": "Local TLS",
+        "environment": "",
+        "observed_at": "2026-10-29T20:23:12.158057+00:00",
+        "state": "untrusted",
+        "latency_ms": 0,
+        "reason": "Certificate presented; see separate validity, trust and hostname results.",
+        "probed_now": false,
+        "recent_observations": [
+          {
+            "hostname": "127.0.0.1",
+            "port": 62911,
+            "state": "untrusted",
+            "applicable": true,
+            "connection_success": true,
+            "certificate_presented": true,
+            "trust": "failed",
+            "trust_reason": "self-signed certificate",
+            "trust_verify_code": 18,
+            "hostname_match": "match",
+            "validity": "valid",
+            "protocol": "TLSv1.3",
+            "cipher": [
+              "TLS_AES_256_GCM_SHA384",
+              "TLSv1.3",
+              256
+            ],
+            "error": null,
+            "reason": "Certificate presented; see separate validity, trust and hostname results.",
+            "expiring_days": 30,
+            "address": "127.0.0.1",
+            "subject": "CN=Local acceptance",
+            "issuer": "CN=Local acceptance",
+            "serial_number": "72df6af24abfdd3f892ae918a386bde7f0571f21",
+            "fingerprint_sha256": "1aff5b27993d3d03ffae7a80225dbef4f6d91c7379d889a9698f8899f484c9b9",
+            "valid_from": "2026-10-28T20:23:11+00:00",
+            "expires_at": "2027-01-27T20:23:11+00:00",
+            "remaining_seconds": 7775999,
+            "remaining_days": 90.0,
+            "sans": [
+              {
+                "type": "IP Address",
+                "value": "127.0.0.1"
+              }
+            ],
+            "expiring_soon": false,
+            "observed_at": "2026-10-29T20:23:12.158057+00:00",
+            "latency_ms": 0,
+            "id": "22cc90be-25d5-40cc-8e99-1d8ae4a8d9e5",
+            "service_id": "29d4042a-e12f-4265-8c97-288592f1e48e",
+            "service": "Local TLS",
+            "checked_at": "2026-10-29T20:23:12.158057+00:00"
+          }
+        ]
+      }
+    ],
+    "grounded": true,
+    "quality": "live_observation",
+    "claims": []
+  },
+  "cli": {
+    "tls_results": [
+      {
+        "hostname": "127.0.0.1",
+        "port": 62911,
+        "state": "untrusted",
+        "applicable": true,
+        "connection_success": true,
+        "certificate_presented": true,
+        "trust": "failed",
+        "trust_reason": "self-signed certificate",
+        "trust_verify_code": 18,
+        "hostname_match": "match",
+        "validity": "valid",
+        "protocol": "TLSv1.3",
+        "cipher": [
+          "TLS_AES_256_GCM_SHA384",
+          "TLSv1.3",
+          256
+        ],
+        "error": null,
+        "reason": "Certificate presented; see separate validity, trust and hostname results.",
+        "expiring_days": 30,
+        "address": "127.0.0.1",
+        "subject": "CN=Local acceptance",
+        "issuer": "CN=Local acceptance",
+        "serial_number": "72df6af24abfdd3f892ae918a386bde7f0571f21",
+        "fingerprint_sha256": "1aff5b27993d3d03ffae7a80225dbef4f6d91c7379d889a9698f8899f484c9b9",
+        "valid_from": "2026-10-28T20:23:11+00:00",
+        "expires_at": "2027-01-27T20:23:11+00:00",
+        "remaining_seconds": 7775999,
+        "remaining_days": 90.0,
+        "sans": [
+          {
+            "type": "IP Address",
+            "value": "127.0.0.1"
+          }
+        ],
+        "expiring_soon": false,
+        "observed_at": "2026-10-29T20:23:12.158057+00:00",
+        "latency_ms": 0,
+        "id": "22cc90be-25d5-40cc-8e99-1d8ae4a8d9e5",
+        "service_id": "29d4042a-e12f-4265-8c97-288592f1e48e",
+        "service": "Local TLS",
+        "checked_at": "2026-10-29T20:23:12.158057+00:00"
+      }
+    ]
+  },
+  "mismatch": {
+    "hostname": "127.0.0.1",
+    "port": 62923,
+    "state": "hostname-mismatch",
+    "applicable": true,
+    "connection_success": true,
+    "certificate_presented": true,
+    "trust": "trusted",
+    "trust_reason": "Local runtime validation succeeded",
+    "trust_verify_code": null,
+    "hostname_match": "mismatch",
+    "validity": "valid",
+    "protocol": "TLSv1.3",
+    "cipher": [
+      "TLS_AES_256_GCM_SHA384",
+      "TLSv1.3",
+      256
+    ],
+    "error": null,
+    "reason": "Certificate presented; see separate validity, trust and hostname results.",
+    "expiring_days": 30,
+    "address": "127.0.0.1",
+    "subject": "CN=Local acceptance",
+    "issuer": "CN=Local acceptance",
+    "serial_number": "61184dcf3563cba1acf9c21d9889bf2ea72df516",
+    "fingerprint_sha256": "bd8200681d65a0f672d27fd9c0a6f3cf3fa6f52dbd64421ea515ce8b83bd2ad7",
+    "valid_from": "2026-10-28T20:23:13+00:00",
+    "expires_at": "2027-01-27T20:23:13+00:00",
+    "remaining_seconds": 7776000,
+    "remaining_days": 90.0,
+    "sans": [
+      {
+        "type": "IP Address",
+        "value": "127.0.0.2"
+      }
+    ],
+    "expiring_soon": false,
+    "observed_at": "2026-10-29T20:23:13.151743+00:00",
+    "latency_ms": 15
+  },
+  "expired": {
+    "hostname": "127.0.0.1",
+    "port": 62931,
+    "state": "expired",
+    "applicable": true,
+    "connection_success": true,
+    "certificate_presented": true,
+    "trust": "failed",
+    "trust_reason": "certificate has expired",
+    "trust_verify_code": 10,
+    "hostname_match": "match",
+    "validity": "expired",
+    "protocol": "TLSv1.3",
+    "cipher": [
+      "TLS_AES_256_GCM_SHA384",
+      "TLSv1.3",
+      256
+    ],
+    "error": null,
+    "reason": "Certificate presented; see separate validity, trust and hostname results.",
+    "expiring_days": 30,
+    "address": "127.0.0.1",
+    "subject": "CN=Local acceptance",
+    "issuer": "CN=Local acceptance",
+    "serial_number": "5ef1f9b0b4048e03f1c586dce0a28dc299bd83d",
+    "fingerprint_sha256": "e4d4fe2ae5001df34d28219a7587e7d9855ca310cca63f6bf9f27422d39f6468",
+    "valid_from": "2026-07-31T20:23:13+00:00",
+    "expires_at": "2026-10-28T20:23:13+00:00",
+    "remaining_seconds": -86401,
+    "remaining_days": -1.0,
+    "sans": [
+      {
+        "type": "IP Address",
+        "value": "127.0.0.1"
+      }
+    ],
+    "expiring_soon": false,
+    "observed_at": "2026-10-29T20:23:13.680542+00:00",
+    "latency_ms": 16
+  },
+  "not_yet_valid": {
+    "hostname": "127.0.0.1",
+    "port": 62936,
+    "state": "not-yet-valid",
+    "applicable": true,
+    "connection_success": true,
+    "certificate_presented": true,
+    "trust": "failed",
+    "trust_reason": "certificate is not yet valid",
+    "trust_verify_code": 9,
+    "hostname_match": "match",
+    "validity": "not-yet-valid",
+    "protocol": "TLSv1.3",
+    "cipher": [
+      "TLS_AES_256_GCM_SHA384",
+      "TLSv1.3",
+      256
+    ],
+    "error": null,
+    "reason": "Certificate presented; see separate validity, trust and hostname results.",
+    "expiring_days": 30,
+    "address": "127.0.0.1",
+    "subject": "CN=Local acceptance",
+    "issuer": "CN=Local acceptance",
+    "serial_number": "71a7744e26d69a53c0f01949dd8145db4b1142db",
+    "fingerprint_sha256": "dfc4b323c4468c98b996517eaa3c5ec4a33e52daaf04021ee1b617a7138bda6e",
+    "valid_from": "2026-10-30T20:23:14+00:00",
+    "expires_at": "2027-01-27T20:23:14+00:00",
+    "remaining_seconds": 7776000,
+    "remaining_days": 90.0,
+    "sans": [
+      {
+        "type": "IP Address",
+        "value": "127.0.0.1"
+      }
+    ],
+    "expiring_soon": false,
+    "observed_at": "2026-10-29T20:23:14.212488+00:00",
+    "latency_ms": 16
+  },
+  "expiring_soon": {
+    "hostname": "127.0.0.1",
+    "port": 62941,
+    "state": "expiring-soon",
+    "applicable": true,
+    "connection_success": true,
+    "certificate_presented": true,
+    "trust": "trusted",
+    "trust_reason": "Local runtime validation succeeded",
+    "trust_verify_code": null,
+    "hostname_match": "match",
+    "validity": "valid",
+    "protocol": "TLSv1.3",
+    "cipher": [
+      "TLS_AES_256_GCM_SHA384",
+      "TLSv1.3",
+      256
+    ],
+    "error": null,
+    "reason": "Certificate presented; see separate validity, trust and hostname results.",
+    "expiring_days": 30,
+    "address": "127.0.0.1",
+    "subject": "CN=Local acceptance",
+    "issuer": "CN=Local acceptance",
+    "serial_number": "21f8014eba05a1a1b4c3c3779ddf4bb8f09ac4e",
+    "fingerprint_sha256": "240986d7a923c037f7a2ca142357fd221b65414a5b9f58900188f091f4f7820e",
+    "valid_from": "2026-10-28T20:23:14+00:00",
+    "expires_at": "2026-11-10T20:23:14+00:00",
+    "remaining_seconds": 1036799,
+    "remaining_days": 12.0,
+    "sans": [
+      {
+        "type": "IP Address",
+        "value": "127.0.0.1"
+      }
+    ],
+    "expiring_soon": true,
+    "observed_at": "2026-10-29T20:23:14.742911+00:00",
+    "latency_ms": 16
+  },
+  "plaintext": {
+    "hostname": "127.0.0.1",
+    "port": 62946,
+    "state": "handshake-failed",
+    "applicable": true,
+    "connection_success": false,
+    "certificate_presented": false,
+    "trust": "unavailable",
+    "trust_reason": null,
+    "trust_verify_code": null,
+    "hostname_match": "unavailable",
+    "validity": "unknown",
+    "protocol": null,
+    "cipher": null,
+    "error": "handshake_failed",
+    "reason": "TCP/TLS connection failed.",
+    "expiring_days": 30,
+    "observed_at": "2026-10-29T20:23:14.747433+00:00",
+    "latency_ms": 0
+  },
+  "refused": {
+    "hostname": "127.0.0.1",
+    "port": 62946,
+    "state": "handshake-failed",
+    "applicable": true,
+    "connection_success": false,
+    "certificate_presented": false,
+    "trust": "unavailable",
+    "trust_reason": null,
+    "trust_verify_code": null,
+    "hostname_match": "unavailable",
+    "validity": "unknown",
+    "protocol": null,
+    "cipher": null,
+    "error": "handshake_failed",
+    "reason": "TCP/TLS connection failed.",
+    "expiring_days": 30,
+    "observed_at": "2026-10-29T20:23:17.294921+00:00",
+    "latency_ms": 2031
+  }
+}

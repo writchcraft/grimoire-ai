@@ -1,0 +1,132 @@
+[
+  {
+    "suite": "development",
+    "suite_sha256": "180bda35834131c913ba185bd0f13190c47e5d8210991a6a3b664736939abbbd",
+    "generation_model": {
+      "provider": "native",
+      "backend": "llama.cpp",
+      "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "state": "ready",
+      "reason": null,
+      "context_size": 4096,
+      "gpu_layers": 0
+    },
+    "embedding_model": {
+      "provider": "native",
+      "backend": "llama.cpp",
+      "model": "all-MiniLM-L6-v2-ggml-model-f16.gguf",
+      "state": "ready",
+      "reason": null,
+      "context_size": 512,
+      "gpu_layers": 0
+    },
+    "summary": {
+      "retrieval": {
+        "hit@1": {
+          "found": 8,
+          "total": 10
+        },
+        "hit@3": {
+          "found": 10,
+          "total": 10
+        },
+        "hit@5": {
+          "found": 10,
+          "total": 10
+        }
+      },
+      "grounded_qa": {
+        "PASS": 10
+      },
+      "oracle_qa": {
+        "PASS": 10
+      },
+      "unsupported": {
+        "PASS": 4
+      },
+      "oracle_unsupported": {
+        "PASS": 4
+      },
+      "citations": {
+        "traceable_claims": 18,
+        "validated_claims": 18,
+        "answers_with_claims": 10,
+        "rejected_outputs": 0
+      },
+      "logs": {
+        "PASS": 6
+      },
+      "log_extraction": {
+        "PASS": 6
+      },
+      "incidents": {
+        "PASS": 6
+      }
+    }
+  },
+  {
+    "suite": "heldout",
+    "suite_sha256": "09df3fb0e6a53233d46dfc3ae1db42044c184465b706dd10aae10db137664ca5",
+    "generation_model": {
+      "provider": "native",
+      "backend": "llama.cpp",
+      "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+      "state": "ready",
+      "reason": null,
+      "context_size": 4096,
+      "gpu_layers": 0
+    },
+    "embedding_model": {
+      "provider": "native",
+      "backend": "llama.cpp",
+      "model": "all-MiniLM-L6-v2-ggml-model-f16.gguf",
+      "state": "ready",
+      "reason": null,
+      "context_size": 512,
+      "gpu_layers": 0
+    },
+    "summary": {
+      "retrieval": {
+        "hit@1": {
+          "found": 18,
+          "total": 22
+        },
+        "hit@3": {
+          "found": 21,
+          "total": 22
+        },
+        "hit@5": {
+          "found": 22,
+          "total": 22
+        }
+      },
+      "grounded_qa": {
+        "PASS": 22
+      },
+      "oracle_qa": {
+        "PASS": 22
+      },
+      "unsupported": {
+        "PASS": 5
+      },
+      "oracle_unsupported": {
+        "PASS": 5
+      },
+      "citations": {
+        "traceable_claims": 25,
+        "validated_claims": 25,
+        "answers_with_claims": 22,
+        "rejected_outputs": 0
+      },
+      "logs": {
+        "PASS": 7
+      },
+      "log_extraction": {
+        "PASS": 7
+      },
+      "incidents": {
+        "PASS": 7
+      }
+    }
+  }
+]
