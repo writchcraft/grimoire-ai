@@ -60,10 +60,10 @@ export function modelStatus(status) {
   const embeddings = status.embeddings;
   const provider = ai.provider.charAt(0).toUpperCase() + ai.provider.slice(1);
   return {
-    model: `${provider} · ${ai.model || "No model configured"}`,
+    model: ai.routing ? `${ai.routing.mode === "auto" ? "Auto \u00b7 " : ""}${ai.routing.display_name}` : status.generation_models?.length ? `Auto \u00b7 ${ai.model}` : `${provider} \u00b7 ${ai.model || "No model configured"}`,
     label: ai.state === "ready"
       ? (embeddings.state === "ready" ? "Local models ready" : "Chat ready · embeddings unavailable")
-      : `AI: ${ai.state.replaceAll("_", " ")}`,
+      : ai.state === "not_loaded" ? "Configured \u00b7 loads on request" : `AI: ${ai.state.replaceAll("_", " ")}`,
     detail: `${ai.backend} · ${(ai.reason || ai.state).replace(/\.+$/, "")}. Embeddings: ${embeddings.reason || embeddings.state}`,
   };
 }

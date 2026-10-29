@@ -1079,3 +1079,45 @@ summary > span {
   margin: 0 40px 8px;
   overflow-wrap: anywhere;
 }
+
+.generation-options {
+  position: relative;
+  flex-shrink: 0;
+}
+.generation-options select {
+  position: absolute;
+  bottom: 24px;
+  right: 0;
+  width: 220px;
+  max-width: calc(100vw - 56px);
+  background: #23212e;
+  border: 1px solid #383044;
+  border-radius: 5px;
+  color: #b5a7ca;
+  padding: 5px;
+  font-size: 11px;
+  z-index: 5;
+}
+.service-health { margin: 1rem 0; }
+.health-healthy { color: #88c9a1; }
+.health-degraded, .health-unknown { color: #e2bc78; }
+.health-unhealthy, .health-unreachable { color: #e79a9a; }
+
+#windows-events { padding: 24px; margin-bottom: 24px; }
+#events-form { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 20px 0; }
+#events-form label { min-width: 0; }
+#events-form input, #events-form select { display: block; width: 100%; margin-top: 6px; }
+#windows-events > label { display: block; margin: 12px 0; }
+#events-list { max-height: 640px; overflow: auto; margin-top: 20px; }
+#events-list article { padding: 18px; margin-bottom: 12px; }
+#events-list pre, #events-report { overflow-wrap: anywhere; white-space: pre-wrap; }
+#events-report:empty { display: none; }
+@media (max-width: 900px) { #events-form { grid-template-columns: 1fr; } }
+/* Explicit host inspections. */
+.host-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 24px 0; }
+.host-metric { padding: 20px; border: 1px solid #343244; border-radius: 12px; }
+.host-metric small, .host-metric strong { display: block; }
+.host-metric small { opacity: .65; margin-bottom: 12px; text-transform: uppercase; letter-spacing: .1em; }
+.host-row { padding: 12px 0; border-bottom: 1px solid #343244; white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; }
+.host-service-list { max-height: 600px; overflow: auto; }
+@media (max-width: 700px) { .host-grid { grid-template-columns: 1fr; } }

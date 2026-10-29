@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "check": "node --check src/app.js && node --check src/api.js",
-    "test": "node --test tests/api.test.js"
+    "check": "node --check src/app.js && node --check src/api.js && node --check src/dns.js && node --check src/tls.js && node --check src/events.js && node --check src/host.js",
+    "test": "node --test tests/api.test.js tests/dns.test.js tests/tls.test.js tests/events.test.js tests/host.test.js"
   }
 }

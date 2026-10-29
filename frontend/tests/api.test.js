@@ -59,3 +59,11 @@ test("API surfaces actionable provider error and request ID", async () => {
     globalThis.fetch = original;
   }
 });
+
+test("routing status stays concise for Auto and manual selection", () => {
+  const status = { ai: { provider: "native", backend: "llama.cpp", model: "small", state: "ready", reason: null, routing: { mode: "auto", display_name: "Small local model" } }, embeddings: { state: "ready", reason: null } };
+  assert.equal(modelStatus(status).model, "Auto · Small local model");
+  status.ai.routing.mode = "large";
+  status.ai.routing.display_name = "Larger local model";
+  assert.equal(modelStatus(status).model, "Larger local model");
+});

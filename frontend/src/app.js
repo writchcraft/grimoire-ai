@@ -1,3 +1,7 @@
+import { eventText, eventReference, eventFilters } from "./events.js";
+import { hostCards, diskText, interfaceText, serviceText, hostContextText } from "./host.js";
+import { tlsText } from "./tls.js";
+import { dnsText } from "./dns.js";
 import { api, jsonApi, readEvents, modelStatus } from "./api.js";
 
 const $ = (selector) => document.querySelector(selector);
@@ -5,6 +9,7 @@ let history = [];
 let controller = null;
 let reportUrl = null;
 const titles = {
+  host: "This host",
   chat: "Assistant",
   knowledge: "Knowledge",
   logs: "Logs & incidents",
@@ -57,6 +62,13 @@ async function refreshStatus() {
     const ready = status.status === "ready";
     $("#connection-dot").classList.toggle("ready", ready);
     const display = modelStatus(status);
+    const selector = $("#generation-model");
+    const previous = selector.value;
+    selector.replaceChildren(new Option("Auto", "auto"));
+    for (const model of status.generation_models || []) {
+      selector.add(new Option(model.display_name, model.id));
+    }
+    if ([...selector.options].some(option => option.value === previous)) selector.value = previous;
     $("#connection-label").textContent = display.label;
     $("#model-tag").textContent = display.model;
     $("#nav-count").textContent = status.documents;
@@ -110,7 +122,9 @@ function attachSources(node, sources) {
       element(
         "small",
         "",
-        `${source.source_path} · lines ${source.line_start}–${source.line_end} · chunk ${source.chunk_number}`,
+        source.evidence_type === "live_observation"
+          ? `LIVE OBSERVATION · ${source.observation.checked_at} · ${source.observation.endpoint.url}`
+          : `INDEXED DOCUMENTATION · ${source.source_path} · lines ${source.line_start}–${source.line_end} · chunk ${source.chunk_number}`,
       ),
       element("pre", "", source.text),
     );
@@ -133,6 +147,7 @@ $("#chat-form").addEventListener("submit", async (event) => {
   $("#chat-mode").disabled = true;
   $("#clear-chat").disabled = true;
   let answer = "",
+    hostEventAnswer = false,
     completed = false;
   try {
     const response = await api("/api/chat", {
@@ -141,6 +156,7 @@ $("#chat-form").addEventListener("submit", async (event) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         message,
+        model: $("#generation-model").value,
         mode,
         history: history.slice(-12),
         stream: true,
@@ -153,14 +169,26 @@ $("#chat-form").addEventListener("submit", async (event) => {
       } else if (item.type === "token") {
         answer += item.content;
         assistant.body.textContent = answer;
+      } else if (item.type === "live") {
+        hostEventAnswer ||= item.live.some(e => e.evidence_type === "windows_event");
+        const details = element("details", "sources");
+        details.append(element("summary", "", "LIVE OBSERVATION - evidence"));
+        for (const observation of item.live) details.append(element("pre", "report", JSON.stringify(observation, null, 2)));
+        assistant.node.append(details);
+      } else if (item.type === "interpretation") {
+        const section = element("div", "panel");
+        section.append(element("strong", "", "AI INTERPRETATION - unverified suggestions"), element("p", "", item.content));
+        assistant.node.append(section);
       } else if (item.type === "error") throw new Error(item.detail);
       else if (item.type === "done") completed = true;
       scrollChat();
     }
     if (!completed)
       throw new Error("The response ended before completion. Please retry.");
+    await refreshStatus();
     // Bound individual history turns to the API schema; long answers stay visible in the UI.
-    history.push(
+    // Host evidence stays out of later model routes, which may use other adapters.
+    if (!hostEventAnswer) history.push(
       { role: "user", content: message },
       { role: "assistant", content: answer.slice(-8000) },
     );
@@ -331,11 +359,14 @@ $("#log-form").addEventListener("submit", async (event) => {
       $("#log-question").value.trim() ||
       "Explain the failures and suggest investigation steps.",
     use_model: $("#use-model").checked,
+    model: $("#generation-model").value,
   };
   if (incident)
     Object.assign(body, {
       title: $("#incident-title").value.trim() || "Homelab incident",
       notes: $("#incident-notes").value,
+      event_selection: [...selectedWindowsEvents.values()],
+      include_host: $("#incident-host").checked,
     });
   const buttons = [...$("#log-form").querySelectorAll("button")];
   buttons.forEach((b) => (b.disabled = true));
@@ -345,6 +376,7 @@ $("#log-form").addEventListener("submit", async (event) => {
       body,
     );
     const analysis = incident ? result.analysis : result;
+    await refreshStatus();
     const area = $("#log-results");
     area.replaceChildren();
     const stats = element("div", "stat-row");
@@ -455,6 +487,61 @@ function serviceCard(service, allowDelete = false) {
   const tags = element("div", "tags");
   service.tags.forEach((tag) => tags.append(element("span", "tag", tag)));
   card.append(tags);
+  if (service.local_windows_service) {
+    card.append(element("p", "", `Local Windows service: ${service.local_windows_service}`));
+  }
+  if (allowDelete && service.monitor) {
+    const area = element("div", "service-health");
+    const render = (health) => {
+      area.replaceChildren();
+      area.append(element("strong", `health-${health.state}`, `● ${health.state.toUpperCase()}`));
+      const observation = health.latest;
+      if (observation) {
+        for (const [label, endpoint] of [["HTTP", observation.endpoint], ["Health endpoint", observation.health_endpoint]]) {
+          if (endpoint) area.append(element("p", "", `${label}: ${endpoint.status_code ?? "No response"} · ${endpoint.latency_ms} ms${endpoint.error ? ` · ${endpoint.error.replaceAll("_", " ")}` : ""}`));
+        }
+        area.append(element("p", "", `Checked ${new Date(observation.checked_at).toLocaleString()} · saved observation`));
+      } else area.append(element("p", "", "Not checked yet"));
+    };
+    render(service.health || { state: "unknown" });
+    const button = element("button", "primary-button", "Probe ↗");
+    button.addEventListener("click", async () => {
+      button.disabled = true;
+      try {
+        const latest = await jsonApi(`/api/services/${service.id}/probe`, {});
+        render({ state: latest.state, latest });
+      } catch (error) { notice(error.message); }
+      finally { button.disabled = false; }
+    });
+    card.append(area, button);
+  }
+  if (allowDelete && (service.monitor || service.hostname)) {
+    const dnsArea = element("pre", "report", dnsText(service.dns));
+    const dnsButton = element("button", "primary-button", "Inspect DNS");
+    dnsButton.addEventListener("click", async () => {
+      dnsButton.disabled = true;
+      try {
+        await jsonApi(`/api/services/${service.id}/dns`, {});
+        const data = await jsonApi(`/api/services/${service.id}/dns`);
+        dnsArea.textContent = dnsText(data);
+      } catch (error) { notice(error.message); }
+      finally { dnsButton.disabled = false; }
+    });
+    card.append(dnsArea, dnsButton);
+    if (service.monitor?.url.startsWith("https://")) {
+      const tlsArea = element("pre", "report", tlsText(service.tls));
+      const tlsButton = element("button", "primary-button", "Inspect TLS");
+      tlsButton.addEventListener("click", async () => {
+        tlsButton.disabled = true;
+        try {
+          await jsonApi(`/api/services/${service.id}/tls`, {});
+          tlsArea.textContent = tlsText(await jsonApi(`/api/services/${service.id}/tls`));
+        } catch (e) { notice(e.message); }
+        finally { tlsButton.disabled = false; }
+      });
+      card.append(tlsArea, tlsButton);
+    }
+  }
   if (allowDelete) {
     const remove = element("button", "delete-button", "Delete service");
     remove.addEventListener("click", async () => {
@@ -472,7 +559,7 @@ function serviceCard(service, allowDelete = false) {
   return card;
 }
 async function loadServices() {
-  const services = await jsonApi("/api/services"),
+  const services = await jsonApi("/api/services?health=true"),
     list = $("#services-list");
   list.replaceChildren();
   if (!services.length)
@@ -483,8 +570,18 @@ async function loadServices() {
         "Add your first service. Inventory entries are searchable; upload a runbook to use them in knowledge chat.",
       ),
     );
-  services.forEach((service) => list.append(serviceCard(service, true)));
+  for (const service of services) {
+    service.health = { state: service.health?.state || "unknown", latest: service.health };
+    list.append(serviceCard(service, true));
+  }
 }
+$("#probe-services").addEventListener("click", async (event) => {
+  const button = event.currentTarget;
+  button.disabled = true;
+  try { await jsonApi("/api/services/probe", {}); await loadServices(); }
+  catch (error) { notice(error.message); }
+  finally { button.disabled = false; }
+});
 $("#service-form").addEventListener("submit", async (event) => {
   event.preventDefault();
   notice();
@@ -499,6 +596,17 @@ $("#service-form").addEventListener("submit", async (event) => {
   data.urls = split(data.urls);
   data.dependencies = split(data.dependencies);
   data.tags = split(data.tags);
+  data.monitor_url ||= null;
+  data.local_windows_service ||= null;
+  data.health_url ||= null;
+  data.expected_status = Number(data.expected_status);
+  data.timeout_seconds = Number(data.timeout_seconds);
+  if (data.monitor_url) data.monitor = {
+    url: data.monitor_url, health_url: data.health_url,
+    expected_status: data.expected_status, timeout_seconds: data.timeout_seconds,
+    environment: data.environment,
+  };
+  for (const key of ["monitor_url", "health_url", "expected_status", "timeout_seconds", "environment"]) delete data[key];
   if (!data.ip_address) data.ip_address = null;
   const button = form.querySelector("button");
   button.disabled = true;
@@ -514,3 +622,106 @@ $("#service-form").addEventListener("submit", async (event) => {
   }
 });
 refreshStatus();
+
+
+let eventPage = null;
+let eventParams = null;
+const selectedWindowsEvents = new Map();
+async function loadWindowsEvents(older = false) {
+  const params = older ? new URLSearchParams(eventParams) : eventFilters(new FormData($("#events-form")));
+  if (older && eventPage?.next_before_record) params.set("before_record", eventPage.next_before_record);
+  eventParams = params;
+  if (!older) $("#events-report").textContent = "";
+  const [page, channels, services] = await Promise.all([
+    jsonApi(`/api/events?${params}`), jsonApi("/api/events/channels"), jsonApi("/api/services")
+  ]);
+  eventPage = page;
+  $("#events-status").textContent = channels.channels.map(c => `${c.channel}: ${c.status}${c.reason ? ` (${c.reason})` : ""}`).join("\n") +
+    `\n${page.records.length} records. ${(page.issues || []).join("; ")}`;
+  $("#events-more").disabled = !page.next_before_record;
+  const serviceSelect = $("#events-service");
+  const previous = serviceSelect.value;
+  serviceSelect.replaceChildren(new Option("No service selected", "unknown"));
+  for (const service of services) serviceSelect.add(new Option(service.name, service.id));
+  serviceSelect.value = previous;
+  const list = $("#events-list"); list.replaceChildren();
+  for (const record of page.records) {
+    const card = element("article", "panel");
+    const label = element("label");
+    const checkbox = element("input"); checkbox.type = "checkbox";
+    checkbox.checked = selectedWindowsEvents.has(record.evidence_id);
+    checkbox.addEventListener("change", () => {
+      if (checkbox.checked && selectedWindowsEvents.size >= 50) {
+        checkbox.checked = false; notice("Select at most 50 events."); return;
+      }
+      if (checkbox.checked) selectedWindowsEvents.set(record.evidence_id, eventReference(record));
+      else selectedWindowsEvents.delete(record.evidence_id);
+    });
+    label.append(checkbox, document.createTextNode(" Select event evidence"));
+    const detail = element("details");
+    detail.append(element("summary", "", "Exact source fields"), element("pre", "report", JSON.stringify(record, null, 2)));
+    card.append(label, element("pre", "report", eventText(record)), detail); list.append(card);
+  }
+}
+$("#events-form").addEventListener("submit", async event => {
+  event.preventDefault(); selectedWindowsEvents.clear();
+  try { await loadWindowsEvents(); } catch (error) { notice(error.message); }
+});
+$("#events-more").addEventListener("click", () => loadWindowsEvents(true).catch(e => notice(e.message)));
+async function explainWindowsEvents(incident = false) {
+  if (!selectedWindowsEvents.size) { notice("Select event records first."); return; }
+  const body = {selected: [...selectedWindowsEvents.values()],
+    question: $("#events-question").value, service: $("#events-service").value || "unknown",
+    use_model: $("#events-model").checked, notes: $("#incident-notes").value};
+  if (incident) body.incident_title = $("#incident-title").value || "Windows host incident";
+  const result = await jsonApi("/api/events/analyse", body);
+  const analysis = result.analysis || result;
+  $("#events-report").textContent = incident ? result.markdown : analysis.answer + "\n\nRepeated provider/event groups:\n" +
+    JSON.stringify(analysis.repeated_patterns, null, 2) + "\nSeparate time correlations:\n" + JSON.stringify(analysis.correlations, null, 2);
+}
+$("#events-analyse").addEventListener("click", () => explainWindowsEvents().catch(e => notice(e.message)));
+$("#events-incident").addEventListener("click", () => explainWindowsEvents(true).catch(e => notice(e.message)));
+
+$("#host-refresh").addEventListener("click", async event => {
+  event.target.disabled = true;
+  try {
+    const page = await jsonApi("/api/host");
+    $("#host-status").textContent = `${page.host} · ${page.status} · ${page.observed_at}`;
+    const facts = page.records[0]?.facts || {};
+    const grid = $("#host-overview"); grid.replaceChildren();
+    for (const [title, value] of hostCards(facts)) {
+      const card = element("div", "host-metric");
+      card.append(element("small", "", title), element("strong", "", value)); grid.append(card);
+    }
+    for (const [selector, values, format] of [["#host-disks", facts.disks || [], diskText], ["#host-network", facts.interfaces || [], interfaceText]]) {
+      const list = $(selector); list.replaceChildren();
+      for (const value of values) list.append(element("p", "host-row", format(value)));
+      if (!values.length) list.append(element("p", "", "No accessible entries in this sample."));
+    }
+    $("#host-evidence").textContent = [...page.issues, ...page.records.map(r => r.evidence_id)].join("\n");
+  } catch (error) { notice(error.message); }
+  finally { event.target.disabled = false; }
+});
+$("#host-services-form").addEventListener("submit", async event => {
+  event.preventDefault();
+  const params = new URLSearchParams();
+  for (const [key, value] of new FormData(event.target)) if (value) params.set(key, value);
+  params.set("limit", "100");
+  const button = event.target.querySelector("button"); button.disabled = true;
+  try {
+    const page = await jsonApi(`/api/host/services?${params}`);
+    $("#host-services-status").textContent = `${page.status} · ${page.records.length} services${page.truncated ? " · Truncated; narrow filters" : ""}\n${page.issues.join("\n")}`;
+    const list = $("#host-services"); list.replaceChildren();
+    for (const record of page.records) list.append(element("pre", "host-row", serviceText(record)));
+  } catch (error) { notice(error.message); }
+  finally { button.disabled = false; }
+});
+$("#host-correlate").addEventListener("click", async event => {
+  event.target.disabled = true;
+  try {
+    const name = $("#host-mapping").value.trim();
+    const result = await jsonApi(`/api/host/correlations${name ? `?service=${encodeURIComponent(name)}` : ""}`);
+    $("#host-correlations").textContent = hostContextText(result);
+  } catch (error) { notice(error.message); }
+  finally { event.target.disabled = false; }
+});

@@ -27,6 +27,7 @@
       </div>
       <div class="nav-caption">WORKSPACE</div>
       <nav aria-label="Workspace">
+        <button class="nav-item" data-view="host"><span>▣</span> This host <kbd>05</kbd></button>
         <button class="nav-item active" data-view="chat" aria-current="page">
           <span>✧</span> Assistant <kbd>01</kbd>
         </button>
@@ -138,7 +139,12 @@
                   <option value="knowledge">Indexed knowledge</option>
                   <option value="general">General chat</option>
                 </select></label
-              ><span class="composer-hint"
+              ><details class="generation-options">
+                <summary>Model</summary>
+                <select id="generation-model" aria-label="Generation model">
+                  <option value="auto">Auto</option>
+                </select>
+              </details><span class="composer-hint"
                 >Enter to send · Shift + Enter for a new line</span
               ><button
                 class="send"
@@ -240,6 +246,30 @@
             causes.
           </p>
         </div>
+        <div class="panel" id="windows-events">
+          <h2>Windows Events · read only</h2>
+          <p>Bounded local host evidence. Event data can contain usernames, hostnames, paths, IP addresses and authentication metadata. Security contents are excluded from model context.</p>
+          <form id="events-form">
+            <label>Channel <select name="channel"><option>System</option><option>Application</option><option>Security</option></select></label>
+            <label>Minimum severity <select name="level"><option value="warning">Warning</option><option value="error">Error</option><option value="critical">Critical</option><option value="all">All levels</option></select></label>
+            <label>Exact provider <input name="provider" maxlength="200" /></label>
+            <label>Event ID <input name="event_id" type="number" min="0" max="65535" /></label>
+            <label>Time window <select name="hours"><option value="1">Last hour</option><option value="24" selected>Last 24 hours</option><option value="168">Last seven days</option><option value="">Latest records</option></select></label>
+            <label>Around local timestamp (±5 minutes) <input name="around" type="datetime-local" /></label>
+            <button class="primary-button" type="submit">Read latest 100</button>
+            <button class="text-button" id="events-more" type="button" disabled>Next older records</button>
+          </form>
+          <pre id="events-status" aria-live="polite"></pre>
+
+          <label>Question <input id="events-question" maxlength="2000" value="Are there repeated failures from the same source?" /></label>
+          <label>Correlate with inventory service <select id="events-service"><option value="unknown">No service selected</option></select></label>
+          <label><input id="events-model" type="checkbox" /> Add local AI interpretation (bounded event selection)</label>
+          <button id="events-analyse" class="primary-button" type="button">Explain selected events</button>
+          <button id="events-incident" class="primary-button" type="button">Create incident from selected events</button>
+          <p>Incidents use the title and operator notes below. Selection is limited to 50 events. Time proximity does not establish causation or a host association.</p>
+          <pre id="events-report" class="report" aria-live="polite"></pre>
+          <div id="events-list" aria-label="Windows event records"></div>
+        </div>
         <div class="panel">
           <form id="log-form">
             <div class="panel-heading">
@@ -307,20 +337,53 @@
           </form>
         </div>
         <div id="log-results" aria-live="polite"></div>
+        <label><input id="incident-host" type="checkbox" /> Attach current host evidence when creating an incident (kept local)</label>
+      </section>
+      <section id="view-host" class="view content-view" hidden>
+        <div class="section-heading">
+          <div class="eyebrow">THIS HOST</div><h1>A view of the machine.</h1>
+          <p>Local facts from explicit inspections. Each reading is a point in time.</p>
+        </div>
+        <div class="panel">
+          <button id="host-refresh" class="primary-button">Inspect host ↗</button>
+          <p id="host-status" role="status">Choose Inspect host to collect local facts.</p>
+          <div id="host-overview" class="host-grid"></div>
+          <details><summary>Local disks</summary><div id="host-disks"></div></details>
+          <details><summary>Network interfaces</summary><div id="host-network"></div></details>
+          <details><summary>Evidence and availability</summary><pre id="host-evidence" class="report"></pre></details>
+        </div>
+        <div class="panel">
+          <h2>Windows services</h2>
+          <form id="host-services-form" class="form-row">
+            <label>Name contains<input name="name" maxlength="256" /></label>
+            <label>State<select name="state"><option value="">All states</option><option>running</option><option>stopped</option><option>paused</option></select></label>
+            <label>Start type<select name="start_type"><option value="">All types</option><option>automatic</option><option>manual</option><option>disabled</option></select></label>
+            <button class="primary-button">Inspect services</button>
+          </form>
+          <p id="host-services-status" role="status">Up to 100 matching services per inspection.</p>
+          <div id="host-services" class="host-service-list"></div>
+        </div>
+        <div class="panel">
+          <h2>Supporting evidence</h2>
+          <label>Configured service name (optional)<input id="host-mapping" maxlength="100" /></label>
+          <button id="host-correlate" class="primary-button">Inspect host and correlate with recent System events</button>
+          <pre id="host-correlations" class="report" aria-live="polite"></pre>
+        </div>
       </section>
       <section id="view-services" class="view content-view" hidden>
         <div class="section-heading">
           <div class="eyebrow">INFRASTRUCTURE</div>
           <h1>Give your services some context.</h1>
           <p>
-            A local inventory of hosts, endpoints and dependencies. No live
-            discovery.
+            Local inventory, manual HTTP health checks and DNS inspection. Saved observations are
+            point-in-time evidence; use Probe to check again.
           </p>
         </div>
         <div class="panel">
           <details>
             <summary>Add a service <span>＋</span></summary>
             <form id="service-form">
+              <label>Associated local Windows service (optional, exact name)<input name="local_windows_service" maxlength="256" placeholder="Explicit local mapping only" /></label>
               <div class="form-row">
                 <label
                   >Name<input
@@ -386,10 +449,22 @@
                   rows="2"
                   maxlength="4000"
                 ></textarea></label
-              ><button class="primary-button">Save service ↗</button>
+              >
+              <div class="form-row">
+                <label>Monitoring URL<input name="monitor_url" type="url" maxlength="2048" placeholder="http://127.0.0.1:7864/health" /></label>
+                <label>Optional health URL<input name="health_url" type="url" maxlength="2048" placeholder="http://127.0.0.1:7864/ready" /></label>
+              </div>
+              <div class="form-row">
+                <label>Expected HTTP status<input name="expected_status" type="number" min="100" max="599" value="200" required /></label>
+                <label>Timeout (seconds)<input name="timeout_seconds" type="number" min="0.1" max="30" step="0.1" value="5" required /></label>
+                <label>Environment<input name="environment" maxlength="100" placeholder="lab" /></label>
+              </div>
+              <p>HTTP(S) only. No credentials, query strings or fragments. Redirects stay on the same origin.</p>
+              <button class="primary-button">Save service ↗</button>
             </form>
           </details>
         </div>
+        <button id="probe-services" class="primary-button">Probe configured services ↗</button>
         <div id="services-list" class="service-grid" aria-live="polite"></div>
       </section>
     </main>
