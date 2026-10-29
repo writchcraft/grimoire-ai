@@ -1,0 +1,304 @@
+{
+  "localhost": {
+    "queried_hostname": "localhost",
+    "hostname": "localhost",
+    "status": "resolved",
+    "addresses": [
+      "127.0.0.1",
+      "::1"
+    ],
+    "a": [
+      "127.0.0.1"
+    ],
+    "aaaa": [
+      "::1"
+    ],
+    "canonical_name": "e-cauldron",
+    "record_types": [
+      "A",
+      "AAAA"
+    ],
+    "records": [
+      {
+        "type": "A",
+        "value": "127.0.0.1"
+      },
+      {
+        "type": "AAAA",
+        "value": "::1"
+      }
+    ],
+    "resolver": "system",
+    "error_category": null,
+    "reason": "System resolver returned addresses.",
+    "truncated": false,
+    "applicable": true,
+    "observed_at": "2026-10-29T19:27:27.506942+00:00",
+    "latency_ms": 16
+  },
+  "invalid": {
+    "queried_hostname": "grimoire-dns-acceptance.invalid.",
+    "hostname": "grimoire-dns-acceptance.invalid",
+    "status": "unresolved",
+    "addresses": [],
+    "a": [],
+    "aaaa": [],
+    "canonical_name": null,
+    "record_types": [
+      "A",
+      "AAAA"
+    ],
+    "records": [],
+    "resolver": "system",
+    "error_category": "name_not_resolved",
+    "reason": "Name could not be resolved.",
+    "truncated": false,
+    "applicable": true,
+    "observed_at": "2026-10-29T19:27:27.524565+00:00",
+    "latency_ms": 15
+  },
+  "lan": "Not tested: configured local inventory contained no services or LAN hostnames.",
+  "scope": "Real system resolver and loopback HTTP; disposable configured localhost service. No public internet names; OS networking was not disabled.",
+  "configured_service_dns": {
+    "queried_hostname": "localhost",
+    "hostname": "localhost",
+    "status": "resolved",
+    "addresses": [
+      "127.0.0.1",
+      "::1"
+    ],
+    "a": [
+      "127.0.0.1"
+    ],
+    "aaaa": [
+      "::1"
+    ],
+    "canonical_name": "e-cauldron",
+    "record_types": [
+      "A",
+      "AAAA"
+    ],
+    "records": [
+      {
+        "type": "A",
+        "value": "127.0.0.1"
+      },
+      {
+        "type": "AAAA",
+        "value": "::1"
+      }
+    ],
+    "resolver": "system",
+    "error_category": null,
+    "reason": "System resolver returned addresses.",
+    "truncated": false,
+    "applicable": true,
+    "observed_at": "2026-10-29T19:27:27.616249+00:00",
+    "latency_ms": 0,
+    "id": "8052a502-d9d5-4ee8-874c-71a611715fa0",
+    "service_id": "e5a369c7-031e-4adf-96a4-ecd3650c0113",
+    "service": "Local acceptance",
+    "checked_at": "2026-10-29T19:27:27.616249+00:00"
+  },
+  "http": {
+    "id": "cb3bd5f2-887a-471b-88b4-b3e3ef056999",
+    "service_id": "e5a369c7-031e-4adf-96a4-ecd3650c0113",
+    "service": "Local acceptance",
+    "environment": "",
+    "checked_at": "2026-10-29T19:27:28.030076+00:00",
+    "state": "unreachable",
+    "reason": "Hostname resolves to a refused address range.",
+    "expected_status": 200,
+    "endpoint": {
+      "reachable": false,
+      "url": "http://localhost:52565",
+      "final_url": null,
+      "status_code": null,
+      "latency_ms": 406,
+      "redirects": 0,
+      "error": "Hostname resolves to a refused address range",
+      "error_kind": "blocked_target",
+      "content_type": null,
+      "content_length": null,
+      "server": null,
+      "body_bytes_read": 0,
+      "body_truncated": false
+    },
+    "health_endpoint": null
+  },
+  "chat": {
+    "answer": "LIVE OBSERVATION\n1 service: 1 unreachable.\n[L1] Local acceptance: UNREACHABLE. Hostname resolves to a refused address range at http://localhost:52565; observed 2026-10-29T19:27:28.030076+00:00 (0 s ago, stored observation). Hostname resolves to a refused address range.\nEach line is a point-in-time observation. It does not establish uptime or past availability.\nINDEXED DOCUMENTATION: not consulted for this live-state answer.\n\nDNS OBSERVATIONS (system resolver; separate from HTTP)\n[D1] Local acceptance: DNS RESOLVED; localhost; A: 127.0.0.1; AAAA: ::1; canonical name: e-cauldron; observed 2026-10-29T19:27:27.616249+00:00; 0 ms. System resolver returned addresses.\n[D1][L1] Separate observations: DNS resolved at 2026-10-29T19:27:27.616249+00:00; HTTP unreachable at 2026-10-29T19:27:28.030076+00:00. These checks may differ in time, cache and resolver result; they do not establish causation.\nOnly recorded samples are compared; no claim of long-term DNS stability. DNS success does not establish HTTP reachability.",
+    "sources": [],
+    "live": [
+      {
+        "evidence_type": "http_observation",
+        "addresses": [],
+        "record_types": [],
+        "records": [],
+        "label": "L1",
+        "observation_id": "cb3bd5f2-887a-471b-88b4-b3e3ef056999",
+        "service": "Local acceptance",
+        "environment": "",
+        "endpoint": "http://localhost:52565",
+        "observed_at": "2026-10-29T19:27:28.030076+00:00",
+        "state": "unreachable",
+        "latency_ms": 406,
+        "error": "Hostname resolves to a refused address range",
+        "reason": "Hostname resolves to a refused address range.",
+        "probed_now": false,
+        "recent_observations": []
+      },
+      {
+        "evidence_type": "dns_observation",
+        "hostname": "localhost",
+        "addresses": [
+          "127.0.0.1",
+          "::1"
+        ],
+        "record_types": [
+          "A",
+          "AAAA"
+        ],
+        "records": [
+          {
+            "type": "A",
+            "value": "127.0.0.1"
+          },
+          {
+            "type": "AAAA",
+            "value": "::1"
+          }
+        ],
+        "canonical_name": "e-cauldron",
+        "label": "D1",
+        "observation_id": "8052a502-d9d5-4ee8-874c-71a611715fa0",
+        "service": "Local acceptance",
+        "environment": "",
+        "observed_at": "2026-10-29T19:27:27.616249+00:00",
+        "state": "resolved",
+        "latency_ms": 0,
+        "reason": "System resolver returned addresses.",
+        "probed_now": false,
+        "recent_observations": [
+          {
+            "queried_hostname": "localhost",
+            "hostname": "localhost",
+            "status": "resolved",
+            "addresses": [
+              "127.0.0.1",
+              "::1"
+            ],
+            "a": [
+              "127.0.0.1"
+            ],
+            "aaaa": [
+              "::1"
+            ],
+            "canonical_name": "e-cauldron",
+            "record_types": [
+              "A",
+              "AAAA"
+            ],
+            "records": [
+              {
+                "type": "A",
+                "value": "127.0.0.1"
+              },
+              {
+                "type": "AAAA",
+                "value": "::1"
+              }
+            ],
+            "resolver": "system",
+            "error_category": null,
+            "reason": "System resolver returned addresses.",
+            "truncated": false,
+            "applicable": true,
+            "observed_at": "2026-10-29T19:27:27.616249+00:00",
+            "latency_ms": 0,
+            "id": "8052a502-d9d5-4ee8-874c-71a611715fa0",
+            "service_id": "e5a369c7-031e-4adf-96a4-ecd3650c0113",
+            "service": "Local acceptance",
+            "checked_at": "2026-10-29T19:27:27.616249+00:00"
+          }
+        ]
+      }
+    ],
+    "grounded": true,
+    "quality": "live_observation",
+    "claims": []
+  },
+  "cli": {
+    "dns_results": [
+      {
+        "queried_hostname": "localhost",
+        "hostname": "localhost",
+        "status": "resolved",
+        "addresses": [
+          "127.0.0.1",
+          "::1"
+        ],
+        "a": [
+          "127.0.0.1"
+        ],
+        "aaaa": [
+          "::1"
+        ],
+        "canonical_name": "e-cauldron",
+        "record_types": [
+          "A",
+          "AAAA"
+        ],
+        "records": [
+          {
+            "type": "A",
+            "value": "127.0.0.1"
+          },
+          {
+            "type": "AAAA",
+            "value": "::1"
+          }
+        ],
+        "resolver": "system",
+        "error_category": null,
+        "reason": "System resolver returned addresses.",
+        "truncated": false,
+        "applicable": true,
+        "observed_at": "2026-10-29T19:27:27.616249+00:00",
+        "latency_ms": 0,
+        "id": "8052a502-d9d5-4ee8-874c-71a611715fa0",
+        "service_id": "e5a369c7-031e-4adf-96a4-ecd3650c0113",
+        "service": "Local acceptance",
+        "checked_at": "2026-10-29T19:27:27.616249+00:00"
+      }
+    ]
+  },
+  "literal_http": {
+    "id": "34afb4e0-3aa5-423b-8d54-5476fab01cc6",
+    "service_id": "a2160e38-d459-4bad-b56e-39b72ae93f5f",
+    "service": "Literal loopback acceptance",
+    "environment": "",
+    "checked_at": "2026-10-29T19:27:28.450176+00:00",
+    "state": "healthy",
+    "reason": "HTTP 200 as expected in 344 ms.",
+    "expected_status": 200,
+    "endpoint": {
+      "reachable": true,
+      "url": "http://127.0.0.1:52565",
+      "final_url": "http://127.0.0.1:52565",
+      "status_code": 200,
+      "latency_ms": 344,
+      "redirects": 0,
+      "error": null,
+      "error_kind": null,
+      "content_type": null,
+      "content_length": null,
+      "server": "BaseHTTP/0.6 Python/3.12.3",
+      "body_bytes_read": 0,
+      "body_truncated": false
+    },
+    "health_endpoint": null
+  },
+  "correlation_note": "Localhost can resolve successfully while the existing HTTP safety policy refuses the IPv6 loopback address. HTTP address validation was preserved.",
+  "result": "PASS"
+}
