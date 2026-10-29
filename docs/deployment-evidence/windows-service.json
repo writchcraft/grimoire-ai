@@ -1,0 +1,36 @@
+{
+  "platform": "Windows-11-10.0.26200-SP0",
+  "cycles": [
+    {
+      "cycle": 0,
+      "answer": "[S1] (Grafana) Grafana uses port 3000.",
+      "citations_identical": true
+    },
+    {
+      "cycle": 1,
+      "answer": "[S1] (Grafana) Grafana uses port 3000.",
+      "citations_identical": true
+    }
+  ],
+  "commands": [
+    {
+      "command": "grimoire doctor",
+      "exit_code": 0
+    },
+    {
+      "command": "grimoire status",
+      "exit_code": 0
+    },
+    {
+      "command": "grimoire models list",
+      "exit_code": 0
+    },
+    {
+      "command": "grimoire validate",
+      "exit_code": 0
+    }
+  ],
+  "network_scope": "Real loopback TCP; outbound networking not blocked in this rehearsal",
+  "first_stop": "abrupt process kill; successful real-server restart and cited RAG",
+  "second_stop": "abrupt Windows termination"
+}

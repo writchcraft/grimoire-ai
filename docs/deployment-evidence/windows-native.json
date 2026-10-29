@@ -1,0 +1,229 @@
+{
+  "platform": "Windows-11-10.0.26200-SP0",
+  "python": "3.12.3",
+  "linux": "BLOCKED \u2014 no Linux runtime",
+  "docker": "UNEXECUTED \u2014 run Compose acceptance separately",
+  "network_scope": "Python outbound socket calls denied; loopback allowed; no OS firewall",
+  "threads_limit": 2,
+  "context": 4096,
+  "samples": [
+    {
+      "phase": "before_start",
+      "cycle": 0,
+      "rss_bytes": 105103360,
+      "cpu_seconds": 2.09375,
+      "threads": 1
+    },
+    {
+      "phase": "embeddings_loaded_generation_lazy",
+      "cycle": 0,
+      "rss_bytes": 156258304,
+      "cpu_seconds": 2.734375,
+      "threads": 4
+    },
+    {
+      "phase": "ingestion",
+      "cycle": 0,
+      "rss_bytes": 181653504,
+      "cpu_seconds": 2.8125,
+      "threads": 4
+    },
+    {
+      "phase": "generation_and_retrieval",
+      "cycle": 0,
+      "rss_bytes": 2025922560,
+      "cpu_seconds": 20.515625,
+      "threads": 5
+    },
+    {
+      "phase": "idle_loaded",
+      "cycle": 0,
+      "rss_bytes": 2026020864,
+      "cpu_seconds": 20.609375,
+      "threads": 5
+    },
+    {
+      "phase": "after_shutdown",
+      "cycle": 0,
+      "rss_bytes": 124932096,
+      "cpu_seconds": 20.984375,
+      "threads": 1
+    },
+    {
+      "phase": "embeddings_loaded_generation_lazy",
+      "cycle": 1,
+      "rss_bytes": 164200448,
+      "cpu_seconds": 21.234375,
+      "threads": 4
+    },
+    {
+      "phase": "generation_and_retrieval",
+      "cycle": 1,
+      "rss_bytes": 2027515904,
+      "cpu_seconds": 37.65625,
+      "threads": 5
+    },
+    {
+      "phase": "idle_loaded",
+      "cycle": 1,
+      "rss_bytes": 2027528192,
+      "cpu_seconds": 37.765625,
+      "threads": 5
+    },
+    {
+      "phase": "after_shutdown",
+      "cycle": 1,
+      "rss_bytes": 126210048,
+      "cpu_seconds": 38.0625,
+      "threads": 1
+    },
+    {
+      "phase": "embeddings_loaded_generation_lazy",
+      "cycle": 2,
+      "rss_bytes": 164810752,
+      "cpu_seconds": 38.359375,
+      "threads": 4
+    },
+    {
+      "phase": "generation_and_retrieval",
+      "cycle": 2,
+      "rss_bytes": 2029408256,
+      "cpu_seconds": 55.03125,
+      "threads": 5
+    },
+    {
+      "phase": "idle_loaded",
+      "cycle": 2,
+      "rss_bytes": 2029436928,
+      "cpu_seconds": 55.109375,
+      "threads": 5
+    },
+    {
+      "phase": "after_shutdown",
+      "cycle": 2,
+      "rss_bytes": 126390272,
+      "cpu_seconds": 55.421875,
+      "threads": 1
+    }
+  ],
+  "cycles": [
+    {
+      "cycle": 0,
+      "kind": "initial",
+      "generation_cpu_seconds": 17.625,
+      "generation_wall_seconds": 9.987670599999547,
+      "idle_cpu_percent_one_core": 1.5622369193029564,
+      "answer": "[S1] (Grafana) Grafana uses port 3000.",
+      "sources": [
+        {
+          "heading": "Grafana",
+          "lineage": "",
+          "id": "11b4e23d-2473-4b1a-8268-6abd5cefa646",
+          "document_id": "acad2661-ece6-4870-a375-59d506877663",
+          "filename": "grafana.md",
+          "source_path": "grafana.md",
+          "document_type": "md",
+          "service": "grafana",
+          "chunk_number": 1,
+          "line_start": 1,
+          "line_end": 2,
+          "text": "# Grafana\nGrafana uses port 3000.",
+          "score": 1.4144039751574502,
+          "label": "S1"
+        }
+      ],
+      "seconds": 12.568362699999852
+    },
+    {
+      "cycle": 1,
+      "kind": "restart",
+      "generation_cpu_seconds": 16.390625,
+      "generation_wall_seconds": 9.268858600000385,
+      "idle_cpu_percent_one_core": 3.1244026142236576,
+      "answer": "[S1] (Grafana) Grafana uses port 3000.",
+      "sources": [
+        {
+          "heading": "Grafana",
+          "lineage": "",
+          "id": "11b4e23d-2473-4b1a-8268-6abd5cefa646",
+          "document_id": "acad2661-ece6-4870-a375-59d506877663",
+          "filename": "grafana.md",
+          "source_path": "grafana.md",
+          "document_type": "md",
+          "service": "grafana",
+          "chunk_number": 1,
+          "line_start": 1,
+          "line_end": 2,
+          "text": "# Grafana\nGrafana uses port 3000.",
+          "score": 1.4144039751574502,
+          "label": "S1"
+        }
+      ],
+      "seconds": 11.627013099998294
+    },
+    {
+      "cycle": 2,
+      "kind": "restore",
+      "generation_cpu_seconds": 16.671875,
+      "generation_wall_seconds": 9.52178190000268,
+      "idle_cpu_percent_one_core": 2.3435222096416912,
+      "answer": "[S1] (Grafana) Grafana uses port 3000.",
+      "sources": [
+        {
+          "heading": "Grafana",
+          "lineage": "",
+          "id": "11b4e23d-2473-4b1a-8268-6abd5cefa646",
+          "document_id": "acad2661-ece6-4870-a375-59d506877663",
+          "filename": "grafana.md",
+          "source_path": "grafana.md",
+          "document_type": "md",
+          "service": "grafana",
+          "chunk_number": 1,
+          "line_start": 1,
+          "line_end": 2,
+          "text": "# Grafana\nGrafana uses port 3000.",
+          "score": 1.4144039751574502,
+          "label": "S1"
+        }
+      ],
+      "seconds": 11.864038799998525
+    }
+  ],
+  "denied_network": [],
+  "backup_manifest": {
+    "format_version": 1,
+    "grimoire_version": "0.1.0",
+    "created_at": "2026-10-29T17:34:38.875633+00:00",
+    "schema_version": 1,
+    "embedding_identity": "native:all-MiniLM-L6-v2-f16:sha256:797b70c4edf85907fe0a49eb85811256f65fa0f7bf52166b147fd16be2be4662",
+    "vector_index": {
+      "backend": "qdrant-memory-rebuilt-from-sqlite",
+      "dimension": 384
+    },
+    "components": {
+      "documents": 1,
+      "chunks": 1,
+      "originals": 1,
+      "services": 1,
+      "incidents": 1
+    },
+    "checksums": {
+      "grimoire.sqlite3": "d05e439974684a1f51440482c5f28c19c2955fc800b6823f81de9591d5e9b33e"
+    },
+    "excluded": [
+      "configuration/secrets",
+      "model weights",
+      "logs",
+      "caches"
+    ]
+  },
+  "disk": {
+    "grimoire.sqlite3": 90112
+  },
+  "model_bytes": {
+    "generation": 1117320736,
+    "embedding": 45949216
+  },
+  "result": "PASS native real-model restart and restore on reported platform",
+  "restore_active_state": "Original active directory retired before restore into a new directory"
+}

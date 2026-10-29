@@ -1,0 +1,70 @@
+{
+  "recorded_at_utc": "2026-10-29T18:51:05.428628+00:00",
+  "host_platform": "Windows-11-10.0.26200-SP0",
+  "scope": "Runtime prerequisite recheck outside sandbox; no application acceptance executed",
+  "resolved_executables": {
+    "wsl": "C:\\WINDOWS\\system32\\wsl.EXE",
+    "docker": null,
+    "ssh": "C:\\WINDOWS\\System32\\OpenSSH\\ssh.EXE"
+  },
+  "checks": [
+    {
+      "command": [
+        "wsl",
+        "--status"
+      ],
+      "exit_code": 50,
+      "stdout": "",
+      "stderr": "The Windows Subsystem for Linux is not installed. You can install by running 'wsl.exe --install'.\r\r\nFor more information please visit https://aka.ms/wslinstall"
+    },
+    {
+      "command": [
+        "wsl",
+        "--list",
+        "--verbose"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "The Windows Subsystem for Linux is not installed. You can install by running 'wsl.exe --install'.\r\r\nFor more information please visit https://aka.ms/wslinstall"
+    },
+    {
+      "command": [
+        "wsl",
+        "--exec",
+        "cat",
+        "/etc/os-release"
+      ],
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "The Windows Subsystem for Linux is not installed. You can install by running 'wsl.exe --install'.\r\r\nFor more information please visit https://aka.ms/wslinstall"
+    },
+    {
+      "command": [
+        "docker",
+        "--version"
+      ],
+      "exit_code": null,
+      "error": "[WinError 2] The system cannot find the file specified"
+    },
+    {
+      "command": [
+        "docker",
+        "info"
+      ],
+      "exit_code": null,
+      "error": "[WinError 2] The system cannot find the file specified"
+    },
+    {
+      "command": [
+        "docker",
+        "compose",
+        "version"
+      ],
+      "exit_code": null,
+      "error": "[WinError 2] The system cannot find the file specified"
+    }
+  ],
+  "native_linux": "BLOCKED",
+  "docker": "BLOCKED",
+  "homelab_ready": false
+}
