@@ -16,7 +16,7 @@ class OutputModel(InputModel):
 
 class EvidenceClaim(OutputModel):
     source: str = Field(pattern=r"^S[1-9]\d*$")
-    quote: str = Field(min_length=1, max_length=1200)
+    quote: str = Field(min_length=1, max_length=2400)
 
 
 class EvidenceAnswer(OutputModel):
@@ -60,7 +60,7 @@ def validate_answer(raw, sources):
     return "\n\n".join(rendered), list(used.values()), claims
 
 
-async def grounded_answer(provider, messages, sources, question=None):
+async def direct_answer(provider, messages, sources, question=None):
     try:
         raw = await structured(provider, messages, EvidenceAnswer, 512)
         answer, used, claims = validate_answer(raw, sources)
@@ -85,6 +85,12 @@ async def grounded_answer(provider, messages, sources, question=None):
             "quality": "rejected_output",
             "grounded": False,
         }
+
+
+async def grounded_answer(provider, messages, sources, question=None):
+    from app.services.facts import fact_answer
+
+    return await fact_answer(provider, sources, question or "")
 
 
 Hypothesis = Literal["connection_failure", "timeout", "restart_loop", "unknown"]
@@ -191,6 +197,16 @@ def model_events(evidence):
     """Bound model input without clipping a line or expanding the supplied event set."""
     selected, used = [], 0
     for event in evidence["events"]:
+        if event.get("evidence", {}).get("evidence_type") == "windows_event":
+            record = event["evidence"]
+            if record["channel"] == "Security":
+                continue
+            event = {k: event[k] for k in ("line", "timestamp", "severity", "source")} | {
+                "text": (
+                    f"{record['channel']} / {record['provider']} / "
+                    f"Event ID {record['event_id']}: {record['message'] or 'Message unavailable'}"
+                )
+            }
         size = len(json.dumps(event))
         if len(selected) < 12 and used + size <= 5000:
             selected.append(event)

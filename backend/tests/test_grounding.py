@@ -281,17 +281,11 @@ async def test_evaluation_exercises_real_ingestion_in_an_isolated_index(
     async def chat(messages):
         if "Classify the supplied log events" in messages[0]["content"]:
             return '{"interpretations":[{"kind":"connection_failure","supporting_lines":[2]}]}'
-        return json.dumps(
-            {
-                "insufficient": False,
-                "claims": [
-                    {"source": "S1", "quote": "Grafana listens on container TCP port 3000."}
-                ],
-            }
-        )
+        slots = json.loads(messages[-1]["content"])["slots"]
+        return json.dumps({s["id"]: [s["candidates"][0]["id"]] for s in slots})
 
     provider.chat = chat
-    result = await runner.evaluate(settings)
+    result = await runner.evaluate(settings, generation_runtime=provider)
     assert result["summary"]["grounded_qa"] == {"PASS": 1}
     assert result["summary"]["oracle_qa"] == {"PASS": 1}
     assert result["summary"]["logs"] == {"PASS": 1}
