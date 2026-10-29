@@ -1,3 +1,4 @@
+import json
 import re
 from collections import Counter
 
@@ -74,10 +75,47 @@ async def analyse(
     use_model: bool,
     provider: ModelProvider,
     notes: str = "",
+    extra_evidence: dict | None = None,
 ) -> dict:
     evidence = inspect_logs(content)
+    if extra_evidence:
+        offset = evidence["line_count"]
+        evidence["events"].extend(
+            {**event, "line": event["line"] + offset} for event in extra_evidence["events"]
+        )
+        evidence["line_count"] += extra_evidence["line_count"]
+        evidence["error_count"] += extra_evidence["error_count"]
+        evidence["warning_count"] += extra_evidence["warning_count"]
+        evidence["repeated_patterns"].extend(extra_evidence["repeated_patterns"])
+        evidence["correlations"] = extra_evidence.get("correlations", [])
+        evidence["windows_events"] = True
+        from app.services.windows_events import instant
+
+        def event_order(event):
+            try:
+                return (0, instant(event["timestamp"]).isoformat(), event["line"])
+            except (TypeError, ValueError, AttributeError):
+                return (1, "", event["line"])
+
+        evidence["events"].sort(key=event_order)
+        known = [e for e in evidence["events"] if event_order(e)[0] == 0]
+        evidence["time_range"] = {
+            "first_observed": known[0]["timestamp"] if known else None,
+            "last_observed": known[-1]["timestamp"] if known else None,
+        }
+        evidence["limitations"] += (
+            " Mixed timeline sorts explicit timezone timestamps; unknown/naive times follow "
+            "in source order and are not assigned an invented timezone."
+        )
     explanation = None
     interpretation, quality = None, "not_requested"
+    if use_model and extra_evidence:
+        from app.services.windows_events import local_model_allowed
+
+        if not local_model_allowed(provider):
+            use_model = False
+            quality = "local_model_required"
+            explanation = "Event interpretation requires an entirely local model route."
     if use_model:
         interpretation, explanation, quality = await explain_logs(
             provider, evidence, question, notes
@@ -106,9 +144,24 @@ def incident_markdown(
         return f"{delimiter}text\n{text}\n{delimiter}"
 
     period = evidence["time_range"]
+    native = any(
+        e.get("evidence", {}).get("evidence_type") == "windows_event" for e in evidence["events"]
+    )
+    qualification = (
+        (
+            "Native event levels for Windows records; text counts for supplied logs. "
+            "Windows timestamps normalized to UTC; supplied log times retain their source format."
+        )
+        if native
+        else "Counts are heuristic."
+    )
+    correlations = evidence.get("correlations", [])
+
     timeline = (
         "\n".join(
-            f"L{event['line']} [{event['severity']}] {event['text']}"
+            f"L{event['line']} [{event['severity']}] "
+            + (f"[{event['source']}] " if event.get("evidence") else "")
+            + event["text"]
             for event in evidence["events"]
         )
         or "No error/warning patterns detected in supplied lines."
@@ -117,11 +170,19 @@ def incident_markdown(
         f"# {title.replace(chr(10), ' ')}\n\n"
         f"## Affected service\n\n{fence(service)}\n\n"
         f"## Observed window\n\n{period['first_observed'] or 'Unknown'} → "
-        f"{period['last_observed'] or 'Unknown'} (input order; timezone not normalized)\n\n"
+        f"{period['last_observed'] or 'Unknown'} "
+        + (
+            "(Windows times UTC; other explicit offsets retained; naive times unknown)"
+            if native
+            else "(input order; timezone not normalized)"
+        )
+        + "\n\n"
         f"## Confirmed\n\n{evidence['line_count']} lines; {evidence['error_count']} error matches; "
-        f"{evidence['warning_count']} warning matches. Counts are heuristic.\n\n"
+        f"{evidence['warning_count']} warning matches. {qualification}\n\n"
         f"## Relevant events / timeline\n\n{fence(timeline)}\n\n"
         f"{'Event list capped at 80 entries. ' if evidence['events_truncated'] else ''}"
+        f"\n## Separate time-correlated observations\n\n"
+        f"{fence(json.dumps(correlations, indent=2))}\n\n"
         f"\n## Operator notes / reported troubleshooting\n\n{fence(notes or 'None supplied.')}\n\n"
         f"## Probable\n\n"
         f"{
