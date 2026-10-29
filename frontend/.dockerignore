@@ -1,3 +1,7 @@
 node_modules
 tests
 package.json
+.env
+.env.*
+dist/
+coverage/

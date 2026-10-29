@@ -4,17 +4,15 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
-from starlette.concurrency import run_in_threadpool
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 
 from app.ai.base import EmbeddingProvider, ModelProvider
-from app.ai.registry import embedding_provider, generation_provider
 from app.api.routes import router
 from app.core.config import Settings
 from app.core.errors import DocumentError, ProviderError
 from app.core.logging import configure_logging
 from app.core.middleware import RequestGuard
-from app.services.storage import Storage
+from app.services.runtime import application_runtime
 
 
 def create_app(
@@ -27,33 +25,15 @@ def create_app(
 
     @asynccontextmanager
     async def lifespan(app: FastAPI):
-        app.state.settings = settings
-        app.state.storage = await run_in_threadpool(
-            Storage,
-            settings.data_dir,
-            (
-                settings.embedding_model
-                if settings.embedding_provider == "ollama"
-                else f"native:{settings.embedding_model}:{settings.native_embedding_model_path}"
-            ),
-        )
-        app.state.provider = provider or generation_provider(settings)
-        app.state.embeddings = embeddings or embedding_provider(settings)
-        app.state.inference_slots = asyncio.Semaphore(2)
-        app.state.ingestion_slot = asyncio.Semaphore(1)
-        logging.getLogger("grimoire").info("application_started")
-        try:
-            for runtime in (app.state.provider, app.state.embeddings):
-                await runtime.start()
+        async with application_runtime(settings, provider, embeddings) as state:
+            app.state.settings = state.settings
+            app.state.storage = state.storage
+            app.state.provider = state.provider
+            app.state.embeddings = state.embeddings
+            app.state.inference_slots = asyncio.Semaphore(2)
+            app.state.ingestion_slot = asyncio.Semaphore(1)
+            logging.getLogger("grimoire").info("application_started")
             yield
-        finally:
-            try:
-                await app.state.provider.close()
-            finally:
-                try:
-                    await app.state.embeddings.close()
-                finally:
-                    await run_in_threadpool(app.state.storage.close)
 
     app = FastAPI(
         title="Grimoire AI",

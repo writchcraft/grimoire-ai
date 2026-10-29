@@ -1,0 +1,4 @@
+# Maintainer CPU wheels; no CUDA/toolchain detection or source-build fallback.
+--extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
+--only-binary llama-cpp-python
+-r requirements-native.lock

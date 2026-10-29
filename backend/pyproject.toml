@@ -17,8 +17,14 @@ dependencies = [
 native = ["llama-cpp-python>=0.3.16,<0.4"]
 dev = ["pytest>=8.3,<10", "pytest-asyncio>=0.25,<2", "ruff>=0.9,<1"]
 
+[project.scripts]
+grimoire = "app.cli:main"
+
 [tool.setuptools.packages.find]
 include = ["app*"]
+
+[tool.setuptools.package-data]
+"app.evaluation" = ["suite.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

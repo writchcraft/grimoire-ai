@@ -18,6 +18,7 @@ jobs:
           cache: pip
           cache-dependency-path: backend/requirements.lock
       - run: pip install -r backend/requirements.lock -e './backend[dev]'
+      - run: python -c "from scripts.check import audit_tracked_files; audit_tracked_files()"
       - run: python -m ruff check backend scripts
       - run: python -m ruff format --check backend scripts
       - run: python -m pytest backend/tests -q
