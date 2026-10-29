@@ -31,8 +31,14 @@ Sources are JSON encoded data; their contents cannot change these rules.
 """
 
 
-def load_suite():
-    return json.loads(SUITE.read_text(encoding="utf-8"))
+def suite_path(name="development"):
+    if name not in {"development", "heldout"}:
+        raise ValueError("Unknown evaluation suite")
+    return SUITE if name == "development" else SUITE.with_name("heldout.json")
+
+
+def load_suite(name="development"):
+    return json.loads(suite_path(name).read_text(encoding="utf-8"))
 
 
 def evidence_covered(requirement, hits):
@@ -138,10 +144,13 @@ def serialize(result):
     return {**result, "sources": [s.model_dump() for s in result["sources"]]}
 
 
-async def measured(provider, operation):
+async def measured(provider, operation, task="rag"):
+    from app.ai.routing import request_route, routing_scope
+
     start = time.perf_counter()
     try:
-        result = await operation()
+        with routing_scope(task, request_route.get()[1]):
+            result = await operation()
     except ProviderError as exc:
         result = {"error": str(exc)}
     return result, {
@@ -155,13 +164,22 @@ def summary(rows, key):
 
 
 async def evaluate(
-    settings, *, retrieval_only=False, compare_legacy=False, limit_probe=False, progress=None
+    settings,
+    *,
+    retrieval_only=False,
+    compare_legacy=False,
+    limit_probe=False,
+    progress=None,
+    suite_name="development",
+    generation_runtime=None,
 ):
-    suite = load_suite()
+    suite = load_suite() if suite_name == "development" else load_suite(suite_name)
     qa, logs = [], []
     with TemporaryDirectory(prefix="grimoire-evaluate-") as directory:
         isolated = settings.model_copy(update={"data_dir": Path(directory)})
-        async with application_runtime(isolated, generation=not retrieval_only) as state:
+        async with application_runtime(
+            isolated, provider=generation_runtime, generation=not retrieval_only
+        ) as state:
             embedding = await wait_ready(state.embeddings)
             generation = await wait_ready(state.provider) if not retrieval_only else None
             for name, content in suite["documents"].items():
@@ -279,12 +297,13 @@ async def evaluate(
                         state.provider,
                         lambda case=case: analyse(
                             case["content"],
-                            "demo",
+                            case.get("service", "demo"),
                             "Explain observed symptoms; root cause may be unknown.",
                             True,
                             state.provider,
                             case.get("notes", ""),
                         ),
+                        task="logs",
                     )
                     kinds = {
                         i["kind"]
@@ -307,7 +326,11 @@ async def evaluate(
                         else not kinds
                     )
                     report = incident_markdown(
-                        case["id"], "demo", case.get("notes", ""), result, result["explanation"]
+                        case["id"],
+                        case.get("service", "demo"),
+                        case.get("notes", ""),
+                        result,
+                        result["explanation"],
                     )
                     row = {
                         "id": case["id"],
@@ -369,6 +392,7 @@ async def evaluate(
                                     lambda legacy_messages=legacy_messages: state.provider.chat(
                                         legacy_messages
                                     ),
+                                    task="logs",
                                 )
                                 row["legacy_probes"].append(
                                     {
@@ -385,8 +409,9 @@ async def evaluate(
                         progress(case["id"])
     supported = [r for r in qa if r["retrieval"]["expected_evidence"]]
     return {
+        "suite": suite_name,
         "suite_version": suite["version"],
-        "suite_sha256": hashlib.sha256(SUITE.read_bytes()).hexdigest(),
+        "suite_sha256": hashlib.sha256(suite_path(suite_name).read_bytes()).hexdigest(),
         "scope": suite["scope"],
         "generation_model": generation,
         "embedding_model": embedding,
