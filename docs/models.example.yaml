@@ -1,0 +1,23 @@
+models:
+  - id: qwen-small
+    display_name: Qwen2.5 1.5B Q4_K_M
+    provider: native
+    model_path: ../models/qwen2.5-1.5b-instruct-q4_k_m.gguf
+    capabilities: [general, rag, logs, incidents, config_explanation, config_reasoning, code_reasoning, summarisation]
+    context_size: 4096
+    output_limit: 512
+    resource_class: light
+  - id: qwen-large
+    display_name: Qwen2.5 3B Q4_K_M
+    provider: native
+    model_path: ../models/qwen2.5-3b-instruct-q4_k_m.gguf
+    capabilities: [general, rag, logs, incidents, config_explanation, config_reasoning, code_reasoning, summarisation]
+    context_size: 4096
+    output_limit: 512
+    resource_class: medium
+    tags: [experimental]
+routing:
+  default: qwen-small
+  policies: {}
+  fallbacks:
+    qwen-large: [qwen-small]
