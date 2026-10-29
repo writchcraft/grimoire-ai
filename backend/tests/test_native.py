@@ -26,6 +26,19 @@ class FakeLlama:
     def create_chat_completion(self, **options):
         assert threading.get_ident() == self.thread
         if not options["stream"]:
+            if options.get("response_format"):
+                schema = options["response_format"]["schema"]
+                content = (
+                    '{"interpretations":[]}'
+                    if "interpretations" in schema["properties"]
+                    else json.dumps(
+                        {
+                            "insufficient": False,
+                            "claims": [{"source": "S1", "quote": "Grafana port 3000"}],
+                        }
+                    )
+                )
+                return {"choices": [{"message": {"content": content}, "finish_reason": "stop"}]}
             return {"choices": [{"message": {"content": "Local answer"}}]}
 
         def chunks():
@@ -267,12 +280,13 @@ def test_native_adapter_all_api_features_with_fake_binding(native_settings):
         assert "ollama" not in status
         response = client.post("/api/chat", json={"message": "Grafana port?", "stream": True})
         events = [json.loads(line) for line in response.text.splitlines()]
-        assert events[0]["sources"] and events[-1] == {"type": "done", "grounded": True}
-        assert "".join(e.get("content", "") for e in events) == "Local answer"
+        assert events[0]["sources"] and events[-1]["grounded"]
+        assert events[-1]["quality"] == "validated"
+        assert "Grafana port 3000" in "".join(e.get("content", "") for e in events)
         body = {"content": "ERROR connection refused", "service": "grafana", "use_model": True}
-        assert client.post("/api/logs/analyse", json=body).json()["explanation"] == "Local answer"
+        assert client.post("/api/logs/analyse", json=body).json()["quality"] == "validated"
         report = client.post("/api/incidents/summarise", json={**body, "title": "Test"})
-        assert report.status_code == 200 and "Local answer" in report.json()["markdown"]
+        assert report.status_code == 200 and "## Unknown" in report.json()["markdown"]
         model = generation.model
     assert model.closed
 
@@ -339,3 +353,30 @@ def test_start_without_ollama_or_models(settings):
             ).status_code
             == 200
         )
+
+
+@pytest.mark.parametrize("stream", [False, True])
+async def test_output_limit_is_explicit_and_not_a_successful_completion(native_settings, stream):
+    class Truncated(FakeLlama):
+        def create_chat_completion(self, **options):
+            if options["stream"]:
+                return iter(
+                    [{"choices": [{"delta": {"content": "partial"}, "finish_reason": "length"}]}]
+                )
+            return {
+                "choices": [{"message": {"content": "partial"}, "finish_reason": "length"}],
+                "usage": {"completion_tokens": options["max_tokens"]},
+            }
+
+    runtime = await load(NativeProvider(native_settings, loader=Truncated))
+    try:
+        with pytest.raises(ProviderError, match="output limit"):
+            if stream:
+                async for _ in runtime.stream([]):
+                    pass
+            else:
+                await runtime.chat_json([], {"type": "object"}, 512)
+        if not stream:
+            assert runtime.last_generation["usage"]["completion_tokens"] == 512
+    finally:
+        await runtime.close()

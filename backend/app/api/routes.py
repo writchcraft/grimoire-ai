@@ -7,7 +7,6 @@ from uuid import UUID
 
 from fastapi import APIRouter, File, Form, HTTPException, Query, Request, UploadFile
 from fastapi.responses import StreamingResponse
-from starlette.concurrency import run_in_threadpool
 
 from app.core.errors import DocumentError, ProviderError
 from app.ingestion.pipeline import ingest
@@ -20,7 +19,9 @@ from app.models import (
     ServiceInput,
 )
 from app.rag.retrieval import NO_EVIDENCE, prepare_chat
+from app.services.grounding import grounded_answer
 from app.services.log_analysis import analyse, incident_markdown
+from app.services.runtime import application_status
 
 router = APIRouter()
 
@@ -33,22 +34,7 @@ async def health() -> dict:
 
 @router.get("/api/status")
 async def status(request: Request) -> dict:
-    state = request.app.state
-    dependency = await state.provider.health()
-    embedding_status = await state.embeddings.health()
-    docs = await run_in_threadpool(state.storage.documents)
-    return {
-        "status": "ready"
-        if dependency["state"] == embedding_status["state"] == "ready"
-        else "degraded",
-        "ai": dependency,
-        "embeddings": embedding_status,
-        "model": dependency["model"],
-        "embedding_model": state.settings.embedding_model,
-        "documents": len(docs),
-        "chunks": sum(d["chunk_count"] for d in docs),
-        "upload_limit_bytes": state.settings.max_upload_bytes,
-    }
+    return await application_status(request.app.state)
 
 
 @router.post("/api/chat", response_model=ChatResponse)
@@ -66,7 +52,29 @@ async def chat(body: ChatRequest, request: Request):
                     messages, sources = await prepare_chat(
                         body, state.storage, state.embeddings, state.settings
                     )
-                    yield event("sources", sources=[s.model_dump() for s in sources])
+                    if body.mode == "knowledge":
+                        result = (
+                            await grounded_answer(state.provider, messages, sources, body.message)
+                            if messages
+                            else {
+                                "answer": NO_EVIDENCE,
+                                "sources": [],
+                                "grounded": False,
+                                "quality": "insufficient_evidence",
+                                "claims": [],
+                            }
+                        )
+                        yield event("sources", sources=[s.model_dump() for s in result["sources"]])
+                        # Buffer knowledge output until validation; no unchecked tokens escape.
+                        yield event("token", content=result["answer"])
+                        yield event(
+                            "done",
+                            grounded=result["grounded"],
+                            quality=result["quality"],
+                            claims=result["claims"],
+                        )
+                        return
+                    yield event("sources", sources=[])
                     if not messages:
                         yield event("token", content=NO_EVIDENCE)
                     else:
@@ -97,8 +105,17 @@ async def chat(body: ChatRequest, request: Request):
         messages, sources = await prepare_chat(
             body, state.storage, state.embeddings, state.settings
         )
+        if body.mode == "knowledge" and messages:
+            return ChatResponse(
+                **await grounded_answer(state.provider, messages, sources, body.message)
+            )
         answer = await state.provider.chat(messages) if messages else NO_EVIDENCE
-        return ChatResponse(answer=answer, sources=sources, grounded=bool(sources))
+        return ChatResponse(
+            answer=answer,
+            sources=sources,
+            grounded=bool(sources),
+            quality="insufficient_evidence" if body.mode == "knowledge" else "unvalidated",
+        )
 
 
 @router.post("/api/documents/upload", status_code=201)

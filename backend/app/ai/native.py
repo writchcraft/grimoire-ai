@@ -15,6 +15,23 @@ logger = logging.getLogger("grimoire")
 T = TypeVar("T")
 
 
+def decoding_schema(schema):
+    """Avoid llama.cpp expanding long bounded strings into enormous grammar rules.
+
+    The original schema is still enforced by Pydantic after generation. Types, required
+    fields, enums and object shape constrain decoding; string lengths are checked later.
+    """
+    if isinstance(schema, dict):
+        return {
+            key: decoding_schema(value)
+            for key, value in schema.items()
+            if key not in {"maxLength", "minLength", "pattern"}
+        }
+    if isinstance(schema, list):
+        return [decoding_schema(item) for item in schema]
+    return schema
+
+
 class NativeRuntime:
     def __init__(
         self,
@@ -131,18 +148,36 @@ class NativeRuntime:
 
 
 class NativeProvider(NativeRuntime):
-    def _completion(self, messages: Messages, stream: bool):
+    def _completion(self, messages: Messages, stream: bool, schema=None, max_tokens=None):
         return self._require_ready().create_chat_completion(
             messages=messages,
             stream=stream,
             temperature=0.15,
-            max_tokens=self.settings.max_output_tokens,
+            max_tokens=max_tokens or self.settings.max_output_tokens,
+            seed=0,
+            **({"response_format": {"type": "json_object", "schema": schema}} if schema else {}),
         )
 
     async def chat(self, messages: Messages) -> str:
+        return await self._chat(messages)
+
+    async def chat_json(self, messages: Messages, schema: dict, max_tokens: int) -> str:
+        return await self._chat(messages, decoding_schema(schema), max_tokens)
+
+    async def _chat(self, messages: Messages, schema=None, max_tokens=None) -> str:
         async with self.lock:
             try:
-                result = await self._run(self._completion, messages, False)
+                self.last_generation = {}
+                result = await self._run(self._completion, messages, False, schema, max_tokens)
+                self.last_generation = {
+                    "finish_reason": result["choices"][0].get("finish_reason"),
+                    "usage": result.get("usage", {}),
+                    "max_tokens": max_tokens or self.settings.max_output_tokens,
+                }
+                if self.last_generation["finish_reason"] == "length":
+                    raise ProviderError(
+                        "Generation reached its output limit; incomplete answer rejected."
+                    )
                 content = result["choices"][0]["message"]["content"]
                 if not isinstance(content, str) or not content.strip():
                     raise ValueError("Empty response")
@@ -175,6 +210,10 @@ class NativeProvider(NativeRuntime):
                         received = received or bool(content.strip())
                         yield content
                     if choice.get("finish_reason") is not None:
+                        if choice["finish_reason"] == "length":
+                            raise ProviderError(
+                                "Generation reached its output limit; stream incomplete."
+                            )
                         finished = True
                         break
                 if not received or not finished:

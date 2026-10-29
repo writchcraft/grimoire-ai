@@ -1,3 +1,6 @@
+import json
+import os
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -16,6 +19,22 @@ class FakeProvider:
 
     async def chat(self, messages):
         self.calls.append(messages)
+        if "Classify the supplied log events" in messages[0]["content"]:
+            return '{"interpretations":[]}'
+        if '"insufficient"' in messages[0]["content"]:
+            records = json.loads(
+                messages[-1]["content"]
+                .split("Untrusted source excerpts:\n")[1]
+                .split("\nPrevious user question")[0]
+            )
+            record = next((record for record in records if "3000" in record["excerpt"]), records[0])
+            line = next(
+                (line for line in record["excerpt"].splitlines() if "3000" in line),
+                record["excerpt"].splitlines()[0],
+            )
+            return json.dumps(
+                {"insufficient": False, "claims": [{"source": record["source"], "quote": line}]}
+            )
         return "Grafana is exposed on port 3000 [S1]."
 
     async def stream(self, messages):
@@ -72,3 +91,12 @@ def indexed(client):
     )
     assert response.status_code == 201, response.text
     return response.json()
+
+
+@pytest.fixture(autouse=True)
+def isolate_runtime_configuration(monkeypatch):
+    # Unit tests must never inherit provisioned weights or deployment paths from a shell
+    # used for explicit model evaluation. Individual tests can still set their own env.
+    for key in tuple(os.environ):
+        if key.startswith("GRIMOIRE_"):
+            monkeypatch.delenv(key)

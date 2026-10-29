@@ -1,9 +1,8 @@
-import json
 import re
 from collections import Counter
 
 from app.ai.base import ModelProvider
-from app.rag.retrieval import SYSTEM
+from app.services.grounding import explain_logs, model_events
 
 TIMESTAMP = re.compile(
     r"^(?:\d{4}-\d{2}-\d{2}[T ][\d:.]+(?:Z|[+-]\d{2}:?\d{2})?|"
@@ -35,8 +34,8 @@ def inspect_logs(content: str) -> dict:
         warnings += severity == "warning"
         if severity != "info":
             message = TIMESTAMP.sub("", line).strip()
-            # Group changing PIDs, durations and numeric counters; retain original evidence.
-            fingerprint = re.sub(r"\b\d+\b", "#", message)
+            # Group named counters, preserving distinct error codes, ports and addresses.
+            fingerprint = re.sub(r"\b(pid|attempt|count)[= ]+\d+\b", r"\1=#", message)
             counts[fingerprint] += 1
             if len(events) < 80:
                 events.append(
@@ -44,7 +43,8 @@ def inspect_logs(content: str) -> dict:
                         "line": number,
                         "timestamp": timestamp.group() if timestamp else None,
                         "severity": severity,
-                        "text": line[:1500],
+                        "text": line,
+                        "source": "supplied_logs",
                     }
                 )
     return {
@@ -77,31 +77,23 @@ async def analyse(
 ) -> dict:
     evidence = inspect_logs(content)
     explanation = None
+    interpretation, quality = None, "not_requested"
     if use_model:
-        # Bounded evidence, including a sample of normal lines for context.
-        material = {
-            "service": service,
-            "question": question,
-            "observations": evidence,
-            "sample": content[:3000],
-            "operator_notes": notes,
-        }
-        # Bound before encoding to avoid breaking JSON or cutting off the question.
-        material["observations"] = {**evidence, "events": evidence["events"][:12]}
-        encoded = json.dumps(material, ensure_ascii=False)
-        explanation = await provider.chat(
-            [
-                {
-                    "role": "system",
-                    "content": SYSTEM + "\nExplain observed symptoms in plain English. "
-                    "Cite log line numbers. Separate evidence, probable causes, uncertainty "
-                    "and suggested investigation. Never assert a cause as certain. "
-                    "No evidence is proof of absence.",
-                },
-                {"role": "user", "content": "Untrusted log evidence (JSON):\n" + encoded},
-            ]
+        interpretation, explanation, quality = await explain_logs(
+            provider, evidence, question, notes
         )
-    return {"service": service, **evidence, "explanation": explanation}
+    return {
+        "service": service,
+        **evidence,
+        "explanation": explanation,
+        "interpretation": interpretation,
+        "quality": quality,
+        "model_event_lines": [e["line"] for e in model_events(evidence)] if use_model else [],
+        "suggested_investigation": [
+            "Inspect dependency health and configuration without changing state.",
+            "Compare these events with resource metrics and recent change records.",
+        ],
+    }
 
 
 def incident_markdown(
@@ -126,17 +118,21 @@ def incident_markdown(
         f"## Affected service\n\n{fence(service)}\n\n"
         f"## Observed window\n\n{period['first_observed'] or 'Unknown'} → "
         f"{period['last_observed'] or 'Unknown'} (input order; timezone not normalized)\n\n"
-        f"## Symptoms\n\n{evidence['line_count']} lines; {evidence['error_count']} error matches; "
+        f"## Confirmed\n\n{evidence['line_count']} lines; {evidence['error_count']} error matches; "
         f"{evidence['warning_count']} warning matches. Counts are heuristic.\n\n"
         f"## Relevant events / timeline\n\n{fence(timeline)}\n\n"
         f"{'Event list capped at 80 entries. ' if evidence['events_truncated'] else ''}"
         f"\n## Operator notes / reported troubleshooting\n\n{fence(notes or 'None supplied.')}\n\n"
-        f"## Probable cause and suggested investigation\n\n"
+        f"## Probable\n\n"
         f"{
             explanation
             or 'Undetermined from heuristic analysis. Correlate the cited lines with '
             'service configuration, dependency health, resource usage and recent changes.'
         }\n\n"
+        "## Unknown\n\nRoot cause and successful recovery cannot be established from these "
+        "heuristics. Operator notes are unverified reports.\n\n"
+        "## Suggested investigation\n\nInspect dependency health, configuration, resource usage "
+        "and recent changes using read-only checks.\n\n"
         "## Confidence / uncertainty\n\nCounts describe matching text, not verified service state. "
         "Any proposed cause is a hypothesis. No commands or remediation were executed.\n"
     )

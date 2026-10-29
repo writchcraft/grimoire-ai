@@ -13,6 +13,7 @@ class Message(InputModel):
 
 
 class SearchHit(BaseModel):
+    heading: str = ""
     id: str
     document_id: str
     filename: str
@@ -42,6 +43,8 @@ class ChatResponse(BaseModel):
     answer: str
     sources: list[Citation]
     grounded: bool
+    quality: str = "unvalidated"
+    claims: list[dict[str, str]] = Field(default_factory=list)
 
 
 class IngestRequest(InputModel):

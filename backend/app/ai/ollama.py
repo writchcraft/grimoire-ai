@@ -67,10 +67,32 @@ class OllamaProvider(_OllamaConnection):
         }
 
     async def chat(self, messages: Messages) -> str:
+        return await self._chat(messages)
+
+    async def chat_json(self, messages: Messages, schema: dict, max_tokens: int) -> str:
+        return await self._chat(messages, schema, max_tokens)
+
+    async def _chat(self, messages: Messages, schema=None, max_tokens=None) -> str:
         try:
-            response = await self.client.post("api/chat", json=self.payload(messages, False))
+            payload = self.payload(messages, False)
+            if schema:
+                payload["format"] = schema
+                payload["options"]["seed"] = 0
+            if max_tokens:
+                payload["options"]["num_predict"] = max_tokens
+            self.last_generation = {}
+            response = await self.client.post("api/chat", json=payload)
             response.raise_for_status()
             data = response.json()
+            self.last_generation = {
+                "finish_reason": data.get("done_reason"),
+                "usage": {"completion_tokens": data.get("eval_count")},
+                "max_tokens": max_tokens or self.settings.max_output_tokens,
+            }
+            if data.get("done_reason") == "length":
+                raise ProviderError(
+                    "Generation reached its output limit; incomplete answer rejected."
+                )
             content = data["message"]["content"]
             if not isinstance(content, str) or not content.strip():
                 raise ValueError("Empty response")
@@ -100,6 +122,10 @@ class OllamaProvider(_OllamaConnection):
                         received_content = received_content or bool(token.strip())
                         yield token
                     if data.get("done"):
+                        if data.get("done_reason") == "length":
+                            raise ProviderError(
+                                "Generation reached its output limit; stream incomplete."
+                            )
                         if not received_content:
                             raise ValueError("Empty stream")
                         return
