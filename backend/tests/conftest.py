@@ -21,6 +21,11 @@ class FakeProvider:
         self.calls.append(messages)
         if "Classify the supplied log events" in messages[0]["content"]:
             return '{"interpretations":[]}'
+        if "Extract supported facts" in messages[0]["content"]:
+            slots = json.loads(messages[-1]["content"])["slots"]
+            return json.dumps(
+                {s["id"]: [s["candidates"][0]["id"]] if s["candidates"] else [] for s in slots}
+            )
         if '"insufficient"' in messages[0]["content"]:
             records = json.loads(
                 messages[-1]["content"]

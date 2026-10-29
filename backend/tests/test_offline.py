@@ -94,16 +94,14 @@ def test_demo_pipeline_without_external_network(settings, provider, no_external_
         assert "3000" in "".join(event.get("content", "") for event in events)
         assert sources[0]["filename"] == "monitoring.md" and sources[0]["label"].startswith("S")
         prompt = provider.calls[-1][-1]["content"]
-        records = json.loads(
-            prompt.split("Untrusted source excerpts:\n", 1)[1].split("\nPrevious user question", 1)[
-                0
-            ]
-        )
+        records = [c for slot in json.loads(prompt)["slots"] for c in slot["candidates"]]
         for source in sources:
             lines = (EXAMPLES / source["filename"]).read_text().splitlines()
             assert source["text"] == "\n".join(lines[source["line_start"] - 1 : source["line_end"]])
             record = next(record for record in records if record["source"] == source["label"])
-            assert record["excerpt"] == source["text"]
+            assert record["quote"] in source["text"]
+            # The model receives the quote once; values are application-owned.
+            assert record["line_end"] >= record["line"]
         calls = len(provider.calls)
         missing = api.post("/api/chat", json={"message": "Who won the lunar chess cup?"}).json()
         assert not missing["grounded"] and missing["sources"] == []

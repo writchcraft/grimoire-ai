@@ -54,6 +54,17 @@ class _OllamaConnection:
 
 
 class OllamaProvider(_OllamaConnection):
+    async def unload(self):
+        try:
+            response = await self.client.post(
+                "api/generate", json={"model": self.settings.model, "keep_alive": 0}
+            )
+            response.raise_for_status()
+        except httpx.HTTPError as exc:
+            raise ProviderError(
+                "Could not unload Ollama generation model; switch aborted."
+            ) from exc
+
     def payload(self, messages: Messages, stream: bool) -> dict:
         return {
             "model": self.settings.model,

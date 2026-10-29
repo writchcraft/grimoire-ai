@@ -11,7 +11,15 @@ class JsonFormatter(logging.Formatter):
             "logger": record.name,
             "event": record.getMessage(),
         }
-        for key in ("request_id", "method", "path", "status", "duration_ms"):
+        for key in (
+            "request_id",
+            "method",
+            "path",
+            "status",
+            "duration_ms",
+            "routing",
+            "embedding",
+        ):
             if hasattr(record, key):
                 entry[key] = getattr(record, key)
         # Never serialize exceptions, request bodies, provider responses or document contents.

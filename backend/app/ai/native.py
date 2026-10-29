@@ -106,6 +106,7 @@ class NativeRuntime:
             )
             if self.settings.native_threads is not None:
                 options["n_threads"] = self.settings.native_threads
+                options["n_threads_batch"] = self.settings.native_threads
             if not self.embedding and self.settings.native_chat_format:
                 options["chat_format"] = self.settings.native_chat_format
             self.model = loader(**options)

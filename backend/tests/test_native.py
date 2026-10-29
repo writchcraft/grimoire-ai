@@ -33,8 +33,7 @@ class FakeLlama:
                     if "interpretations" in schema["properties"]
                     else json.dumps(
                         {
-                            "insufficient": False,
-                            "claims": [{"source": "S1", "quote": "Grafana port 3000"}],
+                            "Q1": ["E1"],
                         }
                     )
                 )
@@ -145,6 +144,7 @@ async def test_load_once_chat_stream_metadata_and_close(native_settings):
         assert status["state"] == "ready"
         assert status["model"] == "test.gguf" and status["context_size"] == 8192
         assert models[0].options["n_threads"] == 2
+        assert models[0].options["n_threads_batch"] == 2
         assert models[0].options["n_gpu_layers"] == 0
         assert await runtime.chat([]) == "Local answer"
         assert "".join([token async for token in runtime.stream([])]) == "Local answer"

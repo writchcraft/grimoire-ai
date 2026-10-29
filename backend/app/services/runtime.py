@@ -8,6 +8,7 @@ from types import SimpleNamespace
 from starlette.concurrency import run_in_threadpool
 
 from app.ai.registry import embedding_provider, generation_provider
+from app.ai.routing import RoutedProvider
 from app.services.storage import Storage
 
 
@@ -22,12 +23,8 @@ def embedding_identity(settings):
         with path.open("rb") as stream:
             before = os.fstat(stream.fileno())
             digest = hashlib.sha256()
-            block = 64 * 1024
-            for offset in sorted(
-                {0, max(0, before.st_size // 2 - block // 2), max(0, before.st_size - block)}
-            ):
-                stream.seek(offset)
-                digest.update(stream.read(block))
+            for block in iter(lambda: stream.read(1024 * 1024), b""):
+                digest.update(block)
             after = os.fstat(stream.fileno())
 
         def metadata(s):
@@ -35,7 +32,8 @@ def embedding_identity(settings):
 
         if metadata(before) != metadata(after) or metadata(after) != metadata(path.stat()):
             raise RuntimeError("Embedding weights changed during identity inspection; restart.")
-        return f"{identity}:file-v1:{metadata(after)}:{digest.hexdigest()}"
+        # Identity survives host/path changes; full hashing detects every changed byte.
+        return f"native:{settings.embedding_model}:sha256:{digest.hexdigest()}"
     except OSError:
         # Diagnostics must still report missing/unreadable weights. This identity also
         # prevents an existing populated index from being opened without its weights.
@@ -58,7 +56,9 @@ async def application_runtime(
             ("embeddings", embeddings, embedding_provider, embedding),
         ):
             if enabled:
-                runtime = supplied or factory(settings)
+                runtime = supplied or (
+                    RoutedProvider(settings) if name == "provider" else factory(settings)
+                )
                 setattr(state, name, runtime)
                 stack.push_async_callback(runtime.close)
                 await runtime.start()
@@ -66,6 +66,8 @@ async def application_runtime(
 
 
 async def wait_ready(runtime):
+    if isinstance(runtime, RoutedProvider):
+        return await runtime.ensure_ready()
     # Native startup deliberately schedules background loading for the web app.
     if getattr(runtime, "loading", None) is not None:
         await runtime.loading
@@ -84,6 +86,12 @@ async def application_status(state):
     return {
         "status": "ready" if dependency["state"] == embeddings["state"] == "ready" else "degraded",
         "ai": dependency,
+        "generation_models": [
+            {"id": m["id"], "display_name": m["display_name"], "readiness": m["state"]}
+            for m in state.provider.inventory()
+        ]
+        if isinstance(state.provider, RoutedProvider)
+        else [],
         "embeddings": embeddings,
         "model": dependency["model"],
         "embedding_model": state.settings.embedding_model,

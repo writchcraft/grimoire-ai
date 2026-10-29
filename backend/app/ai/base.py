@@ -8,7 +8,7 @@ class ModelStatus(TypedDict):
     provider: str
     backend: str
     model: str | None
-    state: Literal["not_configured", "model_missing", "loading", "ready", "failed"]
+    state: Literal["not_configured", "not_loaded", "model_missing", "loading", "ready", "failed"]
     reason: str | None
     context_size: NotRequired[int]
     gpu_layers: NotRequired[int]
