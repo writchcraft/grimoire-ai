@@ -1,0 +1,24 @@
+{
+  "checks": [
+    {
+      "check": "Windows Host / system",
+      "status": "PASS",
+      "detail": "readable"
+    },
+    {
+      "check": "Windows Host / disks",
+      "status": "PASS",
+      "detail": "readable"
+    },
+    {
+      "check": "Windows Host / network",
+      "status": "PASS",
+      "detail": "readable"
+    },
+    {
+      "check": "Windows Host / services",
+      "status": "PASS",
+      "detail": "readable"
+    }
+  ]
+}

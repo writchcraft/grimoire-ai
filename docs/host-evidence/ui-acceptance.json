@@ -1,0 +1,10 @@
+{
+  "scope": "Browser against real Windows backend on loopback; no inventory sent to a model",
+  "overview": "PASS OS, uptime, CPU and memory",
+  "disks": "PASS four fixed volumes with space measurements",
+  "network": "PASS four interfaces with state, assigned IPs and loopback",
+  "services": "PASS stopped filter, 100-result cap, explicit truncation and unavailable optional field",
+  "correlation": "PASS concise Confirmed/Probable/Unknown output, bounded-sample caveat",
+  "layout": "PASS compact two-column resource cards and existing visual identity",
+  "screenshot": "ui-overview.png (local screenshot includes the host identifier)"
+}

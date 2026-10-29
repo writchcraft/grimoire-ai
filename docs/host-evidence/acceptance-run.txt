@@ -1,0 +1,47 @@
+C:\Users\jacob\Documents\_VirtualStudioProjects\.RESUME\grimoire-ai\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+  from starlette.testclient import TestClient as TestClient  # noqa
+{"time": "2026-10-29T21:08:04.059597+00:00", "level": "INFO", "logger": "grimoire", "event": "application_started"}
+{"time": "2026-10-29T21:08:04.222351+00:00", "level": "INFO", "logger": "grimoire.requests", "event": "request_complete", "request_id": "bf8703cdda964511866047d91b6d587a", "method": "GET", "path": "/api/host", "status": 200, "duration_ms": 156.0}
+{"time": "2026-10-29T21:08:04.358729+00:00", "level": "INFO", "logger": "grimoire.requests", "event": "request_complete", "request_id": "4eba229d9d694481b03fe4e0ad0fae77", "method": "GET", "path": "/api/host/{section}", "status": 200, "duration_ms": 125.0}
+{"time": "2026-10-29T21:08:04.493399+00:00", "level": "INFO", "logger": "grimoire.requests", "event": "request_complete", "request_id": "2a53c1146f0d4607908b803df2623a78", "method": "GET", "path": "/api/host/{section}", "status": 200, "duration_ms": 141.0}
+{"time": "2026-10-29T21:08:04.502570+00:00", "level": "INFO", "logger": "grimoire.requests", "event": "request_complete", "request_id": "f718f8276eca400ea8dd3b61c73482cc", "method": "GET", "path": "/api/host/{section}", "status": 200, "duration_ms": 0.0}
+{"time": "2026-10-29T21:08:04.525392+00:00", "level": "INFO", "logger": "grimoire.requests", "event": "request_complete", "request_id": "3a65da568f594fedb9ee39f39155d74b", "method": "GET", "path": "/api/host/{section}", "status": 200, "duration_ms": 15.0}
+{"time": "2026-10-29T21:08:04.627628+00:00", "level": "INFO", "logger": "grimoire.requests", "event": "request_complete", "request_id": "83b2ca24c1be41c9a5d55cf28bb22917", "method": "GET", "path": "/api/host/services", "status": 200, "duration_ms": 94.0}
+{"time": "2026-10-29T21:08:04.639675+00:00", "level": "INFO", "logger": "grimoire.requests", "event": "request_complete", "request_id": "1e28620d8b814b3ba8c47e7f17370262", "method": "GET", "path": "/api/host/services/{name}", "status": 200, "duration_ms": 0.0}
+{"time": "2026-10-29T21:08:04.642696+00:00", "level": "INFO", "logger": "grimoire.requests", "event": "request_complete", "request_id": "4af385c32e3d4a88ac83cb2cbb346298", "method": "GET", "path": "/api/host/services", "status": 422, "duration_ms": 0.0}
+{"time": "2026-10-29T21:08:04.651111+00:00", "level": "INFO", "logger": "grimoire.requests", "event": "request_complete", "request_id": "a0d995562efa435ab1a84553619baf75", "method": "GET", "path": "/api/host/history", "status": 200, "duration_ms": 15.0}
+{"time": "2026-10-29T21:08:05.844790+00:00", "level": "INFO", "logger": "grimoire", "event": "application_stopped"}
+{
+  "administrator": false,
+  "scope": "Real local host, explicit read-only inspections",
+  "os": {
+    "name": "Windows",
+    "release": "11",
+    "version": "10.0.26200",
+    "build": 26200,
+    "edition": "Professional",
+    "architecture": "AMD64"
+  },
+  "logical_cpu_count": 16,
+  "disks": 4,
+  "interfaces": 4,
+  "metadata_resources": "PASS",
+  "evidence": "PASS SHA-256 identity",
+  "services": {
+    "count": 200,
+    "truncated": true,
+    "running_filter": "PASS",
+    "stopped_filter": "PASS",
+    "exact_inspection": "PASS"
+  },
+  "windows_events": {
+    "status": "available",
+    "sampled": 2,
+    "relationships": 2,
+    "scope": "Exact host + startup provider/ID + boot time proximity"
+  },
+  "mapping": "PASS real unreachable test-owned loopback endpoint + explicitly mapped already-stopped Windows service; no live outage induced; cause unknown",
+  "api": "PASS all host routes, service filters/detail and history",
+  "cli": "PASS status/system/disks/network/services/detail JSON and concise human status",
+  "privacy": "No host name, IP addresses, service names or raw events in this report"
+}
