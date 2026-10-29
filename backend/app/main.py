@@ -32,8 +32,10 @@ def create_app(
             app.state.embeddings = state.embeddings
             app.state.inference_slots = asyncio.Semaphore(2)
             app.state.ingestion_slot = asyncio.Semaphore(1)
+            app.state.probe_slots = asyncio.Semaphore(2)
             logging.getLogger("grimoire").info("application_started")
             yield
+        logging.getLogger("grimoire").info("application_stopped")
 
     app = FastAPI(
         title="Grimoire AI",

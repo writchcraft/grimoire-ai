@@ -9,6 +9,7 @@ import subprocess
 import sys
 from urllib.parse import urlparse
 
+from app.ai.catalog import load_registry
 from app.ai.registry import embedding_provider, generation_provider
 from app.services.runtime import embedding_identity
 from app.services.serving import frontend_directory
@@ -18,7 +19,21 @@ from app.services.storage import Storage
 async def inspect_models(settings):
     result = []
     for role, factory in (("generation", generation_provider), ("embedding", embedding_provider)):
-        runtime = factory(settings)
+        entry = None
+        runtime_settings = settings
+        if role == "generation" and settings.model_registry_path:
+            registry = load_registry(settings)
+            entry = registry.get(registry.routing.default)
+            runtime_settings = settings.model_copy(
+                update={
+                    "ai_provider": entry.provider,
+                    "native_model_path": entry.model_path,
+                    "model": entry.model_name or entry.id,
+                    "native_context_size": entry.context_size,
+                    "max_output_tokens": entry.output_limit,
+                }
+            )
+        runtime = factory(runtime_settings)
         try:
             status = dict(await runtime.health())
             status["role"] = role
@@ -54,6 +69,16 @@ async def inspect_models(settings):
                             state="failed", reason="Model is not a readable regular file."
                         )
                 status["runtime_installed"] = importlib.util.find_spec("llama_cpp") is not None
+            if entry:
+                status.update(
+                    id=entry.id,
+                    display_name=entry.display_name,
+                    capabilities=sorted(entry.capabilities),
+                    resource_class=entry.resource_class,
+                )
+                availability = entry.availability()
+                if availability != "unverified":
+                    status.update(state=availability, reason="Registry model is unavailable.")
             result.append(status)
         finally:
             await runtime.close()
@@ -179,6 +204,25 @@ async def diagnose(settings):
         "PASS" if port.isdecimal() and 1 <= int(port) <= 65535 else "FAIL",
         f"GRIMOIRE_PORT={port}",
     )
+    from app.services.windows_events import channels
+
+    for channel in channels()["channels"]:
+        add(
+            "Windows Event Log / " + channel["channel"],
+            "PASS" if channel["status"] == "available" else "WARN",
+            "readable"
+            if channel["status"] == "available"
+            else channel.get("reason", "unavailable"),
+        )
+    from app.services.host import inspect_host
+
+    for section in ("system", "disks", "network", "services"):
+        result = inspect_host(section)
+        add(
+            "Windows Host / " + section,
+            "PASS" if result["status"] == "available" else "WARN",
+            "readable" if result["status"] == "available" else "; ".join(result["issues"]),
+        )
     for row in docker_checks():
         add(*row)
     return {"checks": checks, "models": models}
