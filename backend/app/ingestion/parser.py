@@ -15,6 +15,7 @@ class Chunk:
     text: str
     line_start: int
     line_end: int
+    heading: str = ""
 
 
 def safe_filename(value: str) -> str:
@@ -57,38 +58,114 @@ def parse_document(filename: str, raw: bytes, max_bytes: int) -> tuple[str, str,
 
 
 def chunk_document(text: str, kind: str, target: int = 1400) -> list[Chunk]:
-    """Keep line evidence; prefer headings, paragraphs, log entries and config keys."""
-    chunks: list[Chunk] = []
-    current: list[str] = []
-    size = 0
-    start = 1
-    fenced = False
+    """Pack semantic units, keeping exact text/line spans; hard bound exceptional units.
 
-    def flush(end: int) -> None:
-        nonlocal current, size
-        if current and "\n".join(current).strip():
-            chunks.append(Chunk("\n".join(current), start, end))
-        current, size = [], 0
+    Headings start sections; fences, paragraphs, lists and service/config blocks are
+    indivisible below 2400 chars. Long units fall back to lines, never silent truncation.
+    """
+    lines = text.splitlines()
+    units: list[tuple[int, int, bool]] = []
+    start, fenced, fence_marker, section_start = 0, False, "", False
+    # Config blocks split at peer definitions, not each nested property. Compose-like
+    # services are one level below their parent; ordinary root key/value groups stay together.
+    config = kind in {"yaml", "yml", "json"}
+    definition_indent = None
+    if config:
+        for line in lines:
+            if re.match(
+                r'^(?:services|containers):\s*$|^\s*"(?:services|containers)"\s*:\s*\{', line
+            ):
+                definition_indent = len(line) - len(line.lstrip()) + 2
+                break
 
-    for number, line in enumerate(text.splitlines(), 1):
-        heading = kind == "md" and line.startswith("#") and not fenced
-        config_key = kind in {"yaml", "yml", "json"} and bool(
-            re.match(r'^(?:[\w.-]+\s*:| {2}[\w.-]+\s*:| {2}"[^"\n]+"\s*:)', line)
+    for i, line in enumerate(lines):
+        stripped = line.lstrip()
+        heading = kind == "md" and not fenced and bool(re.match(r"^#{1,6}\s", line))
+        ini = kind == "txt" and bool(re.match(r"^\[[^]]+\]\s*$", line))
+        peer = (
+            config
+            and definition_indent is not None
+            and len(line) - len(stripped) == definition_indent
+            and bool(re.match(r'(?:[\w.-]+|"[^"\n]+")\s*:', stripped))
         )
-        boundary = heading or config_key or not line.strip() or kind == "log"
-        if current and (heading or (boundary and size >= target) or size + len(line) > 2400):
-            flush(number - 1)
-        # Exceptional long lines (e.g. one-line JSON) are bounded with accurate line metadata.
-        if len(line) > 2400:
-            flush(number - 1)
-            for offset in range(0, len(line), 2000):
-                chunks.append(Chunk(line[offset : offset + 2000], number, number))
+        if heading or ini or peer:
+            if i > start:
+                units.append((start, i, section_start))
+            start, section_start = i, True
+        log_entry = kind == "log" and bool(
+            re.match(
+                r"^(?:\d{4}-\d{2}-\d{2}[T ]|(?:TRACE|DEBUG|INFO|WARN(?:ING)?|ERROR|FATAL)\b)", line
+            )
+        )
+        if log_entry and i > start:
+            units.append((start, i, section_start))
+            start, section_start = i, False
+        if not fenced and not stripped and i >= start:
+            units.append((start, i + 1, section_start))
+            start, section_start = i + 1, False
+        if kind == "md" and stripped.startswith(("```", "~~~")):
+            marker = stripped[:3]
+            if not fenced:
+                fenced, fence_marker = True, marker
+            elif marker == fence_marker:
+                fenced = False
+    if start < len(lines):
+        units.append((start, len(lines), section_start))
+
+    chunks: list[Chunk] = []
+    current_start, current_end, size = 0, 0, 0
+
+    def flush():
+        nonlocal size
+        if size and "\n".join(lines[current_start:current_end]).strip():
+            chunks.append(
+                Chunk("\n".join(lines[current_start:current_end]), current_start + 1, current_end)
+            )
+        size = 0
+
+    for begin, end, force in units:
+        unit_size = sum(len(line) + 1 for line in lines[begin:end])
+        if size and (force or size + unit_size > 2400 or size >= target):
+            flush()
+        if unit_size <= 2400:
+            if not size:
+                current_start = begin
+            current_end = end
+            size += unit_size
             continue
-        if not current:
-            start = number
-        current.append(line)
-        size += len(line) + 1
-        if kind == "md" and line.lstrip().startswith("```"):
+        flush()
+        # Bounded fallback for unusually large blocks and minified JSON. Original line
+        # metadata is retained even for line fragments; complete-line validation may refuse.
+        for i in range(begin, end):
+            line = lines[i]
+            if len(line) > 2400:
+                flush()
+                for offset in range(0, len(line), 2000):
+                    chunks.append(Chunk(line[offset : offset + 2000], i + 1, i + 1))
+                continue
+            if size and size + len(line) + 1 > 2400:
+                flush()
+            if not size:
+                current_start = i
+            current_end = i + 1
+            size += len(line) + 1
+        flush()
+    flush()
+    # Metadata is separate from quoted text: inherited headings cannot become invented lines.
+    headings, fenced = [], False
+    contexts = []
+    for line in lines:
+        stripped = line.lstrip()
+        if kind == "md" and stripped.startswith(("```", "~~~")):
             fenced = not fenced
-    flush(len(text.splitlines()))
+        match = re.match(r"^(#{1,6})\s+(.+)", line) if kind == "md" and not fenced else None
+        if match:
+            level = len(match.group(1))
+            headings = [(n, value) for n, value in headings if n < level]
+            headings.append((level, match.group(2)))
+        if kind == "txt" and re.match(r"^\[[^]]+\]$", stripped):
+            headings = [(1, stripped)]
+        contexts.append(" / ".join(value for _, value in headings))
+    for chunk in chunks:
+        chunk.heading = contexts[chunk.line_start - 1] if contexts else ""
     return chunks

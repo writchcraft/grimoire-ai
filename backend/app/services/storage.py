@@ -16,6 +16,39 @@ from app.models import SearchHit, ServiceInput
 class Storage:
     """SQLite is authoritative. Rebuild the embedded vector index on process start."""
 
+    @staticmethod
+    def inspect(directory: Path, embedding_model: str) -> dict:
+        """Inspect persisted state without opening the mutating application lifecycle."""
+        path = directory / "grimoire.sqlite3"
+        if not path.exists():
+            return {
+                "exists": False,
+                "detail": "Database not initialized; storage checks unverified.",
+            }
+        try:
+            db = sqlite3.connect(path.resolve().as_uri() + "?mode=ro", uri=True)
+            try:
+                if db.execute("PRAGMA quick_check").fetchone()[0] != "ok":
+                    raise RuntimeError("SQLite integrity check failed.")
+                count = db.execute("SELECT count(*) FROM documents").fetchone()[0]
+                model = db.execute(
+                    "SELECT value FROM metadata WHERE key='embedding_model'"
+                ).fetchone()
+                if count and (not model or model[0] != embedding_model):
+                    raise RuntimeError(
+                        "Stored embedding identity differs; follow reindexing guidance."
+                    )
+                return {
+                    "exists": True,
+                    "documents": count,
+                    "detail": "SQLite readable, integrity and embedding identity checked; "
+                    "vector rebuild unverified (run validate).",
+                }
+            finally:
+                db.close()
+        except sqlite3.Error as exc:
+            raise RuntimeError("SQLite unavailable; check schema, locks and permissions.") from exc
+
     def __init__(self, directory: Path, embedding_model: str):
         directory.mkdir(parents=True, exist_ok=True)
         self.path = directory / "grimoire.sqlite3"
@@ -46,6 +79,8 @@ class Storage:
                     data TEXT NOT NULL
                 );
             """)
+            if "heading" not in {row[1] for row in db.execute("PRAGMA table_info(chunks)")}:
+                db.execute("ALTER TABLE chunks ADD COLUMN heading TEXT NOT NULL DEFAULT ''")
             model = db.execute("SELECT value FROM metadata WHERE key='embedding_model'").fetchone()
             count = db.execute("SELECT count(*) FROM documents").fetchone()[0]
             if model and model[0] != embedding_model and count:
@@ -139,7 +174,7 @@ class Storage:
             for number, (chunk, vector) in enumerate(zip(chunks, vectors, strict=True), 1):
                 chunk_id = str(uuid4())
                 db.execute(
-                    "INSERT INTO chunks VALUES (?,?,?,?,?,?,?)",
+                    "INSERT INTO chunks VALUES (?,?,?,?,?,?,?,?)",
                     (
                         chunk_id,
                         document["id"],
@@ -148,6 +183,7 @@ class Storage:
                         chunk.line_end,
                         chunk.text,
                         json.dumps(vector),
+                        chunk.heading,
                     ),
                 )
                 db.execute(
@@ -269,6 +305,33 @@ class Storage:
                 if row:
                     result.append(self.hit(row, point.score))
             return result
+
+    def section_neighbors(self, hit: SearchHit) -> list[SearchHit]:
+        """Only expand Markdown continuation chunks within the same heading section."""
+        if hit.document_type != "md":
+            return []
+        with self.connect() as db:
+            rows = db.execute(
+                "SELECT c.*, d.filename, d.source_path, d.document_type, d.service "
+                "FROM chunks c JOIN documents d ON c.document_id=d.id "
+                "WHERE c.document_id=? AND c.chunk_number BETWEEN ? AND ? "
+                "ORDER BY c.chunk_number",
+                (hit.document_id, hit.chunk_number - 1, hit.chunk_number + 1),
+            ).fetchall()
+        result = []
+        for row in rows:
+            sibling = self.hit(row, hit.score * 0.9)
+            if sibling.id == hit.id or len(sibling.text) + len(hit.text) > 4000:
+                continue
+            if hit.heading and sibling.heading != hit.heading:
+                continue
+            if sibling.chunk_number < hit.chunk_number:
+                if hit.text.lstrip().startswith("#"):
+                    continue
+            elif sibling.text.lstrip().startswith("#"):
+                continue
+            result.append(sibling)
+        return result
 
     def services(self, query: str = "") -> list[dict]:
         with self.connect() as db:
