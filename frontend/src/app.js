@@ -93,7 +93,7 @@ function addMessage(role, content) {
   const node = element("article", `message ${role}`);
   const header = element("div", "message-head");
   header.append(
-    element("span", "message-icon", role === "user" ? "U" : "◈"),
+    element("span", "message-icon", role === "user" ? "U" : "g"),
     element("span", "", role === "user" ? "You" : "Grimoire"),
   );
   const body = element("div", "message-body", content);
@@ -399,7 +399,7 @@ $("#log-form").addEventListener("submit", async (event) => {
       reportUrl = URL.createObjectURL(
         new Blob([result.markdown], { type: "text/markdown;charset=utf-8" }),
       );
-      const download = element("a", "text-button", "Download incident.md ↗");
+      const download = element("a", "text-button", "Download incident.md");
       download.href = reportUrl;
       download.download = "incident.md";
       report.append(download, element("pre", "report", result.markdown));
@@ -504,7 +504,7 @@ function serviceCard(service, allowDelete = false) {
       } else area.append(element("p", "", "Not checked yet"));
     };
     render(service.health || { state: "unknown" });
-    const button = element("button", "primary-button", "Probe ↗");
+    const button = element("button", "primary-button", "Probe");
     button.addEventListener("click", async () => {
       button.disabled = true;
       try {

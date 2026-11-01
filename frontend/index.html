@@ -3,52 +3,39 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="theme-color" content="#0e1017" />
+    <meta name="theme-color" content="#100b19" />
     <meta
       name="description"
-      content="Grimoire — local intelligence for your homelab."
+      content="Grimoire — local infrastructure assistant."
     />
-    <title>Grimoire · Homelab intelligence</title>
+    <title>Grimoire · Infrastructure workspace</title>
     <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
     <link rel="stylesheet" href="/src/styles.css" />
-    <link rel="stylesheet" href="/src/compact.css" />
     <script type="module" src="/src/app.js"></script>
   </head>
   <body>
     <aside class="sidebar">
       <a class="brand" href="/" aria-label="Grimoire home"
-        ><span class="sigil">◈</span
-        ><span>grimoire<small>HOMELAB INTELLIGENCE</small></span></a
+        ><span class="sigil" aria-hidden="true">☾</span
+        ><span>grimoire<small>Infrastructure workspace</small></span></a
       >
-      <div class="workspace">
-        <span class="workspace-icon">⌘</span>
-        <div>Local workspace<small>Self-hosted · private by design</small></div>
-        <span class="workspace-dot"></span>
-      </div>
-      <div class="nav-caption">WORKSPACE</div>
+      <div class="nav-caption">Workspace</div>
       <nav aria-label="Workspace">
-        <button class="nav-item" data-view="host"><span>▣</span> This host <kbd>05</kbd></button>
+        <button class="nav-item" data-view="host">This host</button>
         <button class="nav-item active" data-view="chat" aria-current="page">
-          <span>✧</span> Assistant <kbd>01</kbd>
+          Assistant
         </button>
         <button class="nav-item" data-view="knowledge">
-          <span>▤</span> Knowledge <kbd id="nav-count">0</kbd>
+          Knowledge <span class="nav-count" id="nav-count" aria-label="Indexed documents">0</span>
         </button>
         <button class="nav-item" data-view="logs">
-          <span>≋</span> Logs & incidents <kbd>03</kbd>
+          Logs & incidents
         </button>
         <button class="nav-item" data-view="services">
-          <span>⬡</span> Services <kbd>04</kbd>
+          Services
         </button>
       </nav>
-      <div class="sidebar-note">
-        <span>◈</span>
-        <p>
-          Your infrastructure.<br />Your knowledge.<br /><strong
-            >Your machine.</strong
-          >
-        </p>
-      </div>
+
       <div class="sidebar-bottom">
         <span class="status-dot" id="connection-dot"></span>
         <div id="connection-label">Checking local model…</div>
@@ -56,7 +43,7 @@
           ↻
         </button>
       </div>
-      <div class="version">GRIMOIRE <span>v0.1.0 / local</span></div>
+      <div class="version"><span>Self-hosted</span><span>v0.1.0</span></div>
     </aside>
     <main>
       <header class="topbar">
@@ -65,7 +52,7 @@
           ><span id="page-title">Assistant</span>
         </div>
         <div class="privacy">
-          <span>◉</span> LOCAL-FIRST <span class="topbar-divider"></span
+          Local inference <span class="topbar-divider"></span
           ><span class="model-tag" id="model-tag">Checking model…</span>
         </div>
       </header>
@@ -73,10 +60,10 @@
       <section id="view-chat" class="view chat-view">
         <div class="chat-toolbar">
           <div>
-            <span class="status-dot violet"></span> Infrastructure assistant
+            Conversation
           </div>
           <button id="clear-chat" class="text-button">
-            New conversation ↗
+            New conversation
           </button>
         </div>
         <p id="runtime-detail" class="runtime-detail" role="status" hidden></p>
@@ -88,36 +75,22 @@
           aria-live="polite"
         >
           <div id="welcome" class="welcome">
-            <div class="hero-sigil">
-              ◈<span class="orbit one"></span><span class="orbit two"></span>
-            </div>
-            <div class="eyebrow">MAKE SENSE OF YOUR HOMELAB</div>
-            <h1>A little clarity.<br /><span>A lot less guesswork.</span></h1>
-            <p>
-              Ask your documentation. Untangle your logs.<br />Find the evidence
-              behind the answer.
-            </p>
+            <h1>Ask your infrastructure.</h1>
+            <p>Search your runbooks, investigate logs and check service details.
+              Answers from indexed knowledge include source excerpts.</p>
+            <h2 class="prompt-heading">Start with a question</h2>
             <div class="prompt-grid">
               <button data-prompt="What ports does my monitoring stack expose?">
-                <span class="prompt-icon">⬡</span
-                ><strong>Know your infrastructure</strong
-                ><span>What ports does my monitoring stack expose?</span
-                ><i>↗</i>
+                <span>What ports does my monitoring stack expose?</span><span class="prompt-arrow" aria-hidden="true">→</span>
               </button>
               <button data-prompt="How do I restart my reverse proxy?">
-                <span class="prompt-icon">▤</span
-                ><strong>Find it in your docs</strong
-                ><span>How do I restart my reverse proxy?</span><i>↗</i>
+                <span>How do I restart my reverse proxy?</span><span class="prompt-arrow" aria-hidden="true">→</span>
               </button>
               <button data-go="logs">
-                <span class="prompt-icon">≋</span
-                ><strong>Follow the evidence</strong
-                ><span>Inspect errors and repeated log failures</span><i>↗</i>
+                <span>Inspect errors and repeated log failures</span><span class="prompt-arrow" aria-hidden="true">→</span>
               </button>
               <button data-go="knowledge">
-                <span class="prompt-icon">+</span
-                ><strong>Build your knowledge</strong
-                ><span>Add runbooks, configs and service notes</span><i>↗</i>
+                <span>Add runbooks, configs and service notes</span><span class="prompt-arrow" aria-hidden="true">→</span>
               </button>
             </div>
           </div>
@@ -134,7 +107,6 @@
             ></textarea>
             <div class="composer-bottom">
               <label class="mode-select"
-                ><span>◈</span
                 ><select id="chat-mode" aria-label="Answer mode">
                   <option value="knowledge">Indexed knowledge</option>
                   <option value="general">General chat</option>
@@ -166,17 +138,15 @@
       </section>
       <section id="view-knowledge" class="view content-view" hidden>
         <div class="section-heading">
-          <div class="eyebrow">LOCAL KNOWLEDGE</div>
-          <h1>Your knowledge, connected.</h1>
+          <h1>Knowledge</h1>
           <p>
-            Index local runbooks and configuration. Keep the source within
-            reach.
+            Upload runbooks and configuration, or search indexed documents.
           </p>
         </div>
         <div class="panel upload-panel">
           <div class="panel-heading">
             <h2>Add documentation</h2>
-            <span class="badge">LOCAL EMBEDDINGS</span>
+            <span class="badge">Local embeddings</span>
           </div>
           <form id="upload-form">
             <label class="file-label" for="document-file"
@@ -197,7 +167,7 @@
                   maxlength="100"
                   placeholder="e.g. grafana" /></label
               ><button class="primary-button" id="upload-button">
-                Index document ↗
+                Index document
               </button>
             </div>
             <p class="helper">
@@ -239,8 +209,7 @@
       </section>
       <section id="view-logs" class="view content-view" hidden>
         <div class="section-heading">
-          <div class="eyebrow">LOG ANALYSIS</div>
-          <h1>From noise to a working theory.</h1>
+          <h1>Logs & incidents</h1>
           <p>
             Inspect supplied logs. Separate observed events from possible
             causes.
@@ -326,7 +295,7 @@
                 <button class="secondary-button" name="action" value="analyse">
                   Analyse logs</button
                 ><button class="primary-button" name="action" value="incident">
-                  Create incident ↗
+                  Create incident
                 </button>
               </div>
             </div>
@@ -341,11 +310,11 @@
       </section>
       <section id="view-host" class="view content-view" hidden>
         <div class="section-heading">
-          <div class="eyebrow">THIS HOST</div><h1>A view of the machine.</h1>
+          <h1>This host</h1>
           <p>Local facts from explicit inspections. Each reading is a point in time.</p>
         </div>
         <div class="panel">
-          <button id="host-refresh" class="primary-button">Inspect host ↗</button>
+          <button id="host-refresh" class="primary-button">Inspect host</button>
           <p id="host-status" role="status">Choose Inspect host to collect local facts.</p>
           <div id="host-overview" class="host-grid"></div>
           <details><summary>Local disks</summary><div id="host-disks"></div></details>
@@ -372,8 +341,7 @@
       </section>
       <section id="view-services" class="view content-view" hidden>
         <div class="section-heading">
-          <div class="eyebrow">INFRASTRUCTURE</div>
-          <h1>Give your services some context.</h1>
+          <h1>Services</h1>
           <p>
             Local inventory, manual HTTP health checks and DNS inspection. Saved observations are
             point-in-time evidence; use Probe to check again.
@@ -460,11 +428,11 @@
                 <label>Environment<input name="environment" maxlength="100" placeholder="lab" /></label>
               </div>
               <p>HTTP(S) only. No credentials, query strings or fragments. Redirects stay on the same origin.</p>
-              <button class="primary-button">Save service ↗</button>
+              <button class="primary-button">Save service</button>
             </form>
           </details>
         </div>
-        <button id="probe-services" class="primary-button">Probe configured services ↗</button>
+        <button id="probe-services" class="primary-button">Probe configured services</button>
         <div id="services-list" class="service-grid" aria-live="polite"></div>
       </section>
     </main>
