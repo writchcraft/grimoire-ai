@@ -8,3 +8,10 @@
 *.yaml text eol=lf
 *.sh text eol=lf
 *.png binary
+
+# Frozen evaluation artifacts are hashed byte-for-byte; preserve original line endings.
+backend/app/evaluation/suite.json -text
+backend/app/evaluation/heldout.json -text
+docs/heldout/first-run.json -text
+docs/heldout/first-run.sha256 -text
+docs/heldout/analysis.json -text
