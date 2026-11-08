@@ -284,7 +284,7 @@ def inspect_host(section="status", query=None, exact=False, provider=None, thres
         _slots.release()
 
 
-def correlations(host_records, event_records=(), http=None, mapped_name=None):
+def correlations(host_records, event_records=(), http=None, mapped_name=None, tcp=()):
     """Exact identifiers and timestamps only. Temporal support never establishes cause."""
     links = []
     for record in host_records:
@@ -345,6 +345,22 @@ def correlations(host_records, event_records=(), http=None, mapped_name=None):
                     caveat="Causation unknown",
                 )
             )
+        for observation in tcp:
+            if (
+                mapped_name
+                and facts.get("name", "").casefold() == mapped_name.casefold()
+                and facts.get("state") == "stopped"
+                and observation.get("state") in {"refused", "timeout", "blocked/unreachable"}
+            ):
+                links.append(
+                    dict(
+                        evidence_ids=[record["evidence_id"], observation["id"]],
+                        relationship=f"Configured TCP :{observation['port']} was "
+                        f"{observation['state']} at {observation['observed_at']}; mapped Windows "
+                        f"service stopped at {record['observed_at']}",
+                        caveat="Separate observations; causation unknown",
+                    )
+                )
     return links[:100]
 
 
@@ -492,5 +508,11 @@ def context(settings, storage=None, service=None, events=()):
         records=records,
         issues=page["issues"],
         assessment=assessment(records),
-        correlations=correlations(records, events, http, mapping),
+        correlations=correlations(
+            records,
+            events,
+            http,
+            mapping,
+            storage.tcp_observations(configured["id"], 10) if configured else (),
+        ),
     )

@@ -343,6 +343,7 @@ def correlate(records, storage, service_name, minutes=5):
             ("http_observation", storage.observations(service["id"], 50)),
             ("dns_observation", storage.dns_observations(service["id"], 50)),
             ("tls_observation", storage.tls_observations(service["id"], 50)),
+            ("tcp_observation", storage.tcp_observations(service["id"], 50)),
         )
         for observation in items
     ]
@@ -435,6 +436,8 @@ def local_model_allowed(provider):
 
 
 def event_question(message):
+    if re.search(r"\b(tcp|port|associated)\b", message, re.I):
+        return False
     return bool(
         re.search(
             r"windows (?:events?|service)|event (?:log|id)|"

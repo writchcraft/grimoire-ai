@@ -66,12 +66,20 @@ def tokens(name: str) -> set[str]:
 
 def plan_live(message: str, services: list[dict]) -> LivePlan | None:
     """Decide deterministically whether a question asks about current service state."""
+    if re.search(r"^\s*(what|which)\b.*\bports?\b", message, re.I) and not re.search(
+        r"\b(reach\w*|refus\w*|fail\w*|status|unavailable|unreachable)\b", message, re.I
+    ):
+        return None
+    tcp_question = bool(
+        re.search(r"\b(tcp|reach|refus\w*|port.*fail|associated|stopped|changed)\b", message, re.I)
+    )
     tls_question = bool(re.search(r"\b(tls|ssl|certificates?|cert|expir\w*)\b", message, re.I))
     dns_question = bool(re.search(r"\b(dns|resolv\w*|hostname|same ip)\b", message, re.I))
-    if _HOWTO.search(message) and not (dns_question or tls_question):
+    if _HOWTO.search(message) and not (dns_question or tls_question or tcp_question):
         return None
     asks_state = bool(
-        dns_question
+        tcp_question
+        or dns_question
         or tls_question
         or _STATE_WORDS.search(message)
         or _UP_DOWN.search(message)
@@ -100,6 +108,12 @@ def plan_live(message: str, services: list[dict]) -> LivePlan | None:
         kind = "dns"
     if tls_question and not re.search(r"\b(why|fail\w*|unreachable)\b", message, re.I):
         kind = "tls"
+    if (
+        tcp_question
+        and not (tls_question or dns_question)
+        and not re.search(r"\b(why|unavailable|unreachable|fail\w*)\b", message, re.I)
+    ):
+        kind = "tcp"
     if named:
         return LivePlan(kind, named)
     return LivePlan(kind, services, generic=True)
@@ -299,7 +313,9 @@ async def live_answer(body, storage: Storage, provider=None, transport=None) -> 
     plan = plan_live(body.message, services)
     if plan is None:
         return None
-    if plan.kind in {"dns", "tls"}:
+    if body.service and not plan.services:
+        plan.services = services
+    if plan.kind in {"dns", "tls", "tcp"}:
         answer, evidence = (
             f"LIVE {plan.kind.upper()} OBSERVATION\n"
             "INDEXED DOCUMENTATION: not consulted for this live-state answer.",
@@ -314,9 +330,16 @@ async def live_answer(body, storage: Storage, provider=None, transport=None) -> 
     from app.services.tls_live import append_tls
 
     answer, evidence = await append_tls(body, plan, storage, answer, evidence)
+    from app.services.tcp_live import append_tcp
+
+    answer, evidence = await append_tcp(body, plan, storage, answer, evidence)
     interpretation = None
     if body.explain and provider is not None and evidence:
-        interpretation = await interpret(provider, evidence)
+        # Nearby native events keep their existing privacy boundary: only the transport
+        # observations are eligible for this optional model interpretation.
+        interpretation = await interpret(
+            provider, [e for e in evidence if e.evidence_type != "windows_event"]
+        )
     return {
         "answer": answer,
         "sources": [],

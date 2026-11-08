@@ -12,7 +12,9 @@ from app.services.dns import MAX_BATCH, inspect_many, summary
 async def append_dns(body, plan, storage, answer, evidence):
     if plan.kind == "tls" and not re.search(r"\b(dns|resolv\w*)\b", body.message, re.I):
         return answer, evidence
-    dns_question = bool(re.search(r"\b(dns|resolv\w*|hostname|same ip)\b", body.message, re.I))
+    dns_question = bool(
+        re.search(r"\b(dns|resolv\w*|hostname|same ip|tcp|reach|port)\b", body.message, re.I)
+    )
     correlation = bool(re.search(r"\b(why|unreachable|unavailable)\b", body.message, re.I))
     if not (dns_question or correlation):
         return answer, evidence

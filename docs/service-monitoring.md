@@ -125,3 +125,6 @@ Linux and Docker acceptance remain intentionally deferred; neither runtime was p
 
 The recommended next infrastructure integration is read-only DNS resolution inspection for
 configured service hostnames, with similarly bounded requests and traceable observations.
+
+
+TCP connectivity is available for configured service URLs and explicit inventory ports. See [explicit-target TCP diagnostics](tcp-diagnostics.md).

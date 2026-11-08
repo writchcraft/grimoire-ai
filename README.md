@@ -87,11 +87,15 @@ grimoire evaluate --json --output .cache/evaluation.json
 
 ## Interface
 
-Current screenshots show the native-provider UI with no weights configured. Incident and service content is fictional demo data; no live integration or successful model inference is implied.
+Screenshots captured on 8 November 2026 show the current native-provider UI with no model weights configured. Log, incident and service content is fictional demo data. Host and Windows Events views are shown before inspection; no live checks or successful model inference are implied.
 
 ![Grimoire infrastructure assistant](docs/screenshots/assistant.png)
 
-[Knowledge and upload](docs/screenshots/knowledge.png) · [Log evidence](docs/screenshots/logs.png) · [Incident report](docs/screenshots/incident.png) · [Service inventory](docs/screenshots/services.png)
+[Knowledge and upload](docs/screenshots/knowledge.png) · [This host](docs/screenshots/host.png) · [Windows Events](docs/screenshots/events.png) · [Log evidence](docs/screenshots/logs.png) · [Incident report](docs/screenshots/incident.png)
+
+Service inventory includes manual HTTP, TCP and DNS inspection controls, with saved observations kept separate from indexed documentation.
+
+![Grimoire service inventory with HTTP, TCP and DNS inspection controls](docs/screenshots/services.png)
 
 ## Architecture
 
@@ -295,3 +299,12 @@ Use `grimoire models list`, `models inspect <id>`, `models policy`, `models test
 TLS certificate inspection is read-only and reuses configured HTTPS monitors. See the [TLS guide](docs/tls-inspection.md) and [acceptance report](docs/tls-report.md).
 
 Windows host events are available through `grimoire events`, `/api/events`, and **Logs & incidents → Windows Events**. Reads are bounded, read-only and local. System/Application are supported; inaccessible Security logs are a normal state. See [Windows Event Log inspection](docs/windows-events.md) for filters, permissions, privacy controls and platform limitations, and [the milestone report](docs/windows-events-report.md) for acceptance/regression results.
+
+
+### TCP connectivity diagnostics
+
+Known service ports can now be checked with `grimoire services tcp [service] --json`.
+A deliberate single-target check is available as `grimoire network tcp HOST PORT --json`.
+The Services view includes TCP status, latency, timestamps and recent samples.
+See [TCP diagnostics](docs/tcp-diagnostics.md) for inventory selection, safety bounds,
+independent DNS/TCP/TLS/HTTP evidence and Windows service/event correlation.

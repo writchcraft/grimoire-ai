@@ -1,3 +1,4 @@
+import { tcpText } from "./tcp.js";
 import { eventText, eventReference, eventFilters } from "./events.js";
 import { hostCards, diskText, interfaceText, serviceText, hostContextText } from "./host.js";
 import { tlsText } from "./tls.js";
@@ -516,6 +517,17 @@ function serviceCard(service, allowDelete = false) {
     card.append(area, button);
   }
   if (allowDelete && (service.monitor || service.hostname)) {
+    const tcpArea = element("pre", "report", tcpText(service.tcp));
+    const tcpButton = element("button", "primary-button", "Inspect TCP");
+    tcpButton.addEventListener("click", async () => {
+      tcpButton.disabled = true;
+      try {
+        await jsonApi(`/api/services/${service.id}/tcp`, {});
+        tcpArea.textContent = tcpText(await jsonApi(`/api/services/${service.id}/tcp`));
+      } catch (error) { tcpArea.textContent = error.message; }
+      finally { tcpButton.disabled = false; }
+    });
+    card.append(tcpArea, tcpButton);
     const dnsArea = element("pre", "report", dnsText(service.dns));
     const dnsButton = element("button", "primary-button", "Inspect DNS");
     dnsButton.addEventListener("click", async () => {

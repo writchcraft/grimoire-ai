@@ -55,10 +55,11 @@ class LiveEvidence(BaseModel):
     """A traceable live observation; the live counterpart of a document Citation."""
 
     evidence_type: Literal[
-        "http_observation", "dns_observation", "tls_observation", "windows_event"
+        "http_observation", "dns_observation", "tls_observation", "tcp_observation", "windows_event"
     ] = "http_observation"
     windows_event: dict | None = None
     tls: dict | None = None
+    tcp: dict | None = None
     hostname: str | None = None
     addresses: list[str] = Field(default_factory=list)
     record_types: list[str] = Field(default_factory=list)
@@ -142,6 +143,10 @@ class MonitorConfig(InputModel):
         return None if value is None else check_url(value)
 
 
+class TCPProbeRequest(InputModel):
+    """No target overrides: a TCP API probe uses only the stored inventory."""
+
+
 class ServiceInput(InputModel):
     local_windows_service: str | None = Field(default=None, min_length=1, max_length=256)
     name: str = Field(min_length=1, max_length=100, pattern=r"^[\w .-]+$")
@@ -172,6 +177,7 @@ class ServiceInput(InputModel):
 
         for value in urls:
             parsed = urlparse(value)
+            check_url(parsed._replace(path="", query="", fragment="").geturl())
             if (
                 len(value) > 2048
                 or parsed.scheme not in {"http", "https"}

@@ -234,11 +234,29 @@ async def test_correlation_and_explicit_refresh(settings, monkeypatch):
         )
 
     monkeypatch.setattr(tls, "inspect_tls", tls_failure)
+    from app.services import tcp
+
+    async def tcp_failure(*args, **kwargs):
+        return dict(
+            hostname="grafana.home.arpa",
+            address="127.0.0.1",
+            port=3000,
+            state="refused",
+            connection_success=False,
+            error_category="connection_refused",
+            reason="TCP connection refused; cause unconfirmed.",
+            connection_latency_ms=1,
+            observed_at=datetime.now(UTC).isoformat(),
+            latency_ms=1,
+        )
+
+    monkeypatch.setattr(tcp, "inspect_tcp", tcp_failure)
+
     answer = await live_answer(
         ChatRequest(message="Why is Grafana unreachable?", probe=True), store
     )
     assert "do not establish causation" in answer["answer"]
-    assert len(answer["live"]) == 3
+    assert len(answer["live"]) == 4
     assert answer["live"][2].evidence_type == "tls_observation"
     assert answer["live"][2].state == "handshake-failed"
     assert answer["live"][0].state == "unreachable"

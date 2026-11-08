@@ -43,12 +43,18 @@ def parser():
             command.add_argument("--state")
             command.add_argument("--start-type")
             command.add_argument("--limit", type=int, default=100)
+    network = commands.add_parser("network", help="Single explicit target diagnostics")
+    network_actions = network.add_subparsers(dest="action", required=True)
+    tcp = network_actions.add_parser("tcp")
+    tcp.add_argument("host")
+    tcp.add_argument("port", type=int)
+    tcp.add_argument("--json", action="store_true")
     services = commands.add_parser("services", help="Manual read-only HTTP service monitoring")
     actions = services.add_subparsers(dest="action", required=True)
-    for action in ("list", "status", "probe", "dns", "tls", "add"):
+    for action in ("list", "status", "probe", "dns", "tls", "tcp", "add"):
         command = actions.add_parser(action)
         command.add_argument("--json", action="store_true")
-        if action in {"status", "probe", "dns", "tls"}:
+        if action in {"status", "probe", "dns", "tls", "tcp"}:
             command.add_argument("service", nargs="?", help="Exact service name or ID")
         if action == "add":
             command.add_argument("path", type=Path, help="Service configuration JSON file")
@@ -201,6 +207,15 @@ def emit(data, machine):
     elif "answer" in data and "events" in data:
         print(data["answer"])
         print(json.dumps(data.get("correlations", []), indent=2))
+    elif "tcp_results" in data:
+        for item in data["tcp_results"]:
+            print(
+                f"{item.get('service', 'Explicit target')}\nTCP\n"
+                f"Host: {item['hostname']}\nAddress: {item['address']}\n"
+                f"Port: {item['port']}\nStatus: {item['state'].upper()}\n"
+                f"Latency: {item['connection_latency_ms']} ms\n"
+                f"Checked: {item['observed_at']}\n{item['reason']}"
+            )
     elif "tls_results" in data:
         for item in data["tls_results"]:
             print(f"{item['service']}\nTLS\nStatus: {item['state'].upper()}")
@@ -373,6 +388,10 @@ async def execute(args, settings):
                     "retrieval": {k: v for k, v in result.items() if k != "records"},
                 }, 0
         return result, 0
+    if args.command == "network":
+        from app.services.tcp import inspect_tcp
+
+        return {"tcp_results": [await inspect_tcp(args.host, args.port)]}, 0
     if args.command == "services":
         from app.models import ServiceInput
         from app.services.live import probe_and_record
@@ -391,6 +410,10 @@ async def execute(args, settings):
                 raise ValueError("Service not found")
             if args.action == "list":
                 return {"services": targets}, 0
+            if args.action == "tcp":
+                from app.services.tcp import inspect_many
+
+                return {"tcp_results": await inspect_many(store, targets)}, 0
             if args.action == "tls":
                 from app.services.tls import inspect_and_record, inspect_many
 

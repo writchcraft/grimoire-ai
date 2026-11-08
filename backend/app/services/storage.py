@@ -137,6 +137,12 @@ class Storage:
                 );
                 CREATE INDEX IF NOT EXISTS tls_recent
                     ON tls_observations (service_id, checked_at DESC);
+                CREATE TABLE IF NOT EXISTS tcp_observations (
+                    id TEXT PRIMARY KEY, service_id TEXT NOT NULL REFERENCES services(id)
+                    ON DELETE CASCADE, checked_at TEXT NOT NULL, record TEXT NOT NULL
+                );
+                CREATE INDEX IF NOT EXISTS tcp_recent
+                    ON tcp_observations (service_id, checked_at DESC);
                 CREATE INDEX IF NOT EXISTS observation_recent
                     ON service_observations (service_id, checked_at DESC);
             """)
@@ -471,6 +477,7 @@ class Storage:
             db.execute("DELETE FROM service_observations WHERE service_id=?", (service_id,))
             db.execute("DELETE FROM dns_observations WHERE service_id=?", (service_id,))
             db.execute("DELETE FROM tls_observations WHERE service_id=?", (service_id,))
+            db.execute("DELETE FROM tcp_observations WHERE service_id=?", (service_id,))
             return db.execute("DELETE FROM services WHERE id=?", (service_id,)).rowcount > 0
 
     def record_dns(self, observation: dict) -> dict:
@@ -546,6 +553,45 @@ class Storage:
                 json.loads(row[0])
                 for row in db.execute(
                     "SELECT record FROM tls_observations WHERE service_id=? "
+                    "ORDER BY checked_at DESC, rowid DESC LIMIT ?",
+                    (service_id, max(1, min(limit, 50))),
+                )
+            ]
+
+    def record_tcp(self, observation: dict) -> dict:
+        """Persist one observation and prune this service to the newest few."""
+        with self.lock, self.connect() as db:
+            db.execute(
+                "INSERT INTO tcp_observations VALUES (?,?,?,?)",
+                (
+                    observation["id"],
+                    observation["service_id"],
+                    observation["checked_at"],
+                    json.dumps(observation),
+                ),
+            )
+            db.execute(
+                "DELETE FROM tcp_observations WHERE service_id=? AND id NOT IN ("
+                "SELECT id FROM tcp_observations WHERE service_id=? "
+                "ORDER BY checked_at DESC, rowid DESC LIMIT ?)",
+                (
+                    observation["service_id"],
+                    observation["service_id"],
+                    self.OBSERVATIONS_PER_SERVICE,
+                ),
+            )
+            db.execute(
+                "DELETE FROM tcp_observations WHERE rowid NOT IN "
+                "(SELECT rowid FROM tcp_observations ORDER BY rowid DESC LIMIT 5000)"
+            )
+        return observation
+
+    def tcp_observations(self, service_id: str, limit: int = 50) -> list[dict]:
+        with self.connect() as db:
+            return [
+                json.loads(row[0])
+                for row in db.execute(
+                    "SELECT record FROM tcp_observations WHERE service_id=? "
                     "ORDER BY checked_at DESC, rowid DESC LIMIT ?",
                     (service_id, max(1, min(limit, 50))),
                 )

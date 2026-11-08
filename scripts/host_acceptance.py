@@ -67,13 +67,13 @@ def main():
     chosen = stopped["records"][0]["identifier"]
     single = host.inspect_host("services", host.ServiceQuery(name=chosen), exact=True)
     assert single["records"][0]["identifier"] == chosen
-    report["services"] = dict(
-        count=len(services["records"]),
-        truncated=services["truncated"],
-        running_filter="PASS",
-        stopped_filter="PASS",
-        exact_inspection="PASS",
-    )
+    report["services"] = {
+        "count": len(services["records"]),
+        "truncated": services["truncated"],
+        "running_filter": "PASS",
+        "stopped_filter": "PASS",
+        "exact_inspection": "PASS",
+    }
     # Query existing startup evidence around the measured boot; no synthetic Windows events.
     startup = {"status": "available", "records": []}
     for provider, event_id in (
@@ -95,12 +95,12 @@ def main():
         if sample["status"] != "available":
             startup["status"] = sample["status"]
     links = host.correlations(page["records"], startup["records"])
-    report["windows_events"] = dict(
-        status=startup["status"],
-        sampled=len(startup["records"]),
-        relationships=len(links),
-        scope="Exact host + startup provider/ID + boot time proximity",
-    )
+    report["windows_events"] = {
+        "status": startup["status"],
+        "sampled": len(startup["records"]),
+        "relationships": len(links),
+        "scope": "Exact host + startup provider/ID + boot time proximity",
+    }
     with tempfile.TemporaryDirectory() as directory:
         settings = Settings(data_dir=Path(directory))
         with TestClient(

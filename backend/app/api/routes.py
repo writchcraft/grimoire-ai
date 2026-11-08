@@ -21,6 +21,7 @@ from app.models import (
     IngestRequest,
     LogRequest,
     ServiceInput,
+    TCPProbeRequest,
 )
 from app.rag.retrieval import NO_EVIDENCE, prepare_chat
 from app.services.grounding import grounded_answer
@@ -366,6 +367,9 @@ def services(
             from app.services.tls import summary as tls_summary
 
             record["tls"] = tls_summary(store, record)
+            from app.services.tcp import summary as tcp_summary
+
+            record["tcp"] = tcp_summary(store, record)
     return records
 
 
@@ -441,6 +445,28 @@ async def inspect_tls(service_id: UUID, request: Request) -> dict:
 @router.get("/api/services/{service_id}/tls")
 def service_tls(service_id: UUID, request: Request) -> dict:
     from app.services.tls import summary
+
+    service = monitored_service(request, service_id, require_monitor=False)
+    return summary(request.app.state.storage, service)
+
+
+@router.post("/api/services/{service_id}/tcp")
+async def inspect_tcp(
+    service_id: UUID, request: Request, body: TCPProbeRequest | None = None
+) -> list[dict]:
+    from app.services.tcp import inspect_and_record
+
+    service = monitored_service(request, service_id, require_monitor=False)
+    async with request.app.state.probe_slots:
+        try:
+            return await inspect_and_record(request.app.state.storage, service)
+        except ValueError as exc:
+            raise HTTPException(422, str(exc)) from exc
+
+
+@router.get("/api/services/{service_id}/tcp")
+def service_tcp(service_id: UUID, request: Request) -> dict:
+    from app.services.tcp import summary
 
     service = monitored_service(request, service_id, require_monitor=False)
     return summary(request.app.state.storage, service)

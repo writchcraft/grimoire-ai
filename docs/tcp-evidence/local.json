@@ -1,0 +1,183 @@
+{
+  "scope": "Disposable loopback endpoints only; no infrastructure changes",
+  "ipv4": {
+    "hostname": "127.0.0.1",
+    "address": "127.0.0.1",
+    "port": 50323,
+    "state": "reachable",
+    "connection_success": true,
+    "error_category": null,
+    "reason": "TCP connection established; no application payload sent.",
+    "connection_latency_ms": 0.97,
+    "observed_at": "2026-11-08T15:44:50.392525+00:00",
+    "latency_ms": 1
+  },
+  "hostname": {
+    "hostname": "localhost",
+    "address": "127.0.0.1",
+    "port": 50323,
+    "state": "reachable",
+    "connection_success": true,
+    "error_category": null,
+    "reason": "TCP connection established; no application payload sent.",
+    "connection_latency_ms": 0.47,
+    "observed_at": "2026-11-08T15:44:50.397102+00:00",
+    "latency_ms": 4
+  },
+  "configured": [
+    {
+      "hostname": "localhost",
+      "address": "127.0.0.1",
+      "port": 50323,
+      "state": "reachable",
+      "connection_success": true,
+      "error_category": null,
+      "reason": "TCP connection established; no application payload sent.",
+      "connection_latency_ms": 0.42,
+      "observed_at": "2026-11-08T15:44:50.480434+00:00",
+      "latency_ms": 2,
+      "id": "16350ea9-cd2c-413f-8a79-57e59d4ff161",
+      "service_id": "f9f841c0-8033-4745-8810-a9a84a3d20ad",
+      "service": "Local Grimoire endpoint",
+      "checked_at": "2026-11-08T15:44:50.480434+00:00"
+    }
+  ],
+  "cooldown": [
+    {
+      "hostname": "localhost",
+      "address": "127.0.0.1",
+      "port": 50323,
+      "state": "reachable",
+      "connection_success": true,
+      "error_category": null,
+      "reason": "TCP connection established; no application payload sent.",
+      "connection_latency_ms": 0.42,
+      "observed_at": "2026-11-08T15:44:50.480434+00:00",
+      "latency_ms": 2,
+      "id": "16350ea9-cd2c-413f-8a79-57e59d4ff161",
+      "service_id": "f9f841c0-8033-4745-8810-a9a84a3d20ad",
+      "service": "Local Grimoire endpoint",
+      "checked_at": "2026-11-08T15:44:50.480434+00:00"
+    }
+  ],
+  "correlation": "LIVE OBSERVATION\n1 service: 1 healthy.\n[L1] Local Grimoire endpoint: HEALTHY. HTTP 200, 422 ms at http://localhost:50323; observed 2026-11-08T15:44:50.916676+00:00 (0 s ago, probed now). HTTP 200 as expected in 422 ms.\nEach line is a point-in-time observation. It does not establish uptime or past availability.\nINDEXED DOCUMENTATION: not consulted for this live-state answer.\n\nDNS OBSERVATIONS (system resolver; separate from HTTP)\n[D1] Local Grimoire endpoint: DNS RESOLVED; localhost; A: 127.0.0.1; AAAA: ::1; canonical name: e-cauldron; observed 2026-11-08T15:44:50.930756+00:00; 0 ms. System resolver returned addresses.\n[D1][L1] Separate observations: DNS resolved at 2026-11-08T15:44:50.930756+00:00; HTTP healthy at 2026-11-08T15:44:50.916676+00:00. These checks may differ in time, cache and resolver result; they do not establish causation.\nOnly recorded samples are compared; no claim of long-term DNS stability. DNS success does not establish HTTP reachability.\n\nTLS OBSERVATIONS (separate certificate, trust and hostname facts)\nNo matching configured HTTPS service.\nOnly retained samples support comparisons. No automatic HTTP verification bypass.\n\nTCP OBSERVATIONS (single pinned address per target)\n[C1] Local Grimoire endpoint: TCP :50323 REACHABLE; host localhost; address 127.0.0.1; connection 0.42 ms; observed 2026-11-08T15:44:50.480434+00:00. TCP connection established; no application payload sent.\n[C1][L1] Separate observations: TCP reachable at 2026-11-08T15:44:50.480434+00:00; http_observation healthy at 2026-11-08T15:44:50.916676+00:00. Addresses and times may differ; causation unconfirmed.\nTCP and HTTP checks succeeded at their respective times.\n[C1][D1] Separate observations: TCP reachable at 2026-11-08T15:44:50.480434+00:00; dns_observation resolved at 2026-11-08T15:44:50.930756+00:00. Addresses and times may differ; causation unconfirmed.\n[C1] Diagnostic layers (independent samples): DNS resolved at 2026-11-08T15:44:50.930756+00:00 -> TCP :50323 reachable at 2026-11-08T15:44:50.480434+00:00 -> TLS not observed for this target -> HTTP healthy at 2026-11-08T15:44:50.916676+00:00\nUnobserved layers remain unavailable. TCP success proves connection establishment only. Timeout does not prove firewall blockage; refusal does not prove a crash. Retained manual samples are not uptime percentages.",
+  "history": {
+    "latest": [
+      {
+        "hostname": "localhost",
+        "address": "127.0.0.1",
+        "port": 50323,
+        "state": "reachable",
+        "connection_success": true,
+        "error_category": null,
+        "reason": "TCP connection established; no application payload sent.",
+        "connection_latency_ms": 0.42,
+        "observed_at": "2026-11-08T15:44:50.480434+00:00",
+        "latency_ms": 2,
+        "id": "16350ea9-cd2c-413f-8a79-57e59d4ff161",
+        "service_id": "f9f841c0-8033-4745-8810-a9a84a3d20ad",
+        "service": "Local Grimoire endpoint",
+        "checked_at": "2026-11-08T15:44:50.480434+00:00"
+      }
+    ],
+    "history": [
+      {
+        "hostname": "localhost",
+        "address": "127.0.0.1",
+        "port": 50323,
+        "state": "reachable",
+        "connection_success": true,
+        "error_category": null,
+        "reason": "TCP connection established; no application payload sent.",
+        "connection_latency_ms": 0.42,
+        "observed_at": "2026-11-08T15:44:50.480434+00:00",
+        "latency_ms": 2,
+        "id": "16350ea9-cd2c-413f-8a79-57e59d4ff161",
+        "service_id": "f9f841c0-8033-4745-8810-a9a84a3d20ad",
+        "service": "Local Grimoire endpoint",
+        "checked_at": "2026-11-08T15:44:50.480434+00:00"
+      }
+    ],
+    "targets": [
+      {
+        "hostname": "localhost",
+        "port": 50323
+      }
+    ]
+  },
+  "api": [
+    {
+      "hostname": "localhost",
+      "address": "127.0.0.1",
+      "port": 50323,
+      "state": "reachable",
+      "connection_success": true,
+      "error_category": null,
+      "reason": "TCP connection established; no application payload sent.",
+      "connection_latency_ms": 0.42,
+      "observed_at": "2026-11-08T15:44:50.480434+00:00",
+      "latency_ms": 2,
+      "id": "16350ea9-cd2c-413f-8a79-57e59d4ff161",
+      "service_id": "f9f841c0-8033-4745-8810-a9a84a3d20ad",
+      "service": "Local Grimoire endpoint",
+      "checked_at": "2026-11-08T15:44:50.480434+00:00"
+    }
+  ],
+  "cli": {
+    "tcp_results": [
+      {
+        "hostname": "localhost",
+        "address": "127.0.0.1",
+        "port": 50323,
+        "state": "reachable",
+        "connection_success": true,
+        "error_category": null,
+        "reason": "TCP connection established; no application payload sent.",
+        "connection_latency_ms": 0.42,
+        "observed_at": "2026-11-08T15:44:50.480434+00:00",
+        "latency_ms": 2,
+        "id": "16350ea9-cd2c-413f-8a79-57e59d4ff161",
+        "service_id": "f9f841c0-8033-4745-8810-a9a84a3d20ad",
+        "service": "Local Grimoire endpoint",
+        "checked_at": "2026-11-08T15:44:50.480434+00:00"
+      }
+    ]
+  },
+  "ipv6": {
+    "hostname": "::1",
+    "address": "::1",
+    "port": 50332,
+    "state": "reachable",
+    "connection_success": true,
+    "error_category": null,
+    "reason": "TCP connection established; no application payload sent.",
+    "connection_latency_ms": 0.52,
+    "observed_at": "2026-11-08T15:44:51.099733+00:00",
+    "latency_ms": 1
+  },
+  "timeout": {
+    "hostname": "127.0.0.1",
+    "address": "127.0.0.1",
+    "port": 50334,
+    "state": "timeout",
+    "connection_success": false,
+    "error_category": "timeout",
+    "reason": "TCP connection deadline exceeded; cause unconfirmed.",
+    "connection_latency_ms": 264.48,
+    "observed_at": "2026-11-08T15:44:51.616274+00:00",
+    "latency_ms": 265
+  },
+  "timeout_reproduced": true,
+  "refused": {
+    "hostname": "127.0.0.1",
+    "address": "127.0.0.1",
+    "port": 50323,
+    "state": "refused",
+    "connection_success": false,
+    "error_category": "connection_refused",
+    "reason": "TCP connection refused; cause unconfirmed.",
+    "connection_latency_ms": 2042.01,
+    "observed_at": "2026-11-08T15:44:53.985057+00:00",
+    "latency_ms": 2042
+  }
+}

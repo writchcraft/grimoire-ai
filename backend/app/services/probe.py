@@ -52,7 +52,7 @@ def blocked_address(ip) -> bool:
         ip.is_unspecified
         or ip.is_multicast
         or ip.is_link_local
-        or ip.is_reserved
+        or (ip.is_reserved and not ip.is_loopback)
         or ip in _BLOCKED_EXTRA
     )
 

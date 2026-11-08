@@ -1,0 +1,126 @@
+Tracked-file artifact and credential-pattern audit passed.
++ git diff --check HEAD
+warning: in the working copy of 'backend/app/api/routes.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'backend/app/cli.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'backend/app/models.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'backend/app/services/dns_live.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'backend/app/services/host.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'backend/app/services/live.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'backend/app/services/probe.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'backend/app/services/storage.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'backend/app/services/windows_events.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'backend/tests/test_dns.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'backend/tests/test_windows_events.py', CRLF will be replaced by LF the next time Git touches it
+warning: in the working copy of 'frontend/src/app.js', CRLF will be replaced by LF the next time Git touches it
++ C:\Users\jacob\Documents\_VirtualStudioProjects\.RESUME\grimoire-ai\.venv\Scripts\python.exe -m ruff check backend scripts
+All checks passed!
++ C:\Users\jacob\Documents\_VirtualStudioProjects\.RESUME\grimoire-ai\.venv\Scripts\python.exe -m ruff format --check backend scripts
+94 files already formatted
++ C:\Users\jacob\Documents\_VirtualStudioProjects\.RESUME\grimoire-ai\.venv\Scripts\python.exe -m pytest backend/tests -q
+........................................................................ [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 37%]
+........................................................................ [ 49%]
+........................................................................ [ 62%]
+........................................................................ [ 74%]
+........................................................................ [ 87%]
+........................................................................ [ 99%]
+.                                                                        [100%]
+============================== warnings summary ===============================
+.venv\Lib\site-packages\fastapi\testclient.py:1
+  C:\Users\jacob\Documents\_VirtualStudioProjects\.RESUME\grimoire-ai\.venv\Lib\site-packages\fastapi\testclient.py:1: StarletteDeprecationWarning: Using `httpx` with `starlette.testclient` is deprecated; install `httpx2` instead.
+    from starlette.testclient import TestClient as TestClient  # noqa
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+577 passed, 1 warning in 59.93s
++ C:\Program Files\nodejs\npm.CMD run check --prefix frontend
+
+> check
+> node --check src/app.js && node --check src/api.js && node --check src/dns.js && node --check src/tls.js && node --check src/events.js && node --check src/host.js && node --check src/tcp.js
+
++ C:\Program Files\nodejs\npm.CMD test --prefix frontend
+
+> test
+> node --test tests/api.test.js tests/dns.test.js tests/tls.test.js tests/events.test.js tests/host.test.js tests/tcp.test.js
+
+TAP version 13
+# Subtest: NDJSON decoder handles split UTF-8 and split lines
+ok 1 - NDJSON decoder handles split UTF-8 and split lines
+  ---
+  duration_ms: 52.9039
+  ...
+# Subtest: model status identifies either provider and reports embedding failures
+ok 2 - model status identifies either provider and reports embedding failures
+  ---
+  duration_ms: 0.6623
+  ...
+# Subtest: model status shows lifecycle states and safe unconfigured identity
+ok 3 - model status shows lifecycle states and safe unconfigured identity
+  ---
+  duration_ms: 0.2799
+  ...
+# Subtest: API surfaces actionable provider error and request ID
+ok 4 - API surfaces actionable provider error and request ID
+  ---
+  duration_ms: 4.223
+  ...
+# Subtest: routing status stays concise for Auto and manual selection
+ok 5 - routing status stays concise for Auto and manual selection
+  ---
+  duration_ms: 0.4214
+  ...
+# Subtest: DNS cards display deterministic states, addresses, changes and age
+ok 6 - DNS cards display deterministic states, addresses, changes and age
+  ---
+  duration_ms: 64.1979
+  ...
+# Subtest: event facts retain source identity and hostile text literally
+ok 7 - event facts retain source identity and hostile text literally
+  ---
+  duration_ms: 2.8134
+  ...
+# Subtest: bounded time filters and correlation window
+ok 8 - bounded time filters and correlation window
+  ---
+  duration_ms: 23.4404
+  ...
+# Subtest: host cards preserve measured values and unavailable fields
+ok 9 - host cards preserve measured values and unavailable fields
+  ---
+  duration_ms: 2.5827
+  ...
+# Subtest: disks, interfaces and services retain exact identifiers and evidence
+ok 10 - disks, interfaces and services retain exact identifiers and evidence
+  ---
+  duration_ms: 0.5381
+  ...
+# Subtest: host incident context preserves uncertainty without dumping raw inventory
+ok 11 - host incident context preserves uncertainty without dumping raw inventory
+  ---
+  duration_ms: 0.3719
+  ...
+# Subtest: TCP empty, reachable, stale, refusal and retained history
+ok 12 - TCP empty, reachable, stale, refusal and retained history
+  ---
+  duration_ms: 2.9114
+  ...
+# Subtest: TLS unknown and skipped
+ok 13 - TLS unknown and skipped
+  ---
+  duration_ms: 2.1516
+  ...
+# Subtest: TLS trust, hostname, expiry and staleness remain separate
+ok 14 - TLS trust, hostname, expiry and staleness remain separate
+  ---
+  duration_ms: 0.4212
+  ...
+1..14
+# tests 14
+# suites 0
+# pass 14
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 172.345
+Local gate passed. Run Docker and real-model acceptance separately.

@@ -216,6 +216,9 @@ def test_correlation():
         def tls_observations(self, *_):
             return []
 
+        def tcp_observations(self, *_):
+            return []
+
     result = ev.correlate([fixture()], Store(), "example")
     assert len(result) == 1 and result[0]["observation"]["id"] == "HTTP-1"
     assert "causation unconfirmed" in result[0]["relationship"]
